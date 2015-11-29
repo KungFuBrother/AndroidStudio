@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64px"
+        android:background="@color/theme_title_background"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingLeft="20px"
+            android:paddingRight="20px"
+            android:singleLine="true"
+            android:text="选择商品供货区域"
+            android:textColor="@color/textColorCompany"
+            android:textSize="20px" />
+
+        <LinearLayout
+            android:layout_width="64px"
+            android:layout_height="match_parent"
+            android:padding="8px" >
+
+            <ImageView
+                android:id="@+id/dialog_area_close"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/button_circle"
+                android:padding="12px"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_clear_black_24dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/theme_background" >
+
+        <ListView
+            android:id="@+id/dialog_area_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:dividerHeight="1px" >
+        </ListView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/divider" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_gravity="bottom"
+            android:background="@color/divider" />
+    </FrameLayout>
+
+</LinearLayout>

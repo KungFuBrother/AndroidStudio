@@ -1,0 +1,31 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="8dp" >
+
+    <TextView
+        android:id="@+id/date_selector_start"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/selector_white_rec_border"
+        android:gravity="center"
+        android:hint="选择开始时间"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/date_selector_end"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/selector_white_rec_border"
+        android:gravity="center"
+        android:hint="选择结束时间"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textSize="16sp" />
+
+</LinearLayout>

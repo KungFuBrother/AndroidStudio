@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2px"
+        android:background="@drawable/back_white_rec_border"
+        android:orientation="vertical"
+        android:padding="8px" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="4px" >
+
+            <View
+                android:layout_width="4px"
+                android:layout_height="16px"
+                android:layout_margin="4px"
+                android:background="@color/radical_red" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4px"
+                android:text="积分购"
+                android:textColor="@color/material_blue_grey_800"
+                android:textSize="16px" />
+        </LinearLayout>
+
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8px"
+            android:scrollbars="none" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
+
+                <GridView
+                    android:id="@+id/score_grid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:listSelector="@android:color/transparent"
+                    android:scrollbars="none" >
+                </GridView>
+            </LinearLayout>
+        </HorizontalScrollView>
+    </LinearLayout>
+
+</FrameLayout>

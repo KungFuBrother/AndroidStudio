@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:id="@+id/base_fragment_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/base_fragment_empty_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4px"
+            android:text="暂无数据"
+            android:textColor="@color/disbaleTextColor"
+            android:textSize="16px" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/base_fragment_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/base_fragment_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone" >
+
+        <ProgressBar
+            android:id="@+id/base_fragment_loading_progressbar"
+            style="@android:style/Widget.ProgressBar.Small.Inverse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4px" />
+
+        <TextView
+            android:id="@+id/base_fragment_loading_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4px"
+            android:textColor="@color/disbaleTextColor"
+            android:textSize="16px" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/base_fragment_top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:visibility="gone" >
+    </FrameLayout>
+
+</FrameLayout>

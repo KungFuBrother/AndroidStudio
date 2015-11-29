@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="255px"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/suning_product_area_select"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_trans_divider"
+                android:orientation="vertical"
+                android:padding="14px">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="配送至"
+                    android:layout_margin="2px"
+                    android:textColor="@color/textColorSecond"
+                    android:textSize="16px" />
+
+                <TextView
+                    android:id="@+id/suning_product_area"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="点击设置商品供货区域"
+                    android:layout_margin="2px"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="16px" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/divider" />
+
+            <FrameLayout
+                android:id="@+id/suning_product_list_class"
+                android:layout_width="match_parent"
+                android:layout_height="0px"
+                android:layout_weight="1"></FrameLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/divider" />
+
+        <com.handmark.pulltorefresh.library.PullToRefreshScrollView
+            android:id="@+id/suning_product_list_scroll"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12px">
+
+                <yitgogo.smart.view.InnerGridView
+                    android:id="@+id/suning_product_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:listSelector="@android:color/transparent"
+                    android:numColumns="3"></yitgogo.smart.view.InnerGridView>
+            </LinearLayout>
+        </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
+    </LinearLayout>
+
+</FrameLayout>

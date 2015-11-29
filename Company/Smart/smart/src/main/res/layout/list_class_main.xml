@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/class_main_name"
+        android:layout_width="match_parent"
+        android:layout_height="48px"
+        android:gravity="center_vertical"
+        android:paddingLeft="16px"
+        android:paddingRight="16px"
+        android:singleLine="true"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="18px" />
+
+    <LinearLayout
+        android:id="@+id/class_main_mid_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/divider" />
+
+        <yitgogo.smart.view.InnerListView
+            android:id="@+id/class_main_mid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8px"
+            android:divider="@null"
+            android:listSelector="@android:color/transparent" >
+        </yitgogo.smart.view.InnerListView>
+    </LinearLayout>
+
+</LinearLayout>

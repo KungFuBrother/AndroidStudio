@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="4px" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/back_trans_rec_border"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/class_attr_type_layout"
+            android:layout_width="match_parent"
+            android:layout_height="40px"
+            android:background="@drawable/selector_white_divider"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="4px"
+            android:paddingRight="4px" >
+
+            <TextView
+                android:id="@+id/class_attr_type_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4px"
+                android:layout_marginRight="4px"
+                android:singleLine="true"
+                android:textColor="@color/textColorSecond"
+                android:textSize="16px" />
+
+            <TextView
+                android:id="@+id/class_attr_type_value"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4px"
+                android:layout_marginRight="4px"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:singleLine="true"
+                android:textColor="@color/blue"
+                android:textSize="16px" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/class_attr_value_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/divider" />
+
+            <yitgogo.smart.view.InnerListView
+                android:id="@+id/class_attr_value_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@color/divider"
+                android:dividerHeight="1px"
+                android:listSelector="@android:color/transparent" >
+            </yitgogo.smart.view.InnerListView>
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

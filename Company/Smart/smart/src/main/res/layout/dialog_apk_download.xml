@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="540px"
+    android:layout_height="wrap_content"
+    android:background="@color/theme_background"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="72px"
+        android:gravity="center"
+        android:text="发现新版本"
+        android:textColor="@color/blue"
+        android:textSize="24px" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider" />
+
+    <FrameLayout
+        android:layout_width="540px"
+        android:layout_height="540px"
+        android:padding="64px" >
+
+        <FrameLayout
+            android:id="@+id/download_circle_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/circle_download_back" >
+
+            <yitgogo.smart.view.CircleProgressView
+                android:id="@+id/download_progress_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/download_circle_top"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_margin="8px"
+            android:background="@drawable/circle_download_top"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/download_progress_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/blue"
+                android:textSize="20px" />
+
+            <View
+                android:layout_width="40px"
+                android:layout_height="1px"
+                android:layout_margin="4px"
+                android:background="@color/divider" />
+
+            <TextView
+                android:id="@+id/download_progress_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/textColorThird"
+                android:textSize="16px" />
+        </LinearLayout>
+    </FrameLayout>
+
+</LinearLayout>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="96px"
+            android:background="@color/theme_title_background"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="8px">
+
+            <ImageView
+                android:layout_width="240px"
+                android:layout_height="match_parent"
+                android:layout_margin="8px"
+                android:scaleType="fitCenter"
+                android:src="@drawable/logo_vertial" />
+
+            <LinearLayout
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical|right"
+                android:orientation="horizontal"
+                android:padding="4px">
+
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="16px"
+                    android:background="@color/divider"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/container_print"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4px"
+                    android:background="@drawable/selector_trans_divider"
+                    android:gravity="center"
+                    android:paddingLeft="16px"
+                    android:paddingRight="16px"
+                    android:text="打印测试"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="16px"
+                    android:visibility="gone" />
+
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="16px"
+                    android:background="@color/divider" />
+
+                <TextView
+                    android:id="@+id/container_printer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4px"
+                    android:gravity="center"
+                    android:paddingLeft="16px"
+                    android:paddingRight="16px"
+                    android:textColor="@color/textColorSecond"
+                    android:textSize="16px" />
+
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="16px"
+                    android:background="@color/divider" />
+
+                <TextView
+                    android:id="@+id/container_weather"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4px"
+                    android:gravity="center"
+                    android:paddingLeft="16px"
+                    android:paddingRight="16px"
+                    android:textColor="@color/textColorSecond"
+                    android:textSize="16px" />
+
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="16px"
+                    android:background="@color/divider" />
+
+                <TextView
+                    android:id="@+id/container_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4px"
+                    android:gravity="center"
+                    android:paddingLeft="16px"
+                    android:paddingRight="16px"
+                    android:textColor="@color/textColorSecond"
+                    android:textSize="16px" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/divider" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <FrameLayout
+                android:id="@+id/container_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></FrameLayout>
+
+            <TextView
+                android:id="@+id/container_disconnect"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/red"
+                android:gravity="center"
+                android:padding="16px"
+                android:text="无法连接网络，请检查网络设置"
+                android:textColor="@color/white"
+                android:textSize="16px"
+                android:visibility="gone" />
+
+            <FrameLayout
+                android:id="@+id/container_top"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:visibility="gone"></FrameLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/container_ip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/textColorSecond"
+        android:textSize="16px"
+        android:visibility="gone" />
+
+</FrameLayout>

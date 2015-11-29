@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="theme_background">#F5F5F5</color>
+    <color name="theme_title_background">#FAFAFA</color>
+    <color name="theme_title_textColor">#df000000</color>
+    <color name="tab_color">#f8f8f8</color>
+    <color name="white">#ffffff</color>
+    <color name="divider">#20000000</color>
+    <color name="disbaleTextColor">#3f000000</color>
+    <color name="shadow">#5f000000</color>
+    <color name="shadowStart">#1f000000</color>
+    <color name="textColorPrimary">#df000000</color>
+    <color name="textColorSecond">#9f000000</color>
+    <color name="textColorThird">#5f000000</color>
+    <color name="textColorCompany">#FF4500</color>
+    <color name="red">#da4844</color>
+    <color name="edit_lable_back">#05000000</color>
+    <color name="blue">#00BFFF</color>
+    <color name="blue_daker">#1E90FF</color>
+
+    <color name="product_price">#ff5722</color>
+    <color name="product_name">#292929</color>
+    <color name="product_attr">#696969</color>
+    <color name="button_car_normal">#45b745</color>
+    <color name="button_car_pressed">#3fa43f</color>
+    <color name="button_buy_normal">#ff5722</color>
+    <color name="button_buy_pressed">#e94f1e</color>
+
+</resources>

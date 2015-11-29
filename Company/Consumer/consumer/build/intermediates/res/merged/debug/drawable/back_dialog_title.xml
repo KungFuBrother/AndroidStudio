@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle" >
+
+    <corners
+        android:topLeftRadius="2dp"
+        android:topRightRadius="2dp" />
+
+    <solid android:color="@color/theme_title_background" />
+
+</shape><!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Consumer/consumer/src/main/res/drawable/back_dialog_title.xml -->

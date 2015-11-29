@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="48px"
+            android:background="@color/theme_title_background" >
+
+            <RadioGroup
+                android:id="@+id/local_business_tab"
+                android:layout_width="256px"
+                android:layout_height="36px"
+                android:layout_gravity="center"
+                android:background="@drawable/back_trans_rec_border"
+                android:orientation="horizontal" >
+
+                <RadioButton
+                    android:id="@+id/car_tab_platform"
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/back_white_rec_border"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="易商城"
+                    android:textColor="@drawable/selector_text"
+                    android:textSize="16px" />
+
+                <RadioButton
+                    android:id="@+id/car_tab_suning"
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/back_white_rec_border"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="云商城"
+                    android:textColor="@drawable/selector_text"
+                    android:textSize="16px" />
+
+                <RadioButton
+                    android:id="@+id/car_tab_local"
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/back_white_rec_border"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="本地产品"
+                    android:textColor="@drawable/selector_text"
+                    android:textSize="16px" />
+            </RadioGroup>
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/divider" />
+
+        <FrameLayout
+            android:id="@+id/car_content"
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="1" >
+        </FrameLayout>
+    </LinearLayout>
+
+</FrameLayout>

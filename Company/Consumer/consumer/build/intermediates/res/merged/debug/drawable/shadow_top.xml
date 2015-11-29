@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle" >
+
+    <gradient
+        android:angle="-90"
+        android:endColor="@android:color/transparent"
+        android:startColor="@color/shadowStart"
+        android:type="linear" />
+
+</shape><!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Consumer/consumer/src/main/res/drawable/shadow_top.xml -->

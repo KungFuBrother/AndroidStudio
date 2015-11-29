@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/back_white_rec_border"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/edit_lable_back"
+                        android:gravity="center"
+                        android:text="区域"
+                        android:textColor="@color/textColorSecond"
+                        android:textSize="14dp" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="match_parent"
+                        android:background="@color/divider" />
+
+                    <TextView
+                        android:id="@+id/traffic_search_area"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_trans_divider"
+                        android:gravity="center_vertical"
+                        android:hint="选择查询区域"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:singleLine="true"
+                        android:textColor="@color/material_blue_grey_800"
+                        android:textSize="14dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/divider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/edit_lable_back"
+                        android:gravity="center"
+                        android:text="车辆类型"
+                        android:textColor="@color/textColorSecond"
+                        android:textSize="14dp" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="match_parent"
+                        android:background="@color/divider" />
+
+                    <TextView
+                        android:id="@+id/traffic_search_cartype"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_trans_divider"
+                        android:gravity="center_vertical"
+                        android:hint="选择车辆类型"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:singleLine="true"
+                        android:textColor="@color/material_blue_grey_800"
+                        android:textSize="14dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/divider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/edit_lable_back"
+                        android:gravity="center"
+                        android:text="车牌号"
+                        android:textColor="@color/textColorSecond"
+                        android:textSize="14dp" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="match_parent"
+                        android:background="@color/divider" />
+
+                    <EditText
+                        android:id="@+id/traffic_search_plate_number"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:gravity="center_vertical"
+                        android:hint="输入车牌号"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:singleLine="true"
+                        android:textColor="@color/material_blue_grey_800"
+                        android:textSize="14dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/divider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/edit_lable_back"
+                        android:gravity="center"
+                        android:text="车架号"
+                        android:textColor="@color/textColorSecond"
+                        android:textSize="14dp" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="match_parent"
+                        android:background="@color/divider" />
+
+                    <EditText
+                        android:id="@+id/traffic_search_frame_number"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:gravity="center_vertical"
+                        android:hint="输入车架号"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:singleLine="true"
+                        android:textColor="@color/material_blue_grey_800"
+                        android:textSize="14dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/divider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/edit_lable_back"
+                        android:gravity="center"
+                        android:text="发动机号"
+                        android:textColor="@color/textColorSecond"
+                        android:textSize="14dp" />
+
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="match_parent"
+                        android:background="@color/divider" />
+
+                    <EditText
+                        android:id="@+id/traffic_search_engine_number"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:gravity="center_vertical"
+                        android:hint="输入发动机号"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:singleLine="true"
+                        android:textColor="@color/material_blue_grey_800"
+                        android:textSize="14dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/traffic_search_search"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/button"
+                android:text="查询"
+                android:textColor="@color/white"
+                android:textSize="14dp" />
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

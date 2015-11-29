@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <FrameLayout
+        android:id="@+id/local_business_content_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </FrameLayout>
+
+    <RadioGroup
+        android:id="@+id/local_business_tab"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_margin="8dp"
+        android:background="@drawable/edit_back_round"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/local_business_tab_goods"
+            android:layout_width="72dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/tab_selector_left"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="商品"
+            android:textColor="@drawable/selector_text"
+            android:textSize="14dp" />
+
+        <RadioButton
+            android:id="@+id/local_business_tab_service"
+            android:layout_width="72dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/tab_selector_left"
+            android:button="@null"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="服务"
+            android:textColor="@drawable/selector_text"
+            android:textSize="14dp" />
+    </RadioGroup>
+
+</FrameLayout>

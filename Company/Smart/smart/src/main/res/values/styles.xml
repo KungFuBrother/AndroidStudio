@@ -1,0 +1,31 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="Yitgogo_Theme_Smart" parent="@android:style/Theme.Light.NoTitleBar.Fullscreen">
+        <item name="android:windowBackground">@color/theme_background</item>
+    </style>
+
+    <style name="dialog_activity" parent="@style/Yitgogo_Theme_Smart">
+        <item name="android:windowBackground">@color/theme_background</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="titleText">
+        <item name="android:textColor">@color/theme_title_textColor</item>
+        <item name="android:textSize">16dp</item>
+    </style>
+
+    <style name="tabText">
+        <item name="android:textSize">14dp</item>
+        <item name="android:textColor">@color/textColorThird</item>
+    </style>
+
+    <style name="MyRadioButton">
+        <item name="android:button">@drawable/selector_radio_button</item>
+    </style>
+
+</resources>

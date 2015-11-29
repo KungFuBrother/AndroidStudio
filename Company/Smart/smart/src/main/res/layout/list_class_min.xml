@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/class_min_name"
+        android:layout_width="match_parent"
+        android:layout_height="36px"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:paddingLeft="8px"
+        android:paddingRight="8px"
+        android:singleLine="true"
+        android:textColor="@color/textColorThird"
+        android:textSize="14px" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/selector_trans_divider" >
+    </FrameLayout>
+
+</FrameLayout>

@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true">
+
+    <com.handmark.pulltorefresh.library.PullToRefreshScrollView
+        android:id="@+id/main_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="2px">
+
+            <FrameLayout
+                android:id="@+id/home_part_theme_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/home_part_class_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"></FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/home_part_miaosha_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></FrameLayout>
+
+            <ImageView
+                android:id="@+id/home_part_nongfu_layout"
+                android:layout_width="match_parent"
+                android:layout_height="357px"
+                android:layout_margin="2px"
+                android:scaleType="centerCrop"
+                android:src="@drawable/icon_home_nongfu"></ImageView>
+
+            <FrameLayout
+                android:id="@+id/home_part_fresh_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/home_part_sale_time_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/home_part_brand_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/home_part_tejia_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/home_part_score_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/home_part_local_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/home_part_local_sale_miaosha_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/home_part_local_sale_tejia_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/home_part_store_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/home_part_ads_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="2px"
+                android:background="@drawable/back_white_rec_border"
+                android:orientation="vertical"
+                android:padding="8px">
+
+                <LinearLayout
+                    android:id="@+id/local_business_more"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="4px">
+
+                    <View
+                        android:layout_width="4px"
+                        android:layout_height="16px"
+                        android:layout_margin="4px"
+                        android:background="@color/crusta" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4px"
+                        android:text="新品推荐"
+                        android:textColor="@color/material_blue_grey_800"
+                        android:textSize="16px" />
+                </LinearLayout>
+
+                <yitgogo.smart.view.InnerGridView
+                    android:id="@+id/main_product"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="8px"
+                    android:listSelector="@android:color/transparent"
+                    android:numColumns="4"
+                    android:scrollbars="none"></yitgogo.smart.view.InnerGridView>
+            </LinearLayout>
+        </LinearLayout>
+    </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center_vertical"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="12px">
+
+        <LinearLayout
+            android:id="@+id/main_bianmin"
+            android:layout_width="80px"
+            android:layout_height="80px"
+            android:layout_margin="4px"
+            android:background="@drawable/button_float"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="16px"
+            android:paddingTop="16px">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0px"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_bianmin_48" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="便民服务"
+                android:textColor="@color/textColorSecond"
+                android:textSize="12px" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/main_suning"
+            android:layout_width="80px"
+            android:layout_height="80px"
+            android:layout_margin="4px"
+            android:background="@drawable/button_float"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="16px"
+            android:paddingTop="16px">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0px"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_suning" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="云商城"
+                android:textColor="@color/textColorSecond"
+                android:textSize="12px" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/main_search"
+            android:layout_width="80px"
+            android:layout_height="80px"
+            android:layout_margin="4px"
+            android:background="@drawable/button_float"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="16px"
+            android:paddingTop="16px">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0px"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_search_48" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="搜索"
+                android:textColor="@color/textColorSecond"
+                android:textSize="12px" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/main_qrcode"
+            android:layout_width="80px"
+            android:layout_height="80px"
+            android:layout_margin="4px"
+            android:background="@drawable/button_float"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="16px"
+            android:paddingTop="16px">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0px"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_qrcode_48" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="APP"
+                android:textColor="@color/textColorSecond"
+                android:textSize="12px" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</FrameLayout><!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/src/main/res/layout/fragment_main.xml -->

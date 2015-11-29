@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/simple_text"
+        android:layout_width="match_parent"
+        android:layout_height="48px"
+        android:gravity="center_vertical"
+        android:paddingLeft="24px"
+        android:paddingRight="24px"
+        android:singleLine="true"
+        android:textColor="@color/textColorSecond"
+        android:textSize="16px" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/selector_trans_divider" />
+
+</FrameLayout>

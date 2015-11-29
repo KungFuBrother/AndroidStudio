@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16px" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12px" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4px"
+                    android:gravity="center"
+                    android:text="游戏信息"
+                    android:textColor="@color/textColorSecond"
+                    android:textSize="20px" />
+
+                <TextView
+                    android:id="@+id/game_charge_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="64px"
+                    android:layout_margin="4px"
+                    android:background="@drawable/edit_back_round"
+                    android:gravity="center_vertical"
+                    android:hint="已选游戏信息"
+                    android:paddingLeft="20px"
+                    android:paddingRight="20px"
+                    android:singleLine="true"
+                    android:textColor="@color/material_blue_grey_800"
+                    android:textSize="20px" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12px" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4px"
+                    android:gravity="center"
+                    android:text="商品名称"
+                    android:textColor="@color/textColorSecond"
+                    android:textSize="20px" />
+
+                <TextView
+                    android:id="@+id/game_charge_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="64px"
+                    android:layout_margin="4px"
+                    android:background="@drawable/edit_back_round"
+                    android:gravity="center_vertical"
+                    android:hint="选择商品"
+                    android:paddingLeft="20px"
+                    android:paddingRight="20px"
+                    android:singleLine="true"
+                    android:textColor="@color/material_blue_grey_800"
+                    android:textSize="20px" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12px" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4px"
+                    android:gravity="center"
+                    android:text="充值数量"
+                    android:textColor="@color/textColorSecond"
+                    android:textSize="20px" />
+
+                <TextView
+                    android:id="@+id/game_charge_amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="64px"
+                    android:layout_margin="4px"
+                    android:background="@drawable/edit_back_round"
+                    android:gravity="center_vertical"
+                    android:hint="选择充值数量"
+                    android:paddingLeft="20px"
+                    android:paddingRight="20px"
+                    android:singleLine="true"
+                    android:textColor="@color/material_blue_grey_800"
+                    android:textSize="20px" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12px" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4px"
+                    android:gravity="center"
+                    android:text="游戏账号"
+                    android:textColor="@color/textColorSecond"
+                    android:textSize="20px" />
+
+                <EditText
+                    android:id="@+id/game_charge_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="64px"
+                    android:layout_margin="4px"
+                    android:background="@drawable/edit_back_round"
+                    android:gravity="center_vertical"
+                    android:hint="输入游戏账号"
+                    android:paddingLeft="20px"
+                    android:paddingRight="20px"
+                    android:singleLine="true"
+                    android:textColor="@color/material_blue_grey_800"
+                    android:textSize="20px" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12px" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4px"
+                    android:gravity="center"
+                    android:text="通行证"
+                    android:textColor="@color/textColorSecond"
+                    android:textSize="20px" />
+
+                <EditText
+                    android:id="@+id/game_charge_pass"
+                    android:layout_width="match_parent"
+                    android:layout_height="64px"
+                    android:layout_margin="4px"
+                    android:background="@drawable/edit_back_round"
+                    android:gravity="center_vertical"
+                    android:hint="输入游戏通行证(无通行证可不填)"
+                    android:paddingLeft="20px"
+                    android:paddingRight="20px"
+                    android:singleLine="true"
+                    android:textColor="@color/material_blue_grey_800"
+                    android:textSize="20px" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12px" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4px"
+                    android:text="实付金额:"
+                    android:textColor="@color/textColorSecond"
+                    android:textSize="20px" />
+
+                <TextView
+                    android:id="@+id/game_charge_price"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4px"
+                    android:layout_weight="1"
+                    android:textColor="@color/red"
+                    android:textSize="24px" />
+
+                <TextView
+                    android:id="@+id/game_charge_charge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="64px"
+                    android:layout_gravity="right"
+                    android:layout_margin="4px"
+                    android:background="@drawable/button_rec_blue"
+                    android:gravity="center"
+                    android:paddingLeft="20px"
+                    android:paddingRight="20px"
+                    android:text="立即充值"
+                    android:textColor="@color/white"
+                    android:textSize="20px" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

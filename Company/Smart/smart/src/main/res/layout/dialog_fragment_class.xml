@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/product_drawer"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="255px"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/product_area_select"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16px"
+                android:background="@drawable/selector_white_rec_border"
+                android:orientation="vertical"
+                android:padding="8px" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="商品供货区域"
+                    android:textColor="@color/textColorSecond"
+                    android:textSize="16px" />
+
+                <TextView
+                    android:id="@+id/product_area"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="点击设置商品供货区域"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="18px" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/divider" />
+
+            <ListView
+                android:id="@+id/class_list"
+                android:layout_width="match_parent"
+                android:layout_height="0px"
+                android:layout_weight="1"
+                android:divider="@color/divider"
+                android:dividerHeight="1px"
+                android:listSelector="@android:color/transparent"
+                android:scrollbars="none" >
+            </ListView>
+        </LinearLayout>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/divider" />
+
+        <com.handmark.pulltorefresh.library.PullToRefreshScrollView
+            android:id="@+id/product_class_scroll"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12px" >
+
+                <yitgogo.smart.view.InnerGridView
+                    android:id="@+id/product_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:listSelector="@android:color/transparent"
+                    android:numColumns="3" >
+                </yitgogo.smart.view.InnerGridView>
+            </LinearLayout>
+        </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/attr_layout"
+        android:layout_width="256px"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:background="@color/theme_background"
+        android:clickable="true"
+        android:padding="4px" >
+
+        <ListView
+            android:id="@+id/attr_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@null"
+            android:listSelector="@android:color/transparent"
+            android:scrollbars="none" >
+        </ListView>
+    </FrameLayout>
+
+</android.support.v4.widget.DrawerLayout>

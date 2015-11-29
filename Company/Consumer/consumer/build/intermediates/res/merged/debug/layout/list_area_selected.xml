@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/list_area_selected"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/selector_trans_divider"
+        android:gravity="center"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="12dp" />
+
+</FrameLayout><!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Consumer/consumer/src/main/res/layout/list_area_selected.xml -->

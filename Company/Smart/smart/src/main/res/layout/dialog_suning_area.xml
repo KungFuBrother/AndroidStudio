@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/theme_background"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="64px"
+            android:background="@color/theme_title_background">
+
+            <TextView
+                android:id="@+id/dialog_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="选择收货区域"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="16px" />
+
+            <ImageView
+                android:id="@+id/dialog_close"
+                android:layout_width="48px"
+                android:layout_height="48px"
+                android:layout_gravity="right"
+                android:layout_margin="8px"
+                android:background="@drawable/selector_circle_divider_deeper_border"
+                android:padding="12px"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_clear_black_24dp" />
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/divider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8px">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="4px">
+
+                <TextView
+                    android:id="@+id/suning_area_province"
+                    android:layout_width="0px"
+                    android:layout_height="48px"
+                    android:layout_margin="4px"
+                    android:layout_weight="1"
+                    android:background="@drawable/back_white_rec_border"
+                    android:gravity="center"
+                    android:hint="选择省"
+                    android:singleLine="true"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="18px" />
+
+                <TextView
+                    android:id="@+id/suning_area_city"
+                    android:layout_width="0px"
+                    android:layout_height="48px"
+                    android:layout_margin="4px"
+                    android:layout_weight="1"
+                    android:background="@drawable/back_white_rec_border"
+                    android:gravity="center"
+                    android:hint="选择市"
+                    android:singleLine="true"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="18px" />
+
+                <TextView
+                    android:id="@+id/suning_area_district"
+                    android:layout_width="0px"
+                    android:layout_height="48px"
+                    android:layout_margin="4px"
+                    android:layout_weight="1"
+                    android:background="@drawable/back_white_rec_border"
+                    android:gravity="center"
+                    android:hint="选择区/县"
+                    android:singleLine="true"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="18px" />
+
+                <TextView
+                    android:id="@+id/suning_area_town"
+                    android:layout_width="0px"
+                    android:layout_height="48px"
+                    android:layout_margin="4px"
+                    android:layout_weight="1"
+                    android:background="@drawable/back_white_rec_border"
+                    android:gravity="center"
+                    android:hint="选择镇"
+                    android:singleLine="true"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="18px" />
+
+                <TextView
+                    android:id="@+id/suning_area_ok"
+                    android:layout_width="96px"
+                    android:layout_height="48px"
+                    android:layout_margin="4px"
+                    android:background="@drawable/button_rec_blue"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="确定"
+                    android:textColor="@color/white"
+                    android:textSize="18px" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_margin="8px"
+                android:background="@color/divider" />
+
+            <GridView
+                android:id="@+id/suning_area_selections"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4px"
+                android:listSelector="@android:color/transparent"
+                android:numColumns="4"></GridView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/suning_area_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ProgressBar
+            style="@android:style/Widget.ProgressBar.Small.Inverse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4px"
+            android:textColor="@color/disbaleTextColor"
+            android:textSize="16px" />
+    </LinearLayout>
+
+</FrameLayout>

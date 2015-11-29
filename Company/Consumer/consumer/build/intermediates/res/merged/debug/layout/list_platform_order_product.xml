@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="2dp">
+
+        <ImageView
+            android:id="@+id/list_product_img"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="2dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/back_white_rec_border"
+            android:scaleType="fitCenter"
+            android:src="@drawable/loading_default" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/list_product_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:lines="1"
+                        android:textColor="@color/textColorPrimary"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/list_product_attr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:singleLine="true"
+                        android:textColor="@color/textColorThird"
+                        android:textSize="14dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:gravity="right"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/list_product_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:textColor="@color/red"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/list_product_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:textColor="@color/textColorSecond"
+                        android:textSize="14dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp">
+
+                <Button
+                    android:id="@+id/list_platform_order_product_return"
+                    android:layout_width="64dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="right"
+                    android:background="@drawable/button_buy"
+                    android:gravity="center"
+                    android:text="申请退货"
+                    android:textColor="@color/white"
+                    android:textSize="12dp"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/list_platform_order_product_return_operated_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="退货已受理"
+                        android:textColor="@color/product_price"
+                        android:textSize="12dp" />
+
+                    <Button
+                        android:id="@+id/list_platform_order_product_return_operated_result"
+                        android:layout_width="64dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="right"
+                        android:background="@drawable/button_add_car"
+                        android:gravity="center"
+                        android:text="查看结果"
+                        android:textColor="@color/white"
+                        android:textSize="12dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/list_platform_order_product_return_success_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/iconfont_check_checked" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="退货成功"
+                        android:textColor="@color/product_attr"
+                        android:textSize="12dp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/list_platform_order_product_return_operating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:text="退货处理中"
+                    android:textColor="@color/product_price"
+                    android:textSize="12dp"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/list_platform_order_product_return_failed_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/iconfont_check_checked" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="退货申请未通过"
+                        android:textColor="@color/product_attr"
+                        android:textSize="12dp" />
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout><!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Consumer/consumer/src/main/res/layout/list_platform_order_product.xml -->

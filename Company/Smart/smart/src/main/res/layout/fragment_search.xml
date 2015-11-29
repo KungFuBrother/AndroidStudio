@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="56px" >
+
+        <LinearLayout
+            android:layout_width="480px"
+            android:layout_height="64px"
+            android:layout_margin="8px"
+            android:background="@drawable/back_white_rec_border"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingLeft="16px"
+                android:paddingRight="16px"
+                android:text="搜索类型"
+                android:textColor="@color/textColorThird"
+                android:textSize="16px" />
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="16px"
+                android:background="@color/divider" />
+
+            <RadioGroup
+                android:id="@+id/search_type"
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <RadioButton
+                    android:id="@+id/search_type_yitgogo"
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_trans_divider"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="易田商城"
+                    android:textColor="@drawable/selector_text"
+                    android:textSize="16px" />
+
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="16px"
+                    android:background="@color/divider" />
+
+                <RadioButton
+                    android:id="@+id/search_type_local_goods"
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_trans_divider"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="本地产品"
+                    android:textColor="@drawable/selector_text"
+                    android:textSize="16px" />
+
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="16px"
+                    android:background="@color/divider" />
+
+                <RadioButton
+                    android:id="@+id/search_type_local_service"
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_trans_divider"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="本地服务"
+                    android:textColor="@drawable/selector_text"
+                    android:textSize="16px" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="480px"
+            android:layout_height="64px"
+            android:layout_margin="8px"
+            android:background="@drawable/edit_back_round"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <EditText
+                android:id="@+id/search_edit"
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:hint="请输入商品名称"
+                android:paddingLeft="16px"
+                android:paddingRight="16px"
+                android:singleLine="true"
+                android:textColor="@color/textColorPrimary"
+                android:textColorHint="@color/textColorThird"
+                android:textSize="16px" />
+
+            <LinearLayout
+                android:layout_width="1px"
+                android:layout_height="20px"
+                android:background="@color/divider" >
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/search_search"
+                android:layout_width="64px"
+                android:layout_height="match_parent"
+                android:background="@drawable/selector_trans_divider"
+                android:padding="16px"
+                android:scaleType="centerInside"
+                android:src="@drawable/icon_search_24" />
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

@@ -1,0 +1,232 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="horizontal" >
+
+    <FrameLayout
+        android:layout_width="0px"
+        android:layout_height="match_parent"
+        android:layout_weight="2" >
+
+        <WebView
+            android:id="@+id/web_webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none" />
+
+        <ProgressBar
+            android:id="@+id/web_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <View
+        android:layout_width="1px"
+        android:layout_height="match_parent"
+        android:background="@color/divider" />
+
+    <ScrollView
+        android:layout_width="0px"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:focusableInTouchMode="true"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/product_detail_images"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+                </android.support.v4.view.ViewPager>
+
+                <ImageView
+                    android:id="@+id/product_detail_image_last"
+                    android:layout_width="36px"
+                    android:layout_height="36px"
+                    android:layout_gravity="center_vertical|left"
+                    android:layout_margin="16px"
+                    android:background="@drawable/selector_circle_divider_deeper_border"
+                    android:padding="10px"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_chevron_left_grey600_18dp" />
+
+                <ImageView
+                    android:id="@+id/product_detail_image_next"
+                    android:layout_width="36px"
+                    android:layout_height="36px"
+                    android:layout_gravity="center_vertical|right"
+                    android:layout_margin="16px"
+                    android:background="@drawable/selector_circle_divider_deeper_border"
+                    android:padding="10px"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_chevron_right_grey600_18dp" />
+
+                <TextView
+                    android:id="@+id/product_detail_image_index"
+                    android:layout_width="36px"
+                    android:layout_height="36px"
+                    android:layout_gravity="bottom|right"
+                    android:layout_margin="16px"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="@color/textColorThird"
+                    android:textSize="12px" />
+            </FrameLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/divider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8px" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="6px" >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2px"
+                        android:background="@drawable/back_trans_rec_border"
+                        android:orientation="vertical"
+                        android:padding="4px" >
+
+                        <ImageView
+                            android:id="@+id/product_detail_qrcode"
+                            android:layout_width="120px"
+                            android:layout_height="120px"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/loading_default" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:layout_margin="4px"
+                            android:background="@color/divider" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4px"
+                            android:gravity="center"
+                            android:text="扫一扫，就购了"
+                            android:textColor="@color/textColorThird"
+                            android:textSize="14px" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0px"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2px"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:id="@+id/local_goods_detail_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"
+                            android:textColor="@color/red"
+                            android:textSize="28px" />
+
+                        <TextView
+                            android:id="@+id/local_goods_detail_unit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"
+                            android:textColor="@color/textColorSecond"
+                            android:textSize="20px" />
+
+                        <TextView
+                            android:id="@+id/local_goods_detail_state"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"
+                            android:textColor="@color/textColorSecond"
+                            android:textSize="20px" />
+
+                        <TextView
+                            android:id="@+id/local_goods_detail_buy"
+                            android:layout_width="wrap_content"
+                            android:layout_height="48px"
+                            android:background="@drawable/button"
+                            android:gravity="center"
+                            android:paddingLeft="16px"
+                            android:paddingRight="16px"
+                            android:singleLine="true"
+                            android:text="立即购买"
+                            android:textColor="@color/white"
+                            android:textSize="20px" />
+
+                        <TextView
+                            android:id="@+id/local_goods_detail_car"
+                            android:layout_width="wrap_content"
+                            android:layout_height="48px"
+                            android:layout_marginTop="8px"
+                            android:background="@drawable/selector_white_rec_border"
+                            android:gravity="center"
+                            android:paddingLeft="16px"
+                            android:paddingRight="16px"
+                            android:singleLine="true"
+                            android:text="加入购物车"
+                            android:textColor="@color/blue"
+                            android:textSize="20px" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/local_goods_detail_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8px"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="20px" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="4px" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4px"
+                        android:text="属性"
+                        android:textColor="@color/textColorThird"
+                        android:textSize="16px" />
+
+                    <yitgogo.smart.view.InnerListView
+                        android:id="@+id/local_goods_detail_relation_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4px"
+                        android:background="@drawable/back_trans_rec_border"
+                        android:dividerHeight="1px"
+                        android:listSelector="@android:color/transparent" >
+                    </yitgogo.smart.view.InnerListView>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/theme_title_background"
+        android:gravity="right|center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/local_business_selector_classes"
+            android:layout_width="64dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/selector_trans_divider"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="分类"
+            android:textColor="@color/textColorSecond"
+            android:textSize="12dp" />
+
+        <!-- <View -->
+        <!-- android:layout_width="1px" -->
+        <!-- android:layout_height="match_parent" -->
+        <!-- android:background="@color/divider" -->
+        <!-- android:visibility="gone" /> -->
+
+
+        <!-- <TextView -->
+        <!-- android:id="@+id/local_business_selector_brand" -->
+        <!-- android:layout_width="0dp" -->
+        <!-- android:layout_height="match_parent" -->
+        <!-- android:layout_weight="1" -->
+        <!-- android:gravity="center" -->
+        <!-- android:singleLine="true" -->
+        <!-- android:text="品牌" -->
+        <!-- android:textColor="@color/textColorSecond" -->
+        <!-- android:textSize="12dp" -->
+        <!-- android:visibility="gone" /> -->
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <com.handmark.pulltorefresh.library.PullToRefreshScrollView
+            android:id="@+id/local_business_content_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/local_business_button_miaosha"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_rec_round"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="match_parent"
+                            android:padding="12dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/icon_miaosha" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="本地秒杀"
+                            android:textColor="@color/textColorSecond"
+                            android:textSize="16dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/local_business_button_tejia"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_rec_round"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="match_parent"
+                            android:padding="12dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/icon_tejia" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="本地特价"
+                            android:textColor="@color/textColorSecond"
+                            android:textSize="16dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <yitgogo.consumer.view.InnerGridView
+                    android:id="@+id/local_business_content_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:listSelector="@android:color/transparent"
+                    android:numColumns="2"></yitgogo.consumer.view.InnerGridView>
+            </LinearLayout>
+        </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
+
+        <LinearLayout
+            android:id="@+id/local_business_selector_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/textColorThird"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <FrameLayout
+                android:id="@+id/local_business_selector_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="4"
+                android:background="@color/theme_background"
+                android:clickable="true"></FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"></FrameLayout>
+        </LinearLayout>
+    </FrameLayout>
+
+</LinearLayout>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2px"
+        android:background="@drawable/back_white_rec_border"
+        android:orientation="vertical"
+        android:padding="8px" >
+
+        <LinearLayout
+            android:id="@+id/local_business_more"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="4px" >
+
+            <View
+                android:layout_width="4px"
+                android:layout_height="16px"
+                android:layout_margin="4px"
+                android:background="@color/material_deep_teal_500" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4px"
+                android:text="易商圈"
+                android:textColor="@color/material_blue_grey_800"
+                android:textSize="16px" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4px"
+                android:gravity="right"
+                android:text="更多 >"
+                android:textColor="@color/textColorThird"
+                android:textSize="14px" />
+        </LinearLayout>
+
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8px"
+            android:scrollbars="none" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
+
+                <yitgogo.smart.view.InnerGridView
+                    android:id="@+id/local_goods_grid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:listSelector="@android:color/transparent"
+                    android:scrollbars="none" >
+                </yitgogo.smart.view.InnerGridView>
+
+                <yitgogo.smart.view.InnerGridView
+                    android:id="@+id/local_service_grid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:listSelector="@android:color/transparent"
+                    android:scrollbars="none" >
+                </yitgogo.smart.view.InnerGridView>
+            </LinearLayout>
+        </HorizontalScrollView>
+    </LinearLayout>
+
+</FrameLayout>

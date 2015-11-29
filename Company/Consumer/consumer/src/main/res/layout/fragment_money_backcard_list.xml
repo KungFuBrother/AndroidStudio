@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="4dp" >
+
+            <yitgogo.consumer.view.InnerListView
+                android:id="@+id/bank_card_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@null"
+                android:listSelector="@android:color/transparent" >
+            </yitgogo.consumer.view.InnerListView>
+
+            <LinearLayout
+                android:id="@+id/bank_card_add"
+                android:layout_width="match_parent"
+                android:layout_height="96dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/back_bank_card"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/circle_trans_border"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_count_add" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="添加银行卡"
+                    android:textColor="@color/textColorThird"
+                    android:textSize="16dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

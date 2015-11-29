@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/scroll_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="16px"
+        android:layout_marginLeft="8px"
+        android:layout_marginRight="8px"
+        android:layout_marginTop="16px"
+        android:background="@color/white"
+        android:scaleType="fitCenter" />
+
+    <ImageView
+        android:id="@+id/scroll_image_selection"
+        android:layout_width="wrap_content"
+        android:layout_height="14px"
+        android:layout_gravity="bottom|center_horizontal"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icon_item_locate_16px" />
+
+</FrameLayout>

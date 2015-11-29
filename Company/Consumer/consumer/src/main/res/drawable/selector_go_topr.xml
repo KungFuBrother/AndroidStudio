@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_pressed="false"><shape android:shape="oval">
+            <solid android:color="#8fffffff" />
+
+            <stroke android:dashGap="0dp" android:dashWidth="0dp" android:width="1px" android:color="@color/divider" />
+        </shape></item>
+    <item android:state_pressed="true"><shape android:shape="oval">
+            <solid android:color="#ffffff" />
+
+            <stroke android:dashGap="0dp" android:dashWidth="0dp" android:width="1px" android:color="@color/divider" />
+        </shape></item>
+
+</selector>

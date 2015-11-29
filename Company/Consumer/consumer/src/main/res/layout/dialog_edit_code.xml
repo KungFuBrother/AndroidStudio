@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/back_white_rec_round"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/dialog_edit_code_title"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/back_dialog_title"
+            android:gravity="center"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="16dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/divider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp" >
+
+            <EditText
+                android:id="@+id/dialog_edit_code_edit"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/edit_back_round"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="6"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textColor="@color/textColorSecond"
+                android:textSize="24dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/dialog_edit_code_cancel"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_rec_round"
+                    android:gravity="center"
+                    android:text="取消"
+                    android:textColor="@color/textColorSecond"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/dialog_edit_code_ok"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button"
+                    android:gravity="center"
+                    android:text="确定"
+                    android:textColor="@color/white"
+                    android:textSize="14dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

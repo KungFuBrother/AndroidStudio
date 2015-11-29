@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/back_white_rec_border"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="96px">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="下单成功"
+                android:textColor="@color/blue"
+                android:textSize="32px" />
+
+            <ImageView
+                android:id="@+id/pay_close"
+                android:layout_width="64px"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:layout_margin="16px"
+                android:background="@drawable/button_circle"
+                android:padding="16px"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_clear_black_24dp" />
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="32px"
+            android:layout_marginRight="32px"
+            android:background="@color/divider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16px">
+
+            <LinearLayout
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="8px">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8px"
+                        android:text="总金额"
+                        android:textColor="@color/textColorThird"
+                        android:textSize="24px" />
+
+                    <TextView
+                        android:id="@+id/pay_money"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8px"
+                        android:textColor="@color/red"
+                        android:textSize="48px" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8px"
+                        android:text="订单号"
+                        android:textColor="@color/textColorThird"
+                        android:textSize="24px" />
+
+                    <TextView
+                        android:id="@+id/pay_order_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8px"
+                        android:textColor="@color/material_blue_grey_800"
+                        android:textSize="24px" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/pay_qrcode"
+                android:layout_width="160px"
+                android:layout_height="160px"
+                android:layout_margin="16px"
+                android:background="@drawable/back_trans_rec_border"
+                android:scaleType="fitCenter"
+                android:src="@drawable/loading_default" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/pay_type_notify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="32px"
+            android:textColor="@color/material_blue_grey_800"
+            android:textSize="24px" />
+    </LinearLayout>
+
+</FrameLayout>

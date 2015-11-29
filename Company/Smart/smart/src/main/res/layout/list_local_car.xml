@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16px"
+        android:background="@color/white"
+        android:orientation="vertical" >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/divider" />
+
+        <LinearLayout
+            android:id="@+id/local_car_store_select"
+            android:layout_width="match_parent"
+            android:layout_height="64px"
+            android:background="@drawable/selector_trans_divider"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/local_car_store_selection"
+                android:layout_width="48px"
+                android:layout_height="match_parent"
+                android:padding="8px"
+                android:scaleType="centerInside"
+                android:src="@drawable/iconfont_check_normal" />
+
+            <ImageView
+                android:id="@+id/local_car_store_image"
+                android:layout_width="48px"
+                android:layout_height="48px"
+                android:background="@drawable/back_trans_rec_border"
+                android:scaleType="fitCenter" />
+
+            <TextView
+                android:id="@+id/local_car_store_name"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8px"
+                android:layout_marginRight="8px"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="20px" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/divider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <yitgogo.smart.view.InnerListView
+                android:id="@+id/local_car_goods"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:dividerHeight="1px"
+                android:listSelector="@android:color/transparent" >
+            </yitgogo.smart.view.InnerListView>
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@color/divider" />
+
+            <LinearLayout
+                android:layout_width="360px"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48px"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="12px"
+                    android:paddingRight="16px" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4px"
+                        android:text="小计"
+                        android:textColor="@color/textColorThird"
+                        android:textSize="16px" />
+
+                    <TextView
+                        android:id="@+id/local_car_store_money"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4px"
+                        android:textColor="@color/red"
+                        android:textSize="20px" />
+
+                    <TextView
+                        android:id="@+id/local_car_store_money_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4px"
+                        android:textColor="@color/textColorSecond"
+                        android:textSize="16px" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/divider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8px" >
+
+                    <TextView
+                        android:id="@+id/local_car_store_postinfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8px"
+                        android:textColor="@color/textColorPrimary"
+                        android:textSize="16px" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="4px" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4px"
+                            android:text="配送方式"
+                            android:textColor="@color/textColorThird"
+                            android:textSize="16px" />
+
+                        <yitgogo.smart.view.InnerListView
+                            android:id="@+id/diliver_type"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4px"
+                            android:background="@drawable/back_white_rec_border"
+                            android:dividerHeight="1px"
+                            android:listSelector="@android:color/transparent" >
+                        </yitgogo.smart.view.InnerListView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="4px" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4px"
+                            android:text="付款方式"
+                            android:textColor="@color/textColorThird"
+                            android:textSize="16px" />
+
+                        <yitgogo.smart.view.InnerListView
+                            android:id="@+id/payment_type"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4px"
+                            android:background="@drawable/back_white_rec_border"
+                            android:dividerHeight="1px"
+                            android:listSelector="@android:color/transparent" >
+                        </yitgogo.smart.view.InnerListView>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/divider" />
+    </LinearLayout>
+
+</FrameLayout>

@@ -7,15 +7,24 @@ import java.util.List;
 
 public class Request {
 
+    boolean saveCookie = false;
     boolean useCookie = false;
+
+    String host = "";
     String url = "";
+
     List<RequestParam> requestParams = new ArrayList<>();
 
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
+    public String getHost() {
+        return host;
+    }
+
+    public void setUrl(String host, String url) {
+        this.host = host;
         this.url = url;
     }
 
@@ -25,6 +34,14 @@ public class Request {
 
     public void setUseCookie(boolean useCookie) {
         this.useCookie = useCookie;
+    }
+
+    public boolean isSaveCookie() {
+        return saveCookie;
+    }
+
+    public void setSaveCookie(boolean saveCookie) {
+        this.saveCookie = saveCookie;
     }
 
     public List<RequestParam> getRequestParams() {

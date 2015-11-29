@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import com.smartown.controller.R;
+import com.smartown.controller.mission.CookieController;
 import com.smartown.controller.mission.MissionController;
 import com.smartown.controller.mission.MissionMessage;
 import com.smartown.controller.mission.Request;
@@ -17,9 +18,13 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        CookieController.init(this);
+
         Request request = new Request();
-        request.setUrl("http://www.baidu.com");
+        request.setUrl("http://www.baidu.com","");
         request.addRequestParam("test", "test");
+        request.setSaveCookie(true);
+        request.setUseCookie(true);
         MissionController.startNetworkMission(this, request, new RequestListener() {
             @Override
             protected void onStart() {

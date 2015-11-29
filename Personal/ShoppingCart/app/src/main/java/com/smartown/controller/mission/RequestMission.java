@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 public class RequestMission extends Mission {
 
@@ -30,8 +31,8 @@ public class RequestMission extends Mission {
             return;
         }
         try {
-            Log.i("Request", "url:" + request.getUrl());
-            URL url = new URL(request.getUrl());
+            Log.i("Request", "url:" + request.getHost() + request.getUrl());
+            URL url = new URL(request.getHost() + request.getUrl());
             httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setDoOutput(true);// 设置是否向httpUrlConnection输出，因为这个是post请求，参数要放在http正文内，因此需要设为true, 默认情况下是false;
             httpURLConnection.setDoInput(true);// 设置是否从httpUrlConnection读入，默认情况下是true;
@@ -40,6 +41,9 @@ public class RequestMission extends Mission {
             httpURLConnection.setRequestMethod("POST");// 设定请求的方法为"POST"，默认是GET
             httpURLConnection.setConnectTimeout(5000);//连接超时 单位毫秒
             httpURLConnection.setReadTimeout(5000);//读取超时 单位毫秒
+            if (request.isUseCookie()) {
+                httpURLConnection.setRequestProperty("Cookie", CookieController.getCookie(request.getHost()));
+            }
             if (!request.getRequestParams().isEmpty()) {
                 StringBuffer stringBuffer = new StringBuffer();
                 for (int i = 0; i < request.getRequestParams().size(); i++) {
@@ -61,7 +65,19 @@ public class RequestMission extends Mission {
                 return;
             }
             int responseCode = httpURLConnection.getResponseCode();
-            if (String.valueOf(responseCode).startsWith("2")) {
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                if (request.isSaveCookie()) {
+                    List<String> cookies = httpURLConnection.getHeaderFields().get("Set-Cookie");
+                    if (cookies != null) {
+                        StringBuilder stringBuilder = new StringBuilder();
+                        for (int i = 0; i < cookies.size(); i++) {
+                            if (i > 0) {
+                                stringBuilder.append(";");
+                            }
+                            stringBuilder.append(cookies.get(i));
+                        }
+                    }
+                }
                 StringBuilder stringBuilder = new StringBuilder();
                 InputStream inputStream = httpURLConnection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));

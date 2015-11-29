@@ -1,4 +1,4 @@
-package com.smartown.shoppingcart;
+package com.smartown.controller.shoppingcart;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">ShoppingCart</string>
+    <string name="app_name">SmartownController</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>

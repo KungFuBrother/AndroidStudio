@@ -1,4 +1,4 @@
-package com.smartown.shoppingcart;
+package com.smartown.controller.shoppingcart;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -10,9 +10,9 @@ import java.util.List;
 /**
  * Created by Tiger on 2015-11-27.
  */
-public class ShoppingCartManager {
+public class ShoppingCartController {
 
-    public static ShoppingCartManager instance;
+    public static ShoppingCartController instance;
 
     private SQLiteDatabase db;
 
@@ -27,9 +27,9 @@ public class ShoppingCartManager {
         }
     }
 
-    public static ShoppingCartManager getInstance() {
+    public static ShoppingCartController getInstance() {
         if (instance == null) {
-            instance = new ShoppingCartManager();
+            instance = new ShoppingCartController();
         }
         return instance;
     }
@@ -100,4 +100,23 @@ public class ShoppingCartManager {
         return shoppingCarts;
     }
 
+    public List<ModelShoppingCart> getSelectedProducts(String tableName) {
+        db = DataBaseHelper.getInstance().getReadableDatabase();
+        List<ModelShoppingCart> shoppingCarts = new ArrayList<>();
+        Cursor cursor = db.query(tableName, null, ModelShoppingCart.columnIsSelected + " =?", new String[]{"1"}, null, null, null);
+        if (cursor.moveToFirst()) {
+            do {
+                ModelShoppingCart shoppingCart = new ModelShoppingCart();
+                shoppingCart.setBuyCount(cursor.getInt(cursor.getColumnIndex(ModelShoppingCart.columnBuyCount)));
+                shoppingCart.setIsSelected(cursor.getInt(cursor.getColumnIndex(ModelShoppingCart.columnIsSelected)) == 1);
+                shoppingCart.setProviderId(cursor.getString(cursor.getColumnIndex(ModelShoppingCart.columnProviderId)));
+                shoppingCart.setProviderName(cursor.getString(cursor.getColumnIndex(ModelShoppingCart.columnProviderName)));
+                shoppingCart.setProductId(cursor.getString(cursor.getColumnIndex(ModelShoppingCart.columnProductId)));
+                shoppingCart.setProductObject(cursor.getString(cursor.getColumnIndex(ModelShoppingCart.columnProductObject)));
+                shoppingCarts.add(shoppingCart);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return shoppingCarts;
+    }
 }

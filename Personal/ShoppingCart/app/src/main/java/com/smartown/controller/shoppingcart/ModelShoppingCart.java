@@ -1,6 +1,4 @@
-package com.smartown.shoppingcart;
-
-import android.webkit.WebView;
+package com.smartown.controller.shoppingcart;
 
 /**
  * Created by Tiger on 2015-11-27.

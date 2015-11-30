@@ -14,8 +14,8 @@ import yitgogo.consumer.tools.Parameters;
  */
 public class SuningManager {
 
-    public static final String appKey = "SCYT";
-    //    public static final String appKey = "YTKJ";
+    //    public static final String appKey = "SCYT";
+    public static final String appKey = "YTKJ";
     public static final String version = "2.0";
 
     public static ModelSignature getSignature() {

@@ -1,9 +1,33 @@
 package yitgogo.consumer.product.ui;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.Nullable;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import com.dtr.zxing.activity.CaptureActivity;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.smartown.controller.shoppingcart.DataBaseHelper;
+import com.smartown.controller.shoppingcart.ShoppingCartController;
+import com.smartown.yitian.gogo.R;
+import com.umeng.analytics.MobclickAgent;
+import com.viewpagerindicator.CirclePageIndicator;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -11,775 +35,706 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+
 import yitgogo.consumer.BaseNotifyFragment;
-import yitgogo.consumer.order.ui.SaleProductOrderConfirmFragment;
-import yitgogo.consumer.product.model.ModelCar;
+import yitgogo.consumer.order.ui.PlatformProductBuyFragment;
 import yitgogo.consumer.product.model.ModelProduct;
 import yitgogo.consumer.product.model.ModelSaleDetailMiaosha;
 import yitgogo.consumer.product.model.ModelSaleDetailTejia;
 import yitgogo.consumer.product.model.ModelSaleDetailTime;
 import yitgogo.consumer.store.model.Store;
+import yitgogo.consumer.store.ui.StoreAreaFragment;
 import yitgogo.consumer.tools.API;
 import yitgogo.consumer.tools.Content;
 import yitgogo.consumer.tools.Parameters;
 import yitgogo.consumer.user.model.User;
+import yitgogo.consumer.user.ui.UserAddressEditFragment;
 import yitgogo.consumer.user.ui.UserLoginFragment;
 import yitgogo.consumer.view.InnerGridView;
 import yitgogo.consumer.view.Notify;
-import android.graphics.Bitmap;
-import android.graphics.Paint;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.annotation.Nullable;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.dtr.zxing.activity.CaptureActivity;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
-import com.smartown.yitian.gogo.R;
-import com.umeng.analytics.MobclickAgent;
-
-public class ProductDetailFragment extends BaseNotifyFragment implements
-		OnClickListener {
-
-	ViewPager imagePager;
-	LinearLayout htmlButton, attrButton, activityLayout;
-	TextView nameTextView, brandTextView, attrTextView, priceTextView,
-			originalPriceTextView, stateTextView;
-	ImageView lastImageButton, nextImageButton;
-	TextView imageIndexText;
-	TextView carButton, buyButton;
-	TextView activityNameTextView, activityDetailTextView;
-
-	LinearLayout relationLayout;
-	TextView hideRelationButton, noRelationTextView;
-	InnerGridView relationList;
-
-	ImageAdapter imageAdapter;
-	String productId = "";
-	ModelProduct productDetail;
-	RelationAdapter relationAdapter;
-
-	int saleType = CaptureActivity.SALE_TYPE_NONE;
-	ModelSaleDetailTime saleDetailTime = new ModelSaleDetailTime();
-	ModelSaleDetailMiaosha saleDetailMiaosha = new ModelSaleDetailMiaosha();
-	ModelSaleDetailTejia saleDetailTejia = new ModelSaleDetailTejia();
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.fragment_product_detail);
-		init();
-		findViews();
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		MobclickAgent.onPageStart(ProductDetailFragment.class.getName());
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-		MobclickAgent.onPageEnd(ProductDetailFragment.class.getName());
-	}
-
-	@Override
-	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		new GetProductDetail().execute();
-	}
-
-	private void init() {
-		measureScreen();
-		Bundle bundle = getArguments();
-		if (bundle != null) {
-			if (bundle.containsKey("productId")) {
-				productId = bundle.getString("productId");
-			}
-			if (bundle.containsKey("saleType")) {
-				saleType = bundle.getInt("saleType");
-			}
-		}
-		productDetail = new ModelProduct();
-		imageAdapter = new ImageAdapter();
-		relationAdapter = new RelationAdapter();
-	}
-
-	protected void findViews() {
-		imagePager = (ViewPager) contentView
-				.findViewById(R.id.product_detail_images);
-		htmlButton = (LinearLayout) contentView
-				.findViewById(R.id.product_detail_html);
-		attrButton = (LinearLayout) contentView
-				.findViewById(R.id.product_detail_attr);
-		activityLayout = (LinearLayout) contentView
-				.findViewById(R.id.product_detail_activity);
-		nameTextView = (TextView) contentView
-				.findViewById(R.id.product_detail_name);
-		brandTextView = (TextView) contentView
-				.findViewById(R.id.product_detail_brand);
-		attrTextView = (TextView) contentView
-				.findViewById(R.id.product_detail_attr_name);
-		priceTextView = (TextView) contentView
-				.findViewById(R.id.product_detail_price);
-		originalPriceTextView = (TextView) contentView
-				.findViewById(R.id.product_detail_price_original);
-		stateTextView = (TextView) contentView
-				.findViewById(R.id.product_detail_state);
-		lastImageButton = (ImageView) contentView
-				.findViewById(R.id.product_detail_image_last);
-		nextImageButton = (ImageView) contentView
-				.findViewById(R.id.product_detail_image_next);
-		imageIndexText = (TextView) contentView
-				.findViewById(R.id.product_detail_image_index);
-		carButton = (TextView) contentView
-				.findViewById(R.id.product_detail_car);
-		buyButton = (TextView) contentView
-				.findViewById(R.id.product_detail_buy);
-		activityNameTextView = (TextView) contentView
-				.findViewById(R.id.product_detail_activity_name);
-		activityDetailTextView = (TextView) contentView
-				.findViewById(R.id.product_detail_activity_detail);
-
-		relationLayout = (LinearLayout) contentView
-				.findViewById(R.id.product_detail_relation_layout);
-		hideRelationButton = (TextView) contentView
-				.findViewById(R.id.product_detail_relation_hide);
-		relationList = (InnerGridView) contentView
-				.findViewById(R.id.product_detail_relation_list);
-		noRelationTextView = (TextView) contentView
-				.findViewById(R.id.product_detail_relation_none);
-
-		addImageButton(R.drawable.iconfont_cart, "购物车", new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				jump(ShoppingCarFragment.class.getName(), "易商城购物车");
-			}
-		});
-		initViews();
-		registerViews();
-	}
-
-	protected void initViews() {
-		FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
-				screenWidth, screenWidth);
-		imagePager.setLayoutParams(layoutParams);
-		imagePager.setAdapter(imageAdapter);
-		relationList.setAdapter(relationAdapter);
-		originalPriceTextView.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-	}
-
-	@SuppressWarnings("deprecation")
-	@Override
-	protected void registerViews() {
-		htmlButton.setOnClickListener(this);
-		attrButton.setOnClickListener(this);
-		lastImageButton.setOnClickListener(this);
-		nextImageButton.setOnClickListener(this);
-		carButton.setOnClickListener(this);
-		buyButton.setOnClickListener(this);
-		relationLayout.setOnClickListener(this);
-		hideRelationButton.setOnClickListener(this);
-		relationList.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				if (!productDetail.getProductRelations().get(arg2).getId()
-						.equals(productDetail.getId())) {
-					productId = productDetail.getProductRelations().get(arg2)
-							.getId();
-					relationLayout.setVisibility(View.GONE);
-					new GetProductDetail().execute();
-				}
-			}
-		});
-		imagePager.addOnPageChangeListener(new OnPageChangeListener() {
-
-			@Override
-			public void onPageSelected(int arg0) {
-				imageIndexText.setText((imagePager.getCurrentItem() + 1) + "/"
-						+ imageAdapter.getCount());
-			}
-
-			@Override
-			public void onPageScrolled(int arg0, float arg1, int arg2) {
-
-			}
-
-			@Override
-			public void onPageScrollStateChanged(int arg0) {
-
-			}
-		});
-	}
-
-	/**
-	 * 显示商品详情
-	 */
-	private void showDetail() {
-		carButton.setText("加入购物车");
-		carButton.setOnClickListener(this);
-		relationAdapter.notifyDataSetChanged();
-		if (productDetail.getProductRelations().size() > 0) {
-			attrButton.setClickable(true);
-		} else {
-			attrButton.setClickable(false);
-		}
-		imageAdapter.notifyDataSetChanged();
-		nameTextView.setText(productDetail.getProductName());
-		priceTextView.setText("¥"
-				+ decimalFormat.format(productDetail.getPrice()));
-		brandTextView.setText(productDetail.getBrandName());
-		attrTextView.setText(productDetail.getAttName());
-		if (productDetail.getNum() > 0) {
-			if (productDetail.getNum() < 5) {
-				stateTextView.setText("仅剩" + productDetail.getNum()
-						+ productDetail.getUnit());
-			} else {
-				stateTextView.setText("有货");
-			}
-		} else {
-			stateTextView.setText("无货");
-		}
-		if (imageAdapter.getCount() > 0) {
-			imageIndexText.setText(1 + "/" + imageAdapter.getCount());
-		}
-		switch (saleType) {
-
-		case CaptureActivity.SALE_TYPE_TIME:
-			new GetTimeSaleDetail().execute();
-			break;
-
-		case CaptureActivity.SALE_TYPE_MIAOSHA:
-			new GetMiaoshaSaleDetail().execute();
-			break;
-
-		case CaptureActivity.SALE_TYPE_TEJIA:
-			new GetTejiaSaleDetail().execute();
-			break;
-
-		default:
-			break;
-		}
-	}
-
-	/**
-	 * 点击左右导航按钮切换图片
-	 * 
-	 * @param imagePosition
-	 */
-	private void setImagePosition(int imagePosition) {
-		imagePager.setCurrentItem(imagePosition, true);
-		imageIndexText.setText((imagePosition + 1) + "/"
-				+ imageAdapter.getCount());
-	}
-
-	/**
-	 * 添加到购物车
-	 */
-	private void addToCar() {
-		if (productDetail.getNum() > 0) {
-			try {
-				JSONArray carArray = new JSONArray(Content.getStringContent(
-						Parameters.CACHE_KEY_CAR, "[]"));
-				for (int i = 0; i < carArray.length(); i++) {
-					ModelCar modelCar = new ModelCar(carArray.getJSONObject(i));
-					if (modelCar.getProduct().getId()
-							.equals(productDetail.getId())) {
-						Notify.show("已添加过此商品");
-						return;
-					}
-				}
-				JSONObject object = new JSONObject();
-				object.put("productCount", 1);
-				object.put("isSelected", true);
-				object.put("product", productDetail.getJsonObject());
-				carArray.put(object);
-				Content.saveStringContent(Parameters.CACHE_KEY_CAR,
-						carArray.toString());
-				Notify.show("已添加到购物车");
-			} catch (JSONException e) {
-				Notify.show("添加到购物车失败");
-				e.printStackTrace();
-			}
-		} else {
-			Notify.show("此商品无货，无法添加到购物车");
-		}
-	}
-
-	@Override
-	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.product_detail_html:
-			Bundle bundle = new Bundle();
-			bundle.putString("html", productDetail.getXiangqing());
-			bundle.putInt("type", WebFragment.TYPE_HTML);
-			jump(WebFragment.class.getName(), productDetail.getProductName(),
-					bundle);
-			break;
-		case R.id.product_detail_attr:
-			if (productDetail.getProductRelations().size() == 0) {
-				noRelationTextView.setVisibility(View.VISIBLE);
-			} else {
-				noRelationTextView.setVisibility(View.GONE);
-			}
-			relationLayout.setVisibility(View.VISIBLE);
-			break;
-
-		case R.id.product_detail_relation_layout:
-			relationLayout.setVisibility(View.GONE);
-			break;
-
-		case R.id.product_detail_relation_hide:
-			relationLayout.setVisibility(View.GONE);
-			break;
-
-		case R.id.product_detail_image_last:
-			if (imageAdapter.getCount() > 0) {
-				if (imagePager.getCurrentItem() == 0) {
-					setImagePosition(imageAdapter.getCount() - 1);
-				} else {
-					setImagePosition(imagePager.getCurrentItem() - 1);
-				}
-			}
-			break;
-
-		case R.id.product_detail_image_next:
-			if (imageAdapter.getCount() > 0) {
-				if (imagePager.getCurrentItem() == imageAdapter.getCount() - 1) {
-					setImagePosition(0);
-				} else {
-					setImagePosition(imagePager.getCurrentItem() + 1);
-				}
-			}
-			break;
-
-		case R.id.product_detail_car:
-			addToCar();
-			break;
-
-		case R.id.product_detail_buy:
-			buySaleProduct();
-			break;
-
-		default:
-			break;
-
-		}
-	}
-
-	/**
-	 * viewpager适配器
-	 */
-	private class ImageAdapter extends PagerAdapter {
-
-		@Override
-		public void destroyItem(ViewGroup container, int position, Object object) {
-			container.removeView((View) object);
-		}
-
-		@Override
-		public int getCount() {
-			return productDetail.getImages().size();
-		}
-
-		@Override
-		public Object instantiateItem(ViewGroup view, int position) {
-			View imageLayout = layoutInflater.inflate(
-					R.layout.adapter_viewpager, view, false);
-			assert imageLayout != null;
-			ImageView imageView = (ImageView) imageLayout
-					.findViewById(R.id.view_pager_img);
-			final ProgressBar spinner = (ProgressBar) imageLayout
-					.findViewById(R.id.view_pager_loading);
-			ImageLoader.getInstance().displayImage(
-					getBigImageUrl(productDetail.getImages().get(position)),
-					imageView, new SimpleImageLoadingListener() {
-						@Override
-						public void onLoadingStarted(String imageUri, View view) {
-							spinner.setVisibility(View.VISIBLE);
-						}
-
-						@Override
-						public void onLoadingFailed(String imageUri, View view,
-								FailReason failReason) {
-							spinner.setVisibility(View.GONE);
-						}
-
-						@Override
-						public void onLoadingComplete(String imageUri,
-								View view, Bitmap loadedImage) {
-							spinner.setVisibility(View.GONE);
-						}
-					});
-			view.addView(imageLayout, 0);
-			return imageLayout;
-		}
-
-		@Override
-		public boolean isViewFromObject(View view, Object object) {
-			return view.equals(object);
-		}
-
-		@Override
-		public void restoreState(Parcelable state, ClassLoader loader) {
-		}
-
-		@Override
-		public Parcelable saveState() {
-			return null;
-		}
-	}
-
-	class RelationAdapter extends BaseAdapter {
-
-		@Override
-		public int getCount() {
-			return productDetail.getProductRelations().size();
-		}
-
-		@Override
-		public Object getItem(int position) {
-			return productDetail.getProductRelations().get(position);
-		}
-
-		@Override
-		public long getItemId(int position) {
-			return position;
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			ViewHolder holder;
-			if (convertView == null) {
-				holder = new ViewHolder();
-				convertView = layoutInflater.inflate(R.layout.list_attr_value,
-						null);
-				holder.textView = (TextView) convertView
-						.findViewById(R.id.attr_value);
-				convertView.setTag(holder);
-			} else {
-				holder = (ViewHolder) convertView.getTag();
-			}
-			holder.textView.setText(productDetail.getProductRelations()
-					.get(position).getAttName());
-			if (productDetail.getProductRelations().get(position).getId()
-					.equals(productDetail.getId())) {
-				holder.textView
-						.setBackgroundResource(R.drawable.back_white_rec_border_orange);
-			} else {
-				holder.textView
-						.setBackgroundResource(R.drawable.selector_white_rec_border);
-			}
-			return convertView;
-		}
-
-		class ViewHolder {
-			TextView textView;
-		}
-	}
-
-	/**
-	 * 获取商品详情
-	 * 
-	 * @author Tiger
-	 * 
-	 */
-	class GetProductDetail extends AsyncTask<Void, Void, String> {
-
-		@Override
-		protected void onPreExecute() {
-			showLoading();
-		}
-
-		@Override
-		protected String doInBackground(Void... arg0) {
-			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-			nameValuePairs.add(new BasicNameValuePair("jmdId", Store.getStore()
-					.getStoreId()));
-			nameValuePairs.add(new BasicNameValuePair("productId", productId));
-			String result = netUtil.postWithoutCookie(API.API_PRODUCT_DETAIL,
-					nameValuePairs, false, false);
-			return result;
-		}
-
-		@Override
-		protected void onPostExecute(String result) {
-			hideLoading();
-			if (result.length() == 0) {
-				htmlButton.setClickable(false);
-				attrButton.setClickable(false);
-				carButton.setClickable(false);
-			} else {
-				JSONObject object;
-				try {
-					object = new JSONObject(result);
-					if (object.getString("state").equalsIgnoreCase("SUCCESS")) {
-						JSONObject detailObject = object
-								.optJSONObject("dataMap");
-						if (detailObject != null) {
-							productDetail = new ModelProduct(detailObject);
-							showDetail();
-						}
-					} else {
-						htmlButton.setClickable(false);
-						attrButton.setClickable(false);
-						carButton.setClickable(false);
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-
-	/**
-	 * 秒杀商品详情
-	 * 
-	 * @author Tiger
-	 * 
-	 */
-	class GetMiaoshaSaleDetail extends AsyncTask<Void, Void, String> {
-		@Override
-		protected void onPreExecute() {
-			showLoading();
-		}
-
-		@Override
-		protected String doInBackground(Void... params) {
-			List<NameValuePair> valuePairs = new ArrayList<NameValuePair>();
-			valuePairs.add(new BasicNameValuePair("productId", productDetail
-					.getId()));
-			return netUtil.postWithCookie(API.API_SALE_MIAOSHA_DETAIL,
-					valuePairs);
-		}
-
-		@Override
-		protected void onPostExecute(String result) {
-			hideLoading();
-			try {
-				saleDetailMiaosha = new ModelSaleDetailMiaosha(result);
-				if (saleDetailMiaosha != null) {
-					if (saleDetailMiaosha.getSeckillPrice() > 0) {
-						activityLayout.setVisibility(View.VISIBLE);
-						activityNameTextView.setText(saleDetailMiaosha
-								.getSeckillName());
-						// 开始时间<=当前时间，活动已开始
-						if (saleDetailMiaosha.getStartTime() <= Calendar
-								.getInstance().getTime().getTime()) {
-							// 剩余秒杀数量>0，显示秒杀信息
-							if (saleDetailMiaosha.getSeckillNUmber() > 0) {
-								activityDetailTextView.setText("秒杀已开始，每个账号限购"
-										+ saleDetailMiaosha.getMemberNumber()
-										+ "件。");
-								priceTextView.setText("¥"
-										+ decimalFormat
-												.format(saleDetailMiaosha
-														.getSeckillPrice()));
-								originalPriceTextView.setText("¥"
-										+ decimalFormat
-												.format(saleDetailMiaosha
-														.getPrice()));
-								stateTextView.setText("剩余"
-										+ saleDetailMiaosha.getSeckillNUmber()
-										+ "件");
-								carButton.setText("立即抢购");
-								carButton
-										.setOnClickListener(new OnClickListener() {
-
-											@Override
-											public void onClick(View v) {
-												buySaleProduct();
-											}
-										});
-							}
-						} else {
-							// 开始时间>当前时间，活动未开始，显示预告
-							activityDetailTextView.setText("开始时间:\n"
-									+ simpleDateFormat.format(new Date(
-											saleDetailMiaosha.getStartTime()))
-									+ "\n原价："
-									+ Parameters.CONSTANT_RMB
-									+ decimalFormat.format(saleDetailMiaosha
-											.getPrice())
-									+ ","
-									+ "秒杀价："
-									+ Parameters.CONSTANT_RMB
-									+ decimalFormat.format(saleDetailMiaosha
-											.getSeckillPrice()));
-						}
-					}
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	/**
-	 * 限时促销商品详情
-	 * 
-	 * @author Tiger
-	 * 
-	 */
-	class GetTimeSaleDetail extends AsyncTask<Void, Void, String> {
-
-		@Override
-		protected void onPreExecute() {
-			showLoading();
-		}
-
-		@Override
-		protected String doInBackground(Void... params) {
-			List<NameValuePair> valuePairs = new ArrayList<NameValuePair>();
-			valuePairs.add(new BasicNameValuePair("productId", productDetail
-					.getId()));
-			return netUtil.postWithCookie(API.API_SALE_TIME_DETAIL, valuePairs);
-		}
-
-		@Override
-		protected void onPostExecute(String result) {
-			hideLoading();
-			try {
-				saleDetailTime = new ModelSaleDetailTime(result);
-				if (saleDetailTime != null) {
-					if (saleDetailTime.getPromotionPrice() > 0) {
-						// 开始时间>当前时间，未开始，显示活动预告
-						if (saleDetailTime.getStartTime() > Calendar
-								.getInstance().getTime().getTime()) {
-							activityLayout.setVisibility(View.VISIBLE);
-							activityNameTextView.setText(saleDetailTime
-									.getPromotionName());
-							activityDetailTextView.setText("活动时间:\n"
-									+ simpleDateFormat.format(new Date(
-											saleDetailTime.getStartTime()))
-									+ " 至\n"
-									+ simpleDateFormat.format(new Date(
-											saleDetailTime.getEndTime())));
-						} else if (saleDetailTime.getEndTime() > Calendar
-								.getInstance().getTime().getTime()) {
-							// 开始时间<=当前时间，结束时间>当前时间，已开始未结束，活动进行时
-							activityLayout.setVisibility(View.VISIBLE);
-							activityNameTextView.setText(saleDetailTime
-									.getPromotionName());
-							activityDetailTextView.setText("活动时间:\n"
-									+ simpleDateFormat.format(new Date(
-											saleDetailTime.getStartTime()))
-									+ " 至\n"
-									+ simpleDateFormat.format(new Date(
-											saleDetailTime.getEndTime())));
-							priceTextView.setText("¥"
-									+ decimalFormat.format(saleDetailTime
-											.getPromotionPrice()));
-							originalPriceTextView.setText("¥"
-									+ decimalFormat.format(saleDetailTime
-											.getPrice()));
-							carButton.setText("立即抢购");
-							carButton.setOnClickListener(new OnClickListener() {
-
-								@Override
-								public void onClick(View v) {
-									buySaleProduct();
-								}
-							});
-						} else {
-							// 活动结束
-						}
-					}
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	/**
-	 * 特价促销商品详情
-	 * 
-	 * @author Tiger
-	 * 
-	 */
-	class GetTejiaSaleDetail extends AsyncTask<Void, Void, String> {
-		@Override
-		protected void onPreExecute() {
-			showLoading();
-		}
-
-		@Override
-		protected String doInBackground(Void... params) {
-			List<NameValuePair> valuePairs = new ArrayList<NameValuePair>();
-			valuePairs.add(new BasicNameValuePair("productId", productDetail
-					.getId()));
-			return netUtil
-					.postWithCookie(API.API_SALE_TEJIA_DETAIL, valuePairs);
-		}
-
-		@Override
-		protected void onPostExecute(String result) {
-			hideLoading();
-			try {
-				saleDetailTejia = new ModelSaleDetailTejia(result);
-				if (saleDetailTejia != null) {
-					if (saleDetailTejia.getSalePrice() > 0) {
-						if (saleDetailTejia.getNumbers() > 0) {
-							activityLayout.setVisibility(View.VISIBLE);
-							activityNameTextView.setText(saleDetailTejia
-									.getType());
-							activityDetailTextView.setText(saleDetailTejia
-									.getSalePromotionName());
-							priceTextView.setText("¥"
-									+ decimalFormat.format(saleDetailTejia
-											.getSalePrice()));
-							originalPriceTextView.setText("¥"
-									+ decimalFormat.format(saleDetailTejia
-											.getPrice()));
-							carButton.setText("立即抢购");
-							carButton.setOnClickListener(new OnClickListener() {
-
-								@Override
-								public void onClick(View v) {
-									buySaleProduct();
-								}
-							});
-						}
-					}
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	private void buySaleProduct() {
-		if (User.getUser().isLogin()) {
-			Bundle bundle = new Bundle();
-			bundle.putString("productId", productDetail.getId());
-			bundle.putInt("saleType", saleType);
-			jump(SaleProductOrderConfirmFragment.class.getName(), "确认订单",
-					bundle);
-		} else {
-			Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT).show();
-			jump(UserLoginFragment.class.getName(), "会员登录");
-		}
-	}
+
+public class ProductDetailFragment extends BaseNotifyFragment {
+
+    CirclePageIndicator pageIndicator;
+    FrameLayout imageLayout;
+    ViewPager imagePager;
+
+    TextView nameTextView;
+
+    TextView priceTextView;
+
+    LinearLayout saleLayout;
+    TextView saleTextView;
+
+    LinearLayout attrLayout;
+    TextView attrTextView;
+
+    LinearLayout areaLayout;
+    TextView areaTextView;
+    TextView freightTextView;
+
+    FrameLayout countDeleteLayout;
+    FrameLayout countAddLayout;
+    TextView countTextView;
+
+    LinearLayout htmlLayout;
+
+    TextView totalMoneyTextView;
+    Button buyButton;
+    Button carButton;
+
+    LinearLayout relationLayout;
+    TextView hideRelationButton, noRelationTextView;
+    InnerGridView relationList;
+
+    ImageAdapter imageAdapter;
+    String productId = "";
+    ModelProduct productDetail;
+    RelationAdapter relationAdapter;
+
+    int saleType = CaptureActivity.SALE_TYPE_NONE;
+    ModelSaleDetailTime saleDetailTime = new ModelSaleDetailTime();
+    ModelSaleDetailMiaosha saleDetailMiaosha = new ModelSaleDetailMiaosha();
+    ModelSaleDetailTejia saleDetailTejia = new ModelSaleDetailTejia();
+
+    int buyCount = 1;
+
+    boolean isSaleEnable = false;
+    HashMap<String, Double> freightMap;
+
+    String areaName = "", areaId = "";
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_product_detail_new);
+        init();
+        findViews();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(ProductDetailFragment.class.getName());
+        if (!TextUtils.isEmpty(UserAddressEditFragment.areaName)) {
+            areaName = UserAddressEditFragment.areaName;
+            Content.saveStringContent("product_detail_area_name", areaName);
+            if (!TextUtils.isEmpty(UserAddressEditFragment.areaId)) {
+                areaId = UserAddressEditFragment.areaId;
+                Content.saveStringContent("product_detail_area_id", areaId);
+            }
+        }
+        areaTextView.setText(areaName);
+        if (!TextUtils.isEmpty(productDetail.getNumber())) {
+            new GetFreight().execute();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(ProductDetailFragment.class.getName());
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        new GetProductDetail().execute();
+    }
+
+    private void init() {
+        measureScreen();
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            if (bundle.containsKey("productId")) {
+                productId = bundle.getString("productId");
+            }
+            if (bundle.containsKey("saleType")) {
+                saleType = bundle.getInt("saleType");
+            }
+        }
+        areaName = Content.getStringContent("product_detail_area_name", "四川省>成都市>锦江区");
+        areaId = Content.getStringContent("product_detail_area_id", "23");
+        productDetail = new ModelProduct();
+        freightMap = new HashMap<>();
+        imageAdapter = new ImageAdapter();
+        relationAdapter = new RelationAdapter();
+    }
+
+    protected void findViews() {
+        pageIndicator = (CirclePageIndicator) contentView.findViewById(R.id.platform_product_detail_image_indicator);
+        imageLayout = (FrameLayout) contentView.findViewById(R.id.platform_product_detail_image_layout);
+        imagePager = (ViewPager) contentView.findViewById(R.id.platform_product_detail_image_pager);
+
+        nameTextView = (TextView) contentView.findViewById(R.id.platform_product_detail_name);
+
+        priceTextView = (TextView) contentView.findViewById(R.id.platform_product_detail_price);
+
+        saleLayout = (LinearLayout) contentView.findViewById(R.id.platform_product_detail_sale_layout);
+        saleTextView = (TextView) contentView.findViewById(R.id.platform_product_detail_sale_info);
+
+        attrLayout = (LinearLayout) contentView.findViewById(R.id.platform_product_detail_attr_layout);
+        attrTextView = (TextView) contentView.findViewById(R.id.platform_product_detail_attr);
+
+        areaLayout = (LinearLayout) contentView.findViewById(R.id.platform_product_detail_area_layout);
+        areaTextView = (TextView) contentView.findViewById(R.id.platform_product_detail_area);
+        freightTextView = (TextView) contentView.findViewById(R.id.platform_product_detail_freight);
+
+        countDeleteLayout = (FrameLayout) contentView.findViewById(R.id.platform_product_detail_count_delete);
+        countAddLayout = (FrameLayout) contentView.findViewById(R.id.platform_product_detail_count_add);
+        countTextView = (TextView) contentView.findViewById(R.id.platform_product_detail_count);
+        freightTextView = (TextView) contentView.findViewById(R.id.platform_product_detail_freight);
+
+        htmlLayout = (LinearLayout) contentView.findViewById(R.id.platform_product_detail_html);
+
+        totalMoneyTextView = (TextView) contentView.findViewById(R.id.platform_product_detail_total_money);
+        buyButton = (Button) contentView.findViewById(R.id.platform_product_detail_buy);
+        carButton = (Button) contentView.findViewById(R.id.platform_product_detail_add_car);
+
+
+        addImageButton(R.drawable.iconfont_cart, "购物车", new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                jump(ShoppingCarFragment.class.getName(), "易商城购物车");
+            }
+        });
+        initViews();
+        registerViews();
+    }
+
+    protected void initViews() {
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, screenWidth);
+        imagePager.setLayoutParams(layoutParams);
+        imagePager.setAdapter(imageAdapter);
+//        relationList.setAdapter(relationAdapter);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    protected void registerViews() {
+        attrLayout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        areaLayout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("getArea", true);
+                jump(StoreAreaFragment.class.getName(), "选择收货区域", bundle);
+            }
+        });
+        htmlLayout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putString("html", productDetail.getXiangqing());
+                bundle.putInt("type", WebFragment.TYPE_HTML);
+                jump(WebFragment.class.getName(), productDetail.getProductName(), bundle);
+            }
+        });
+        buyButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buyProduct();
+            }
+        });
+        carButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addToCar();
+            }
+        });
+        countAddLayout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buyCount++;
+                new GetFreight().execute();
+            }
+        });
+        countDeleteLayout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (buyCount > 1) {
+                    buyCount--;
+                    new GetFreight().execute();
+                }
+            }
+        });
+    }
+
+    /**
+     * 显示商品详情
+     */
+    private void showDetail() {
+        new GetFreight().execute();
+        imageAdapter.notifyDataSetChanged();
+        nameTextView.setText(productDetail.getProductName());
+        priceTextView.setText(Parameters.CONSTANT_RMB + decimalFormat.format(productDetail.getPrice()));
+        attrTextView.setText(productDetail.getAttName());
+        switch (saleType) {
+
+            case CaptureActivity.SALE_TYPE_TIME:
+                new GetTimeSaleDetail().execute();
+                break;
+
+            case CaptureActivity.SALE_TYPE_MIAOSHA:
+                new GetMiaoshaSaleDetail().execute();
+                break;
+
+            case CaptureActivity.SALE_TYPE_TEJIA:
+                new GetTejiaSaleDetail().execute();
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    /**
+     * 添加到购物车
+     */
+    private void addToCar() {
+        if (productDetail.getNum() > 0) {
+            if (ShoppingCartController.getInstance().hasProduct(DataBaseHelper.tableCarPlatform, productDetail.getId())) {
+                Notify.show("购物车已存在此商品");
+            } else {
+                ShoppingCartController.getInstance().addProduct(DataBaseHelper.tableCarPlatform, true, buyCount, productDetail.getSupplierId(), productDetail.getSupplierName(), productDetail.getId(), productDetail.getJsonObject().toString());
+                Notify.show("添加到购物车成功");
+            }
+        } else {
+            Notify.show("此商品无货，无法添加到购物车");
+        }
+    }
+
+    /**
+     * viewpager适配器
+     */
+    private class ImageAdapter extends PagerAdapter {
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView((View) object);
+        }
+
+        @Override
+        public int getCount() {
+            return productDetail.getImages().size();
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup view, int position) {
+            View imageLayout = layoutInflater.inflate(
+                    R.layout.adapter_viewpager, view, false);
+            assert imageLayout != null;
+            ImageView imageView = (ImageView) imageLayout
+                    .findViewById(R.id.view_pager_img);
+            final ProgressBar spinner = (ProgressBar) imageLayout
+                    .findViewById(R.id.view_pager_loading);
+            ImageLoader.getInstance().displayImage(
+                    getBigImageUrl(productDetail.getImages().get(position)),
+                    imageView, new SimpleImageLoadingListener() {
+                        @Override
+                        public void onLoadingStarted(String imageUri, View view) {
+                            spinner.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onLoadingFailed(String imageUri, View view,
+                                                    FailReason failReason) {
+                            spinner.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onLoadingComplete(String imageUri,
+                                                      View view, Bitmap loadedImage) {
+                            spinner.setVisibility(View.GONE);
+                        }
+                    });
+            view.addView(imageLayout, 0);
+            return imageLayout;
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view.equals(object);
+        }
+
+        @Override
+        public void restoreState(Parcelable state, ClassLoader loader) {
+        }
+
+        @Override
+        public Parcelable saveState() {
+            return null;
+        }
+    }
+
+    class RelationAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return productDetail.getProductRelations().size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return productDetail.getProductRelations().get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder holder;
+            if (convertView == null) {
+                holder = new ViewHolder();
+                convertView = layoutInflater.inflate(R.layout.list_attr_value,
+                        null);
+                holder.textView = (TextView) convertView
+                        .findViewById(R.id.attr_value);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+            holder.textView.setText(productDetail.getProductRelations()
+                    .get(position).getAttName());
+            if (productDetail.getProductRelations().get(position).getId()
+                    .equals(productDetail.getId())) {
+                holder.textView
+                        .setBackgroundResource(R.drawable.back_white_rec_border_orange);
+            } else {
+                holder.textView
+                        .setBackgroundResource(R.drawable.selector_white_rec_border);
+            }
+            return convertView;
+        }
+
+        class ViewHolder {
+            TextView textView;
+        }
+    }
+
+    /**
+     * 获取商品详情
+     *
+     * @author Tiger
+     */
+    class GetProductDetail extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            showLoading();
+        }
+
+        @Override
+        protected String doInBackground(Void... arg0) {
+            List<NameValuePair> nameValuePairs = new ArrayList<>();
+            nameValuePairs.add(new BasicNameValuePair("jmdId", Store.getStore().getStoreId()));
+            nameValuePairs.add(new BasicNameValuePair("productId", productId));
+            String result = netUtil.postWithoutCookie(API.API_PRODUCT_DETAIL, nameValuePairs, false, false);
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            hideLoading();
+            if (!TextUtils.isEmpty(result)) {
+                {
+                    JSONObject object;
+                    try {
+                        object = new JSONObject(result);
+                        if (object.getString("state").equalsIgnoreCase("SUCCESS")) {
+                            JSONObject detailObject = object.optJSONObject("dataMap");
+                            if (detailObject != null) {
+                                productDetail = new ModelProduct(detailObject);
+                                showDetail();
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 秒杀商品详情
+     *
+     * @author Tiger
+     */
+    class GetMiaoshaSaleDetail extends AsyncTask<Void, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            showLoading();
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            List<NameValuePair> valuePairs = new ArrayList<NameValuePair>();
+            valuePairs.add(new BasicNameValuePair("productId", productDetail.getId()));
+            return netUtil.postWithCookie(API.API_SALE_MIAOSHA_DETAIL, valuePairs);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            hideLoading();
+            try {
+                saleDetailMiaosha = new ModelSaleDetailMiaosha(result);
+                if (saleDetailMiaosha != null) {
+                    if (saleDetailMiaosha.getSeckillPrice() > 0) {
+                        StringBuilder saleInfo = new StringBuilder();
+                        saleLayout.setVisibility(View.VISIBLE);
+                        saleInfo.append(saleDetailMiaosha.getSeckillName());
+                        saleInfo.append("\n");
+                        // 开始时间<=当前时间，活动已开始
+                        if (saleDetailMiaosha.getStartTime() <= Calendar
+                                .getInstance().getTime().getTime()) {
+                            // 剩余秒杀数量>0，显示秒杀信息
+                            if (saleDetailMiaosha.getSeckillNUmber() > 0) {
+                                isSaleEnable = true;
+                                priceTextView.setText("¥" + decimalFormat.format(saleDetailMiaosha.getSeckillPrice()));
+                                saleInfo.append("秒杀已开始，每个账号限购" + saleDetailMiaosha.getMemberNumber() + "件。");
+                                saleInfo.append("\n");
+                                saleInfo.append("剩余" + saleDetailMiaosha.getSeckillNUmber() + "件");
+                                saleInfo.append("\n");
+                                saleInfo.append("原件:" + "¥" + decimalFormat.format(saleDetailMiaosha.getPrice()));
+                                carButton.setVisibility(View.GONE);
+                            }
+                        } else {
+                            // 开始时间>当前时间，活动未开始，显示预告
+                            saleInfo.append("开始时间:\n" + simpleDateFormat.format(new Date(saleDetailMiaosha.getStartTime()))
+                                    + "\n原价：" + Parameters.CONSTANT_RMB + decimalFormat.format(saleDetailMiaosha.getPrice()) + ","
+                                    + "秒杀价：" + Parameters.CONSTANT_RMB + decimalFormat.format(saleDetailMiaosha.getSeckillPrice()));
+                        }
+                        saleTextView.setText(saleInfo.toString());
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 限时促销商品详情
+     *
+     * @author Tiger
+     */
+    class GetTimeSaleDetail extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            showLoading();
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            List<NameValuePair> valuePairs = new ArrayList<NameValuePair>();
+            valuePairs.add(new BasicNameValuePair("productId", productDetail
+                    .getId()));
+            return netUtil.postWithCookie(API.API_SALE_TIME_DETAIL, valuePairs);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            hideLoading();
+            try {
+                saleDetailTime = new ModelSaleDetailTime(result);
+                if (saleDetailTime != null) {
+                    if (saleDetailTime.getPromotionPrice() > 0) {
+                        // 开始时间>当前时间，未开始，显示活动预告
+                        if (saleDetailTime.getStartTime() > Calendar.getInstance().getTime().getTime()) {
+                            StringBuilder saleInfo = new StringBuilder();
+                            saleLayout.setVisibility(View.VISIBLE);
+                            saleInfo.append(saleDetailTime.getPromotionName());
+                            saleInfo.append("活动时间:\n"
+                                    + simpleDateFormat.format(new Date(saleDetailTime.getStartTime()))
+                                    + " 至\n" + simpleDateFormat.format(new Date(saleDetailTime.getEndTime())));
+                            saleTextView.setText(saleInfo.toString());
+                        } else if (saleDetailTime.getEndTime() > Calendar.getInstance().getTime().getTime()) {
+                            // 开始时间<=当前时间，结束时间>当前时间，已开始未结束，活动进行时
+                            isSaleEnable = true;
+                            priceTextView.setText("¥" + decimalFormat.format(saleDetailTime.getPromotionPrice()));
+                            StringBuilder saleInfo = new StringBuilder();
+                            saleLayout.setVisibility(View.VISIBLE);
+                            saleInfo.append(saleDetailTime.getPromotionName());
+                            saleInfo.append("活动时间:\n"
+                                    + simpleDateFormat.format(new Date(saleDetailTime.getStartTime()))
+                                    + " 至\n" + simpleDateFormat.format(new Date(saleDetailTime.getEndTime())));
+                            saleInfo.append("原价:¥" + decimalFormat.format(saleDetailTime.getPrice()));
+                            carButton.setVisibility(View.GONE);
+                        } else {
+                            // 活动结束
+                        }
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 特价促销商品详情
+     *
+     * @author Tiger
+     */
+    class GetTejiaSaleDetail extends AsyncTask<Void, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            showLoading();
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            List<NameValuePair> valuePairs = new ArrayList<NameValuePair>();
+            valuePairs.add(new BasicNameValuePair("productId", productDetail.getId()));
+            return netUtil
+                    .postWithCookie(API.API_SALE_TEJIA_DETAIL, valuePairs);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            hideLoading();
+            try {
+                saleDetailTejia = new ModelSaleDetailTejia(result);
+                if (saleDetailTejia != null) {
+                    if (saleDetailTejia.getSalePrice() > 0) {
+                        if (saleDetailTejia.getNumbers() > 0) {
+                            StringBuilder saleInfo = new StringBuilder();
+                            isSaleEnable = true;
+                            saleLayout.setVisibility(View.VISIBLE);
+                            priceTextView.setText("¥" + decimalFormat.format(saleDetailTejia.getSalePrice()));
+                            saleInfo.append(saleDetailTejia.getType());
+                            saleInfo.append(saleDetailTejia.getSalePromotionName());
+                            saleInfo.append("原价:¥" + decimalFormat.format(saleDetailTejia.getPrice()));
+                            carButton.setText("立即抢购");
+                            carButton.setVisibility(View.GONE);
+                        }
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    class GetFreight extends AsyncTask<Void, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            showLoading();
+            countTextView.setText(String.valueOf(buyCount));
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            List<NameValuePair> valuePairs = new ArrayList<>();
+            valuePairs.add(new BasicNameValuePair("productNumber", productDetail.getNumber() + "-" + buyCount));
+            valuePairs.add(new BasicNameValuePair("areaid", areaId));
+            valuePairs.add(new BasicNameValuePair("spid", Store.getStore().getStoreId()));
+            return netUtil.postWithCookie(API.API_PRODUCT_FREIGHT, valuePairs);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            hideLoading();
+            if (!TextUtils.isEmpty(result)) {
+                try {
+                    JSONObject object = new JSONObject(result);
+                    if (object.optString("state").equalsIgnoreCase("SUCCESS")) {
+                        JSONArray jsonArray = object.optJSONArray("dataList");
+                        if (jsonArray != null) {
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject jsonObject = jsonArray.optJSONObject(i);
+                                if (jsonObject != null) {
+                                    Iterator<String> keys = jsonObject.keys();
+                                    while (keys.hasNext()) {
+                                        String key = keys.next();
+                                        freightMap.put(key, jsonObject.optDouble(key));
+                                    }
+                                }
+                            }
+                            if (freightMap.containsKey(productDetail.getSupplierId())) {
+                                freightTextView.setText("运费:" + Parameters.CONSTANT_RMB + decimalFormat.format(freightMap.get(productDetail.getSupplierId())));
+                                totalMoneyTextView.setText(Parameters.CONSTANT_RMB + decimalFormat.format(buyCount * productDetail.getPrice() + freightMap.get(productDetail.getSupplierId())));
+                            }
+                        }
+                        return;
+                    }
+                    Notify.show(object.optString("message"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void buyProduct() {
+        if (User.getUser().isLogin()) {
+            if (productDetail.getNum() > 0) {
+                int isIntegralMall = 0;
+                double price = productDetail.getPrice();
+                if (isSaleEnable) {
+                    switch (saleType) {
+
+                        case CaptureActivity.SALE_TYPE_TIME:
+                            price = saleDetailTime.getPromotionPrice();
+                            break;
+
+                        case CaptureActivity.SALE_TYPE_MIAOSHA:
+                            isIntegralMall = 2;
+                            price = saleDetailMiaosha.getSeckillPrice();
+                            break;
+
+                        case CaptureActivity.SALE_TYPE_TEJIA:
+                            price = saleDetailTejia.getSalePrice();
+                            break;
+
+                        default:
+                            price = productDetail.getPrice();
+                            break;
+                    }
+                }
+                if (price > 0) {
+                    if (freightMap.containsKey(productDetail.getSupplierId())) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("supplierId", productDetail.getSupplierId());
+                        bundle.putString("supplierName", productDetail.getSupplierName());
+                        bundle.putString("productId", productDetail.getId());
+                        bundle.putString("productNumber", productDetail.getNumber());
+                        bundle.putString("name", productDetail.getProductName());
+                        bundle.putString("image", productDetail.getImg());
+                        bundle.putInt("isIntegralMall", isIntegralMall);
+                        bundle.putInt("buyCount", buyCount);
+                        bundle.putDouble("price", price);
+                        jump(PlatformProductBuyFragment.class.getName(), "确认订单", bundle);
+                    } else {
+                        Notify.show("查询运费失败，暂不能购买");
+                    }
+                } else {
+                    Notify.show("查询价格失败，暂不能购买");
+                }
+            } else {
+                Notify.show("此商品无货，暂不能购买");
+            }
+        } else {
+            Notify.show("请先登录");
+            jump(UserLoginFragment.class.getName(), "会员登录");
+        }
+    }
+
 }

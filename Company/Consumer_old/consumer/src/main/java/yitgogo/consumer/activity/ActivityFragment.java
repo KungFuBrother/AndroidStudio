@@ -135,33 +135,108 @@ public class ActivityFragment extends BaseNotifyFragment {
         pagenum = 0;
         activities.clear();
         imageAdapter.notifyDataSetChanged();
-        getActivities();
+        new GetActivities().execute();
     }
 
-    private void getActivities(){
-        post(API.API_ACTIVITY_LIST, new OnNetworkListener() {
-            @Override
-            public void onSuccess(String result) {
-                refreshScrollView.onRefreshComplete();
-                if (!TextUtils.isEmpty(result)) {
-                    try {
-                        JSONObject object = new JSONObject(result);
-                        if (object.optString("state").equalsIgnoreCase("SUCCESS")) {
-                            JSONArray array = object.optJSONArray("dataList");
-                            if (array != null) {
-                                for (int i = 0; i < array.length(); i++) {
-                                    activities.add(new ModelActivity(array
-                                            .optJSONObject(i)));
-                                }
-                                imageAdapter.notifyDataSetChanged();
+    /**
+     * @author Tiger
+     * @Url http://192.168.8.80:8088/api/member/activityManage/memberActivity/
+     * findAllActivity
+     * @Parameters No Parameters
+     * @Result {"message":"ok","state":"SUCCESS","cacheKey":null,"dataList":[{"id"
+     * :4,"activityName":"七夕时刻","activityImg":
+     * "http://192.168.8.98:8087/images/public/20150819/55901439975585460.jpg"
+     * ,"titleImg":
+     * "http://images.yitos.net/images/public/20150819/54901439975595835.jpg,http://192.168.8.98:8087/images/public/20150819/54901439975595835.jpg"
+     * ,"totalMoney":5000,"surplusMoney":5000,"lowestMoney":100,
+     * "highestMoney":500,"activityNum":"489799","activityState":"启用",
+     * "activityStartTime"
+     * :"2015-08-20 08:00:46","progress":1,"addUser":"测试一"
+     * ,"service":{"id"
+     * :1,"no":"YT613630259926","brevitycode":"scytsmyxgs"
+     * ,"servicename":
+     * "四川易田商贸有限公司","businessno":"VB11122220000","contacts"
+     * :"易田","cardnumber"
+     * :"111111111111111111","serviceaddress":"成都市金牛区",
+     * "contactphone":"13076063079"
+     * ,"contacttelephone":"028-83222680","email"
+     * :"qqqqq@qq.com","reva":{
+     * "id":3253,"valuename":"中国","valuetype":{"id"
+     * :1,"typename":"国"},"onid"
+     * :0,"onname":null,"brevitycode":null},"contractno"
+     * :"SC11111100000",
+     * "contractannex":"","onservice":null,"state":"启用",
+     * "addtime":"2014-09-04 16:01:36"
+     * ,"starttime":1409760000000,"sptype"
+     * :"1","endtime":1457712000000,"supply"
+     * :true,"imghead":"","longitude"
+     * :null,"latitude":null},"addTime":"2015-08-19 17:13:59"
+     * ,"winExtent"
+     * :50,"winNum":10},{"id":2,"activityName":"易田论坛大会","activityImg":
+     * "http://192.168.8.98:8087/images/public/20150819/61111439970534690.png"
+     * ,"titleImg":
+     * "http://images.yitos.net/images/public/20150819/67041439970537790.png,http://192.168.8.98:8087/images/public/20150819/67041439970537790.png"
+     * ,"totalMoney":100,"surplusMoney":19893,"lowestMoney":5,
+     * "highestMoney":20,"activityNum":"603200","activityState":"启用",
+     * "activityStartTime"
+     * :"2015-08-18 12:28:28","progress":1,"addUser":"测试一"
+     * ,"service":{"id"
+     * :1,"no":"YT613630259926","brevitycode":"scytsmyxgs"
+     * ,"servicename":
+     * "四川易田商贸有限公司","businessno":"VB11122220000","contacts"
+     * :"易田","cardnumber"
+     * :"111111111111111111","serviceaddress":"成都市金牛区",
+     * "contactphone":"13076063079"
+     * ,"contacttelephone":"028-83222680","email"
+     * :"qqqqq@qq.com","reva":{
+     * "id":3253,"valuename":"中国","valuetype":{"id"
+     * :1,"typename":"国"},"onid"
+     * :0,"onname":null,"brevitycode":null},"contractno"
+     * :"SC11111100000",
+     * "contractannex":"","onservice":null,"state":"启用",
+     * "addtime":"2014-09-04 16:01:36"
+     * ,"starttime":1409760000000,"sptype"
+     * :"1","endtime":1457712000000,"supply"
+     * :true,"imghead":"","longitude"
+     * :null,"latitude":null},"addTime":"2015-08-19 15:47:10"
+     * ,"winExtent"
+     * :5,"winNum":2}],"totalCount":1,"dataMap":{},"object":null}
+     */
+    class GetActivities extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            showLoading();
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            return netUtil.postWithoutCookie(API.API_ACTIVITY_LIST, null,
+                    false, false);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            hideLoading();
+            refreshScrollView.onRefreshComplete();
+            if (!TextUtils.isEmpty(result)) {
+                try {
+                    JSONObject object = new JSONObject(result);
+                    if (object.optString("state").equalsIgnoreCase("SUCCESS")) {
+                        JSONArray array = object.optJSONArray("dataList");
+                        if (array != null) {
+                            for (int i = 0; i < array.length(); i++) {
+                                activities.add(new ModelActivity(array
+                                        .optJSONObject(i)));
                             }
+                            imageAdapter.notifyDataSetChanged();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
-        });
+        }
     }
 
     class ImageAdapter extends BaseAdapter {
@@ -299,10 +374,6 @@ public class ActivityFragment extends BaseNotifyFragment {
                 }
             }
         }
-    }
-
-    private void joinActivityState(){
-
     }
 
     /**

@@ -74,8 +74,7 @@ public class EntranceActivity extends BaseActivity {
         if (disConnect) {
             if (isConnected()) {
                 disConnect = false;
-//                new CheckUpdate().execute();
-                locate();
+                new CheckUpdate().execute();
             } else {
                 NormalAskDialog askDialog = new NormalAskDialog(
                         "无法连接网络，请检查网络设置！", "查看设置", "退出", false) {
@@ -101,8 +100,7 @@ public class EntranceActivity extends BaseActivity {
     private void checkConnection() {
         if (isConnected()) {
             //能访问网络，检查更新
-//            new CheckUpdate().execute();
-            locate();
+            new CheckUpdate().execute();
         } else {
             //不能访问网络
             disConnect = true;

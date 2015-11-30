@@ -11,14 +11,12 @@ public interface API {
 
     String URL_DOWNLOAD = "http://updatephone.yitos.net/";
 
-    public String IP_PUBLIC = "http://yitos.net";
-    //        String IP_PUBLIC = "http://192.168.8.8:8050";
-//    String IP_PUBLIC = "http://192.168.8.96:8888";
-    String IP_SUNING = "http://gcapi.suning.com";
-    //    String IP_SUNING = "http://58.240.86.161";
-    public String IP_MONEY = "http://pay.yitos.net";
-//    String IP_MONEY = "http://192.168.8.8:82";
-//    String IP_MONEY = "http://192.168.8.50:8085";
+    //    public String IP_PUBLIC = "http://yitos.net";
+    String IP_PUBLIC = "http://192.168.8.8:8050";
+    //    String IP_SUNING = "http://gcapi.suning.com";
+    String IP_SUNING = "http://58.240.86.161";
+    //    public String IP_MONEY = "http://pay.yitos.net";
+    String IP_MONEY = "http://192.168.8.8:82";
 
     /**
      * 说明：根据手机号码和面值（为慢充时还须到账时间）查询充值信息 参数： phoneno 手机号码 必须 pervalue 面值 必须
@@ -88,7 +86,10 @@ public interface API {
 
     String API_BIANMIN_ORDER = IP_PUBLIC
             + "/api/facilitate/recharge/rechargeOrder/findOrderByMember";
-
+    /**
+     * 运费计算
+     */
+    String API_PRODUCT_FREIGHT = IP_PUBLIC + "/api/order/orderManage/freightTemplate/calculationOfFreight";
     /**
      * orderNumber
      */
@@ -343,6 +344,12 @@ public interface API {
      */
     String API_ORDER_WULIU = IP_PUBLIC
             + "/api/mobilePhone/deliveryRecord/logisticsManage/findDeliveryRecords";
+
+    /**
+     * 退货申请
+     */
+    String API_ORDER_RETURN = IP_PUBLIC + "/member/order/returnManage/applyReturn";
+
 
     /**
      * 查询店铺街的店铺列表及信息 参数：加盟店编号（storeId）

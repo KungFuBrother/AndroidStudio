@@ -12,7 +12,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     /**
      * 数据库名称常量
      */
-    public static final String DATABASE_NAME = "shopping_cart.db3";
+    public static final String DATABASE_NAME = "shopping_cart.db";
     /**
      * 数据库版本常量
      */
@@ -20,7 +20,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     /**
      * 购物车表
      */
-    public static final String table_car_platform = "car_platform";
+    public static final String tableCarPlatform = "car_platform";
 
     private static DataBaseHelper helper;
 
@@ -43,7 +43,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table if not exists " + table_car_platform + "("
+        db.execSQL("create table if not exists " + tableCarPlatform + "("
                 + "id integer primary key,"
                 + ModelShoppingCart.columnIsSelected + " integer,"
                 + ModelShoppingCart.columnBuyCount + " integer,"

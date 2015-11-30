@@ -19,4 +19,12 @@
     <color name="blue">#00BFFF</color>
     <color name="blue_daker">#1E90FF</color>
 
+    <color name="product_price">#ff5722</color>
+    <color name="product_name">#292929</color>
+    <color name="product_attr">#696969</color>
+    <color name="button_car_normal">#45b745</color>
+    <color name="button_car_pressed">#3fa43f</color>
+    <color name="button_buy_normal">#ff5722</color>
+    <color name="button_buy_pressed">#e94f1e</color>
+
 </resources>

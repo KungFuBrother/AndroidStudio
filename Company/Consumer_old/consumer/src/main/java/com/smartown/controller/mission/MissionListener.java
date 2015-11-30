@@ -13,7 +13,7 @@ public abstract class MissionListener {
     public static final int PROGRESS_FINISH = 4;
 
     Handler handler = new Handler(Looper.myLooper()) {
-        public void handleMessage(android.os.Message msg) {
+        public void handleMessage(Message msg) {
             operateMessage((MissionMessage) msg.obj);
         }
     };

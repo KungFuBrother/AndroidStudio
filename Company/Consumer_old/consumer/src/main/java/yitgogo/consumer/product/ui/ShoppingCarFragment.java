@@ -1,29 +1,5 @@
 package yitgogo.consumer.product.ui;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import yitgogo.consumer.BaseNotifyFragment;
-import yitgogo.consumer.home.model.ModelListPrice;
-import yitgogo.consumer.local.ui.ShoppingCarLocalFragment;
-import yitgogo.consumer.order.ui.PlatformOrderConfirmFragment;
-import yitgogo.consumer.product.model.ModelCar;
-import yitgogo.consumer.product.model.ModelProduct;
-import yitgogo.consumer.store.model.Store;
-import yitgogo.consumer.tools.API;
-import yitgogo.consumer.tools.Content;
-import yitgogo.consumer.tools.Parameters;
-import yitgogo.consumer.user.model.User;
-import yitgogo.consumer.user.ui.UserLoginFragment;
-import yitgogo.consumer.view.Notify;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -38,21 +14,46 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.smartown.controller.shoppingcart.DataBaseHelper;
+import com.smartown.controller.shoppingcart.ModelShoppingCart;
+import com.smartown.controller.shoppingcart.ShoppingCartController;
 import com.smartown.yitian.gogo.R;
 import com.umeng.analytics.MobclickAgent;
 
-public class ShoppingCarFragment extends BaseNotifyFragment implements
-        OnClickListener {
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+
+import yitgogo.consumer.BaseNotifyFragment;
+import yitgogo.consumer.home.model.ModelListPrice;
+import yitgogo.consumer.local.ui.ShoppingCarLocalFragment;
+import yitgogo.consumer.order.ui.ShoppingCarPlatformBuyFragment;
+import yitgogo.consumer.product.model.ModelProduct;
+import yitgogo.consumer.store.model.Store;
+import yitgogo.consumer.tools.API;
+import yitgogo.consumer.tools.Parameters;
+import yitgogo.consumer.user.model.User;
+import yitgogo.consumer.user.ui.UserLoginFragment;
+import yitgogo.consumer.view.Notify;
+
+public class ShoppingCarFragment extends BaseNotifyFragment {
 
     LinearLayout normalLayout;
     ListView carList;
-    List<ModelCar> modelCars;
+    List<ModelShoppingCart> shoppingCarts;
     HashMap<String, ModelListPrice> priceMap;
     CarAdapter carAdapter;
-    TextView selectAllButton, totalPriceTextView, addOrderButton;
-    JSONArray carArray;
+    TextView selectAllButton;
     boolean allSelected = true;
 
+    TextView totalPriceTextView, buyButton;
     double totalMoney = 0;
 
     @Override
@@ -67,11 +68,12 @@ public class ShoppingCarFragment extends BaseNotifyFragment implements
     public void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd(ShoppingCarFragment.class.getName());
+        ShoppingCartController.getInstance().saveChangedShoppingCart(DataBaseHelper.tableCarPlatform, shoppingCarts);
     }
 
     private void init() {
-        modelCars = new ArrayList<ModelCar>();
-        priceMap = new HashMap<String, ModelListPrice>();
+        shoppingCarts = new ArrayList<>();
+        priceMap = new HashMap<>();
         carAdapter = new CarAdapter();
     }
 
@@ -79,18 +81,17 @@ public class ShoppingCarFragment extends BaseNotifyFragment implements
     public void onResume() {
         super.onResume();
         MobclickAgent.onPageStart(ShoppingCarFragment.class.getName());
-        refresh();
+        initShoppingCart();
     }
 
     protected void findViews() {
+
         carList = (ListView) contentView.findViewById(R.id.car_list);
-        normalLayout = (LinearLayout) contentView
-                .findViewById(R.id.normal_layout);
-        selectAllButton = (TextView) contentView
-                .findViewById(R.id.car_selectall);
-        totalPriceTextView = (TextView) contentView
-                .findViewById(R.id.car_total);
-        addOrderButton = (TextView) contentView.findViewById(R.id.car_buy);
+        normalLayout = (LinearLayout) contentView.findViewById(R.id.normal_layout);
+        selectAllButton = (TextView) contentView.findViewById(R.id.car_selectall);
+        totalPriceTextView = (TextView) contentView.findViewById(R.id.car_total);
+        buyButton = (TextView) contentView.findViewById(R.id.car_buy);
+
         initViews();
         registerViews();
     }
@@ -118,112 +119,83 @@ public class ShoppingCarFragment extends BaseNotifyFragment implements
 
                     @Override
                     public void onClick(View v) {
-                        delete();
+                        deleteSelectedCarts();
                     }
                 });
     }
 
     @Override
     protected void registerViews() {
-        selectAllButton.setOnClickListener(this);
-        addOrderButton.setOnClickListener(this);
+        selectAllButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectAll();
+            }
+        });
+        buyButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                confirmOrder();
+            }
+        });
     }
 
-    private void refresh() {
-        modelCars.clear();
+
+    private void initShoppingCart() {
+        shoppingCarts = ShoppingCartController.getInstance().getAllProducts(DataBaseHelper.tableCarPlatform);
         carAdapter.notifyDataSetChanged();
         totalPriceTextView.setText("");
-        try {
-            carArray = new JSONArray(Content.getStringContent(
-                    Parameters.CACHE_KEY_CAR, "[]"));
-            for (int i = 0; i < carArray.length(); i++) {
-                modelCars.add(new ModelCar(carArray.getJSONObject(i)));
-            }
-            carAdapter.notifyDataSetChanged();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        if (modelCars.size() > 0) {
-            normalLayout.setVisibility(View.VISIBLE);
-            if (priceMap.isEmpty()) {
-                StringBuilder stringBuilder = new StringBuilder();
-                for (int i = 0; i < modelCars.size(); i++) {
-                    if (i > 0) {
-                        stringBuilder.append(",");
-                    }
-                    stringBuilder.append(modelCars.get(i).getProduct().getId());
+        if (shoppingCarts.size() > 0) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i = 0; i < shoppingCarts.size(); i++) {
+                if (i > 0) {
+                    stringBuilder.append(",");
                 }
-                new GetPriceList().execute(stringBuilder.toString());
-            } else {
-                countTotalPrice();
-                carAdapter.notifyDataSetChanged();
+                stringBuilder.append(shoppingCarts.get(i).getProductId());
             }
+            new GetPriceList().execute(stringBuilder.toString());
         } else {
-            normalLayout.setVisibility(View.GONE);
             loadingEmpty("购物车还没有添加商品");
         }
     }
 
     private void addCount(int position) {
-        ModelProduct product = modelCars.get(position).getProduct();
-        long originalCount = modelCars.get(position).getProductCount();
-        try {
-            if (priceMap.containsKey(product.getId())) {
-                if (product.getNum() > originalCount) {
-                    carArray.getJSONObject(position).remove("productCount");
-                    carArray.getJSONObject(position).put("productCount",
-                            originalCount + 1);
-                    Content.saveStringContent(Parameters.CACHE_KEY_CAR,
-                            carArray.toString());
-                    refresh();
-                } else {
-                    Notify.show("库存不足");
-                }
+        if (priceMap.containsKey(shoppingCarts.get(position).getProductId())) {
+            ModelListPrice price = priceMap.get(shoppingCarts.get(position).getProductId());
+            int originalCount = shoppingCarts.get(position).getBuyCount();
+            if (price.getNum() > originalCount) {
+                shoppingCarts.get(position).setBuyCount(originalCount + 1);
+                carAdapter.notifyDataSetChanged();
+                countTotalPrice();
+            } else {
+                Notify.show("库存不足");
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
     }
 
     private void deleteCount(int position) {
-        long originalCount = modelCars.get(position).getProductCount();
+        int originalCount = shoppingCarts.get(position).getBuyCount();
         if (originalCount > 1) {
-            try {
-                carArray.getJSONObject(position).remove("productCount");
-                carArray.getJSONObject(position).put("productCount",
-                        originalCount - 1);
-                Content.saveStringContent(Parameters.CACHE_KEY_CAR,
-                        carArray.toString());
-                refresh();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            shoppingCarts.get(position).setBuyCount(originalCount - 1);
+            carAdapter.notifyDataSetChanged();
+            countTotalPrice();
         }
     }
 
     private void select(int position) {
-        boolean originalSelection = modelCars.get(position).isSelected();
-        try {
-            carArray.getJSONObject(position).remove("isSelected");
-            carArray.getJSONObject(position).put("isSelected",
-                    !originalSelection);
-            Content.saveStringContent(Parameters.CACHE_KEY_CAR,
-                    carArray.toString());
-            refresh();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        shoppingCarts.get(position).setIsSelected(!shoppingCarts.get(position).isSelected());
+        carAdapter.notifyDataSetChanged();
+        countTotalPrice();
     }
 
     private void countTotalPrice() {
         allSelected = true;
         totalMoney = 0;
-        for (int i = 0; i < modelCars.size(); i++) {
-            if (modelCars.get(i).isSelected()) {
-                ModelProduct product = modelCars.get(i).getProduct();
-                if (priceMap.containsKey(product.getId())) {
-                    double price = priceMap.get(product.getId()).getPrice();
-                    long count = modelCars.get(i).getProductCount();
+        for (int i = 0; i < shoppingCarts.size(); i++) {
+            if (shoppingCarts.get(i).isSelected()) {
+                if (priceMap.containsKey(shoppingCarts.get(i).getProductId())) {
+                    double price = priceMap.get(shoppingCarts.get(i).getProductId()).getPrice();
+                    int count = shoppingCarts.get(i).getBuyCount();
                     if (price > 0) {
                         totalMoney += count * price;
                     }
@@ -242,99 +214,68 @@ public class ShoppingCarFragment extends BaseNotifyFragment implements
     }
 
     private void selectAll() {
-        try {
-            // 当前已全选，改为全不选
-            if (allSelected) {
-                for (int i = 0; i < carArray.length(); i++) {
-                    carArray.getJSONObject(i).remove("isSelected");
-                    carArray.getJSONObject(i).put("isSelected", false);
-                }
-            } else {
-                for (int i = 0; i < carArray.length(); i++) {
-                    carArray.getJSONObject(i).remove("isSelected");
-                    carArray.getJSONObject(i).put("isSelected", true);
-                }
+        // 当前已全选，改为全不选
+        if (allSelected) {
+            for (int i = 0; i < shoppingCarts.size(); i++) {
+                shoppingCarts.get(i).setIsSelected(false);
             }
-            Content.saveStringContent(Parameters.CACHE_KEY_CAR,
-                    carArray.toString());
-            refresh();
-        } catch (JSONException e) {
-            e.printStackTrace();
+        } else {
+            for (int i = 0; i < shoppingCarts.size(); i++) {
+                shoppingCarts.get(i).setIsSelected(true);
+            }
         }
+        carAdapter.notifyDataSetChanged();
+        countTotalPrice();
     }
 
-    private void delete() {
-        JSONArray jsonArray = new JSONArray();
-        for (int i = 0; i < modelCars.size(); i++) {
-            if (!modelCars.get(i).isSelected()) {
-                try {
-                    jsonArray.put(carArray.getJSONObject(i));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+    private void deleteSelectedCarts() {
+        Iterator<ModelShoppingCart> shoppingCartIterator = shoppingCarts.iterator();
+        while (shoppingCartIterator.hasNext()) {
+            ModelShoppingCart shoppingCart = shoppingCartIterator.next();
+            if (shoppingCart.isSelected()) {
+                shoppingCartIterator.remove();
             }
         }
-        Content.saveStringContent(Parameters.CACHE_KEY_CAR,
-                jsonArray.toString());
-        refresh();
+        carAdapter.notifyDataSetChanged();
+        countTotalPrice();
     }
 
     private void confirmOrder() {
         int selectedCount = 0;
-        JSONArray orderArray = new JSONArray();
-        for (int i = 0; i < modelCars.size(); i++) {
-            if (modelCars.get(i).isSelected()) {
-                selectedCount++;
-                if (modelCars.get(i).isSelected()) {
-                    ModelProduct product = modelCars.get(i).getProduct();
-                    if (priceMap.containsKey(product.getId())) {
-                        ModelListPrice price = priceMap.get(product.getId());
-                        if (price.getPrice() > 0) {
-                            if (price.getNum() < modelCars.get(i)
-                                    .getProductCount()) {
-                                Notify.show("商品库存不足，无法下单");
-                                return;
-                            }
-                        } else {
-                            Notify.show("有商品信息错误，无法下单");
-                            return;
-                        }
+        for (int i = 0; i < shoppingCarts.size(); i++) {
+            if (shoppingCarts.get(i).isSelected()) {
+                if (priceMap.containsKey(shoppingCarts.get(i).getProductId())) {
+                    double price = priceMap.get(shoppingCarts.get(i).getProductId()).getPrice();
+                    if (price > 0) {
+                        selectedCount++;
                     } else {
-                        Notify.show("有商品信息错误，无法下单");
+                        errorProductInfo(shoppingCarts.get(i));
                         return;
                     }
-                    orderArray.put(modelCars.get(i).getJsonObject());
+                } else {
+                    errorProductInfo(shoppingCarts.get(i));
+                    return;
                 }
             }
         }
-        if (orderArray.length() > 0) {
-            Content.saveStringContent(Parameters.CACHE_KEY_ORDER_PRODUCT,
-                    orderArray.toString());
-            if (selectedCount > orderArray.length()) {
-                Notify.show("已过滤异常产品");
-            }
+        if (selectedCount > 0) {
             if (User.getUser().isLogin()) {
-                jump(PlatformOrderConfirmFragment.class.getName(), "确认订单");
+                jump(ShoppingCarPlatformBuyFragment.class.getName(), "确认订单");
             } else {
                 Notify.show("请先登录");
                 jump(UserLoginFragment.class.getName(), "登录");
             }
+        } else {
+            Notify.show("请勾选要购买的商品");
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.car_selectall:
-                selectAll();
-                break;
-
-            case R.id.car_buy:
-                confirmOrder();
-                break;
-
-            default:
-                break;
+    private void errorProductInfo(ModelShoppingCart shoppingCart) {
+        try {
+            ModelProduct product = new ModelProduct(new JSONObject(shoppingCart.getProductObject()));
+            Notify.show("商品“" + product.getProductName() + "”信息有误，不能购买。");
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
@@ -342,12 +283,12 @@ public class ShoppingCarFragment extends BaseNotifyFragment implements
 
         @Override
         public int getCount() {
-            return modelCars.size();
+            return shoppingCarts.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return modelCars.get(position);
+            return shoppingCarts.get(position);
         }
 
         @Override
@@ -407,39 +348,41 @@ public class ShoppingCarFragment extends BaseNotifyFragment implements
                     select(index);
                 }
             });
-            ModelCar modelCar = modelCars.get(position);
-            ModelProduct product = modelCar.getProduct();
 
-            holder.countText.setText(modelCar.getProductCount() + "");
-            holder.selection.setChecked(modelCar.isSelected());
+            ModelProduct product = null;
+            try {
+                product = new ModelProduct(new JSONObject(shoppingCarts.get(position).getProductObject()));
 
-            holder.goodNameText.setText(product.getProductName());
-            holder.guigeText.setText(product.getAttName());
-            ImageLoader.getInstance().displayImage(product.getImg(),
-                    holder.goodsImage);
+                holder.countText.setText(String.valueOf(shoppingCarts.get(position).getBuyCount()));
+                holder.selection.setChecked(shoppingCarts.get(position).isSelected());
 
-            if (priceMap.containsKey(product.getId())) {
-                ModelListPrice price = priceMap.get(product.getId());
-                holder.goodsPriceText.setText("¥"
-                        + decimalFormat.format(price.getPrice()));
-                if (price.getNum() > 0) {
-                    if (price.getNum() < 5) {
-                        holder.stateText.setText("仅剩" + price.getNum()
-                                + product.getUnit());
+                holder.goodNameText.setText(product.getProductName());
+                holder.guigeText.setText(product.getAttName());
+                ImageLoader.getInstance().displayImage(product.getImg(), holder.goodsImage);
+
+                if (priceMap.containsKey(product.getId())) {
+                    ModelListPrice price = priceMap.get(product.getId());
+                    holder.goodsPriceText.setText("¥" + decimalFormat.format(price.getPrice()));
+                    if (price.getNum() > 0) {
+                        if (price.getNum() < 5) {
+                            holder.stateText.setText("仅剩" + price.getNum() + product.getUnit());
+                        } else {
+                            holder.stateText.setText("有货");
+                        }
                     } else {
-                        holder.stateText.setText("有货");
+                        holder.stateText.setText("无货");
                     }
-                } else {
-                    holder.stateText.setText("无货");
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
+
             return convertView;
         }
 
         class ViewHolder {
             ImageView goodsImage, addButton, deleteButton;
-            TextView goodNameText, goodsPriceText, guigeText, countText,
-                    stateText;
+            TextView goodNameText, goodsPriceText, guigeText, countText, stateText;
             FrameLayout selectButton;
             CheckBox selection;
         }
@@ -449,12 +392,10 @@ public class ShoppingCarFragment extends BaseNotifyFragment implements
 
         @Override
         protected String doInBackground(String... value) {
-            List<NameValuePair> valuePairs = new ArrayList<NameValuePair>();
-            valuePairs.add(new BasicNameValuePair("jmdId", Store.getStore()
-                    .getStoreId()));
+            List<NameValuePair> valuePairs = new ArrayList<>();
+            valuePairs.add(new BasicNameValuePair("jmdId", Store.getStore().getStoreId()));
             valuePairs.add(new BasicNameValuePair("productId", value[0]));
-            return netUtil.postWithoutCookie(API.API_PRICE_LIST, valuePairs,
-                    false, false);
+            return netUtil.postWithoutCookie(API.API_PRICE_LIST, valuePairs, false, false);
         }
 
         @Override
@@ -467,10 +408,8 @@ public class ShoppingCarFragment extends BaseNotifyFragment implements
                         JSONArray priceArray = object.optJSONArray("dataList");
                         if (priceArray != null) {
                             for (int i = 0; i < priceArray.length(); i++) {
-                                ModelListPrice priceList = new ModelListPrice(
-                                        priceArray.getJSONObject(i));
-                                priceMap.put(priceList.getProductId(),
-                                        priceList);
+                                ModelListPrice priceList = new ModelListPrice(priceArray.getJSONObject(i));
+                                priceMap.put(priceList.getProductId(), priceList);
                             }
                             countTotalPrice();
                             carAdapter.notifyDataSetChanged();

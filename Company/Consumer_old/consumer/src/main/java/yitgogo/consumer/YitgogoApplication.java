@@ -8,13 +8,12 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.utils.L;
+import com.smartown.controller.shoppingcart.DataBaseHelper;
 import com.smartown.yitian.gogo.R;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.AnalyticsConfig;
 import com.umeng.analytics.MobclickAgent;
 
-import yitgogo.consumer.tools.ApplicationTool;
-import yitgogo.consumer.tools.MissionController;
 import yitgogo.consumer.store.model.Store;
 import yitgogo.consumer.suning.model.SuningCarController;
 import yitgogo.consumer.tools.Content;
@@ -34,8 +33,7 @@ public class YitgogoApplication extends Application {
     }
 
     private void init() {
-        ApplicationTool.init(this);
-        MissionController.init();
+        DataBaseHelper.init(this);
         PackageTool.init(this);
         LogUtil.setLogEnable(true);
         SuningCarController.init(this);
@@ -67,6 +65,7 @@ public class YitgogoApplication extends Application {
         ImageLoader.getInstance().init(configuration);
     }
 
+
     private void initUmeng() {
         //Edit in AndroidManifest.xml
 //        AnalyticsConfig.setAppkey(this, "564143c067e58e7902003900");
@@ -94,5 +93,6 @@ public class YitgogoApplication extends Application {
         AnalyticsConfig.enableEncrypt(true);
         MobclickAgent.setDebugMode(false);
     }
+
 
 }

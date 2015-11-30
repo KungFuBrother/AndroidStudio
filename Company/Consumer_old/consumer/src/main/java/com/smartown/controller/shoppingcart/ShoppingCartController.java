@@ -45,16 +45,28 @@ public class ShoppingCartController {
         return hasProduct;
     }
 
-    public void addProduct(String tableName, int buyCount, String providerId, String providerName, String productId, String productObject) {
+    public void addProduct(String tableName, boolean isSelected, int buyCount, String providerId, String providerName, String productId, String productObject) {
         db = DataBaseHelper.getInstance().getReadableDatabase();
         ContentValues values = new ContentValues();
+        int selection = 0;
+        if (isSelected) {
+            selection = 1;
+        }
+        values.put(ModelShoppingCart.columnIsSelected, selection);
         values.put(ModelShoppingCart.columnBuyCount, buyCount);
         values.put(ModelShoppingCart.columnProviderId, providerId);
         values.put(ModelShoppingCart.columnProviderName, providerName);
         values.put(ModelShoppingCart.columnProductId, productId);
         values.put(ModelShoppingCart.columnProductObject, productObject);
-        db.insert(DataBaseHelper.table_car_platform, null, values);
+        db.insert(tableName, null, values);
         close();
+    }
+
+    public void saveChangedShoppingCart(String tableName, List<ModelShoppingCart> shoppingCarts) {
+        removeAllProduct(tableName);
+        for (int i = 0; i < shoppingCarts.size(); i++) {
+            addProduct(tableName, shoppingCarts.get(i).isSelected(), shoppingCarts.get(i).getBuyCount(), shoppingCarts.get(i).getProviderId(), shoppingCarts.get(i).getProviderName(), shoppingCarts.get(i).getProductId(), shoppingCarts.get(i).getProductObject());
+        }
     }
 
     public void removeAllProduct(String tableName) {

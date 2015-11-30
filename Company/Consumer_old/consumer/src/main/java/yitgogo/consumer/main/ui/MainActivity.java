@@ -99,7 +99,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initViews() {
         tabHost.setup(this, getSupportFragmentManager(), R.id.main_fragment);
-        tabHost.getTabWidget().setDividerDrawable(null);
+        tabHost.setup(this, getSupportFragmentManager(), R.id.main_fragment);
         for (int i = 0; i < fragments.size(); i++) {
             // 为每一个Tab按钮设置图标、文字和内容
             tabHost.addTab(tabHost.newTabSpec(fragments.get(i).getName())

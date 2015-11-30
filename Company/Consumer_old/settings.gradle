@@ -1,2 +1,2 @@
-include ':consumer', ':ViewPagerIndicator'
+include ':ViewPagerIndicator', 'consumer'
 include ':pullToRefresh'

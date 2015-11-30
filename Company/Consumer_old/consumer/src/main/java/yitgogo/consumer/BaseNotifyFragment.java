@@ -1,6 +1,5 @@
 package yitgogo.consumer;
 
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,9 +19,7 @@ import yitgogo.consumer.order.model.ModelStorePostInfo;
 import yitgogo.consumer.order.ui.OrderFragment;
 import yitgogo.consumer.product.ui.ProductDetailFragment;
 import yitgogo.consumer.product.ui.ProductListFragment;
-import yitgogo.consumer.tools.ApplicationTool;
 import yitgogo.consumer.tools.MD5;
-import yitgogo.consumer.tools.MissionController;
 import yitgogo.consumer.tools.NetUtil;
 import yitgogo.consumer.tools.Parameters;
 import yitgogo.consumer.tools.ScreenUtil;
@@ -42,9 +39,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -63,11 +57,6 @@ import android.widget.TextView;
 
 import com.dtr.zxing.activity.CaptureActivity;
 import com.smartown.yitian.gogo.R;
-import com.squareup.okhttp.Call;
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
 
 /**
  * 有通知功能的fragment
@@ -179,6 +168,13 @@ public class BaseNotifyFragment extends Fragment {
     }
 
     protected void reload() {
+        failButton.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                reload();
+            }
+        });
     }
 
     private void initReceiver() {
@@ -194,13 +190,6 @@ public class BaseNotifyFragment extends Fragment {
                 }
             }
         };
-        failButton.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                reload();
-            }
-        });
         IntentFilter intentFilter = new IntentFilter(
                 ConnectivityManager.CONNECTIVITY_ACTION);
         getActivity().registerReceiver(broadcastReceiver, intentFilter);
@@ -637,142 +626,5 @@ public class BaseNotifyFragment extends Fragment {
         return localCar.getDiliver().getName() + "、"
                 + localCar.getPayment().getName();
     }
-
-
-    /**
-     * reLoad on loading fail
-     */
-    protected void reLoad() {
-
-    }
-
-    /**
-     * network mission start
-     */
-    private void missionStart() {
-        loadingLayout.setVisibility(View.VISIBLE);
-        failLayout.setVisibility(View.GONE);
-        emptyLayout.setVisibility(View.GONE);
-    }
-
-    /**
-     * network mission finished
-     */
-    private void missionComplete() {
-        loadingLayout.setVisibility(View.GONE);
-        failLayout.setVisibility(View.GONE);
-        emptyLayout.setVisibility(View.GONE);
-    }
-
-    /**
-     * network mission finished on fail
-     */
-    protected void missionFailed() {
-        loadingLayout.setVisibility(View.GONE);
-        failLayout.setVisibility(View.VISIBLE);
-        emptyLayout.setVisibility(View.GONE);
-    }
-
-    /**
-     * network mission finished but not contain useable data
-     */
-    protected void missionNodata() {
-        loadingLayout.setVisibility(View.GONE);
-        failLayout.setVisibility(View.GONE);
-        emptyLayout.setVisibility(View.VISIBLE);
-    }
-
-    /**
-     * add a new post network mission
-     */
-    protected void post(String url, OnNetworkListener onNetworkListener) {
-        post(url, null, onNetworkListener);
-    }
-
-    /**
-     * add a new post network mission
-     */
-    protected void post(String url, RequestBody requestBody, OnNetworkListener onNetworkListener) {
-        Request.Builder builder = new Request.Builder();
-        builder.tag(getActivity());
-        builder.url(url);
-        if (requestBody != null) {
-            builder.post(requestBody);
-        }
-        Request request = builder.build();
-        startNetworkMission(request, onNetworkListener);
-    }
-
-    private void startNetworkMission(Request request, final OnNetworkListener onNetworkListener) {
-        if (loadingLayout.getVisibility() != View.VISIBLE) {
-            missionStart();
-        }
-        Call call = MissionController.getOkHttpClient().newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Request request, IOException e) {
-                onNetworkListener.onFailure(request);
-            }
-
-            @Override
-            public void onResponse(Response response) throws IOException {
-                onNetworkListener.onResponse(response);
-            }
-        });
-    }
-
-    public abstract class OnNetworkListener {
-
-        public static final int FLAG_FAIL = 0;
-        public static final int FLAG_SUCCESS = 1;
-
-        Handler handler = new Handler(Looper.getMainLooper()) {
-            public void handleMessage(Message msg) {
-                switch (msg.what) {
-                    case FLAG_FAIL:
-                        onFailure((String) msg.obj);
-                        break;
-
-                    case FLAG_SUCCESS:
-                        onResponse((String) msg.obj);
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-        };
-
-        public void onFailure(Request request) {
-            handler.sendMessage(Message.obtain(handler, FLAG_FAIL, "Called when the request could not be executed due to cancellation, a connectivity problem or timeout."));
-        }
-
-        public void onResponse(Response response) {
-            if (response.code() >= 400 && response.code() <= 599) {
-                handler.sendMessage(Message.obtain(handler, FLAG_FAIL, "ResponseCode " + response.code()));
-                return;
-            }
-            try {
-                handler.sendMessage(Message.obtain(handler, FLAG_SUCCESS, response.body().string()));
-            } catch (IOException e) {
-                handler.sendMessage(Message.obtain(handler, FLAG_FAIL, e.getMessage()));
-            }
-        }
-
-        private void onFailure(String failReason) {
-            ApplicationTool.log("Request Status", "onFailure:" + failReason);
-            missionFailed();
-        }
-
-        private void onResponse(String result) {
-            ApplicationTool.log("Request Status", "onResponse:" + result);
-            missionComplete();
-            onSuccess(result);
-        }
-
-        public abstract void onSuccess(String result);
-
-    }
-
 
 }

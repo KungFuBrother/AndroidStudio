@@ -257,7 +257,7 @@ public class ShoppingCarPlatformBuyFragment extends BaseNotifyFragment {
     private void errorProductInfo(ModelShoppingCart shoppingCart) {
         try {
             ModelProduct product = new ModelProduct(new JSONObject(shoppingCart.getProductObject()));
-            Notify.show("商品“" + product.getProductName() + "”价格有误，不能购买。");
+            Notify.show("商品“" + product.getProductName() + "”信息有误，不能购买。");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -599,7 +599,7 @@ public class ShoppingCarPlatformBuyFragment extends BaseNotifyFragment {
         networkContent.addParameters("customerName", userNameEditText.getText().toString());
         networkContent.addParameters("phone", userPhoneEditText.getText().toString());
         networkContent.addParameters("shippingaddress", userAddressEditText.getText().toString());
-        networkContent.addParameters("totalMoney", goodsMoney + "");
+        networkContent.addParameters("totalMoney", String.valueOf(goodsMoney));
         try {
             JSONArray dataArray = new JSONArray();
             for (int i = 0; i < shoppingCarts.size(); i++) {
@@ -656,9 +656,9 @@ public class ShoppingCarPlatformBuyFragment extends BaseNotifyFragment {
                             try {
                                 object = new JSONObject(message.getResult());
                                 if (object.optString("state").equalsIgnoreCase("SUCCESS")) {
+                                    ShoppingCartController.getInstance().removeSelectedProducts(DataBaseHelper.tableCarPlatform);
                                     Notify.show("下单成功");
                                     payMoney(object.optJSONArray("object"));
-                                    ShoppingCartController.getInstance().removeSelectedProducts(DataBaseHelper.tableCarPlatform);
                                     return;
                                 }
                                 Notify.show(object.optString("message"));

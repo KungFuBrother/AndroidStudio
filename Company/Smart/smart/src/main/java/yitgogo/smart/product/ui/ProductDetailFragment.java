@@ -90,8 +90,6 @@ public class ProductDetailFragment extends BaseNotifyFragment {
     ProgressBar progressBar;
 
     int buyCount = 1;
-    double freight = 0;
-    double totalMoney = 0;
 
     boolean isSaleEnable = false;
 
@@ -587,7 +585,7 @@ public class ProductDetailFragment extends BaseNotifyFragment {
                                         // 剩余秒杀数量>0，显示秒杀信息
                                         if (saleDetailMiaosha
                                                 .getSeckillNUmber() > 0) {
-                                            boolean isSaleEnable = true;
+                                            isSaleEnable = true;
                                             activityDetailTextView.setText("秒杀已开始，每个账号限购"
                                                     + saleDetailMiaosha
                                                     .getMemberNumber()
@@ -834,10 +832,8 @@ public class ProductDetailFragment extends BaseNotifyFragment {
                                             }
                                         }
                                         if (freightMap.containsKey(productDetail.getSupplierId())) {
-                                            freight = freightMap.get(productDetail.getSupplierId());
-                                            freightTextView.setText("运费:" + Parameters.CONSTANT_RMB + decimalFormat.format(freight));
+                                            freightTextView.setText("运费:" + Parameters.CONSTANT_RMB + decimalFormat.format(freightMap.get(productDetail.getSupplierId())));
                                         }
-                                        countTotalMoney();
                                     }
                                     return;
                                 }
@@ -850,35 +846,10 @@ public class ProductDetailFragment extends BaseNotifyFragment {
                 });
     }
 
-    private void countTotalMoney() {
-        if (isSaleEnable) {
-            switch (saleType) {
-
-                case QrCodeTool.SALE_TYPE_TIME:
-                    totalMoney = buyCount * saleDetailTime.getPromotionPrice() + freight;
-                    break;
-
-                case QrCodeTool.SALE_TYPE_MIAOSHA:
-                    totalMoney = buyCount * saleDetailMiaosha.getSeckillPrice() + freight;
-                    break;
-
-                case QrCodeTool.SALE_TYPE_TEJIA:
-                    totalMoney = buyCount * saleDetailTejia.getSalePrice() + freight;
-                    break;
-
-                default:
-                    totalMoney = buyCount * productDetail.getPrice() + freight;
-                    break;
-            }
-        } else {
-            totalMoney = buyCount * productDetail.getPrice() + freight;
-        }
-    }
-
     private void buyProduct() {
         if (productDetail.getNum() > 0) {
             int isIntegralMall = 0;
-            double price = 0;
+            double price = productDetail.getPrice();
             if (isSaleEnable) {
                 switch (saleType) {
 
@@ -900,19 +871,26 @@ public class ProductDetailFragment extends BaseNotifyFragment {
                         break;
 
                 }
-            } else {
-                price = productDetail.getPrice();
             }
-            Bundle bundle = new Bundle();
-            bundle.putString("productId", productDetail.getId());
-            bundle.putString("name", productDetail.getProductName());
-            bundle.putString("image", productDetail.getImg());
-            bundle.putInt("isIntegralMall", isIntegralMall);
-            bundle.putInt("buyCount", buyCount);
-            bundle.putDouble("price", price);
-            bundle.putDouble("freight", freight);
-            bundle.putDouble("totalMoney", totalMoney);
-            openWindow(ProductPlatformBuyFragment.class.getName(), "确认订单", bundle);
+            if (price > 0) {
+                if (freightMap.containsKey(productDetail.getSupplierId())) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("supplierId", productDetail.getSupplierId());
+                    bundle.putString("supplierName", productDetail.getSupplierName());
+                    bundle.putString("productId", productDetail.getId());
+                    bundle.putString("name", productDetail.getProductName());
+                    bundle.putString("image", productDetail.getImg());
+                    bundle.putInt("isIntegralMall", isIntegralMall);
+                    bundle.putInt("buyCount", buyCount);
+                    bundle.putDouble("price", price);
+                    bundle.putDouble("freight", freightMap.get(productDetail.getSupplierId()));
+                    openWindow(ProductPlatformBuyFragment.class.getName(), "确认订单", bundle);
+                } else {
+                    Notify.show("查询运费失败，暂不能购买");
+                }
+            } else {
+                Notify.show("查询价格失败，暂不能购买");
+            }
         } else {
             Notify.show("此商品无货，暂不能购买");
         }

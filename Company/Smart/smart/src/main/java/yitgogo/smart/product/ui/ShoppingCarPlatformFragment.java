@@ -111,9 +111,39 @@ public class ShoppingCarPlatformFragment extends BaseNotifyFragment {
 
             @Override
             public void onClick(View v) {
-                openWindow(ShoppingCarPlatformBuyFragment.class.getName(), "确认订单");
+                int selectedCount = 0;
+                for (int i = 0; i < shoppingCarts.size(); i++) {
+                    if (shoppingCarts.get(i).isSelected()) {
+                        if (priceMap.containsKey(shoppingCarts.get(i).getProductId())) {
+                            double price = priceMap.get(shoppingCarts.get(i).getProductId()).getPrice();
+                            if (price > 0) {
+                                selectedCount++;
+                            } else {
+                                errorProductInfo(shoppingCarts.get(i));
+                                return;
+                            }
+                        } else {
+                            errorProductInfo(shoppingCarts.get(i));
+                            return;
+                        }
+                    }
+                }
+                if (selectedCount > 0) {
+                    openWindow(ShoppingCarPlatformBuyFragment.class.getName(), "确认订单");
+                } else {
+                    Notify.show("请勾选要购买的商品");
+                }
             }
         });
+    }
+
+    private void errorProductInfo(ModelShoppingCart shoppingCart) {
+        try {
+            ModelProduct product = new ModelProduct(new JSONObject(shoppingCart.getProductObject()));
+            Notify.show("商品“" + product.getProductName() + "”信息有误，不能购买。");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initShoppingCart() {

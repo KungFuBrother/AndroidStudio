@@ -16,33 +16,6 @@ import yitgogo.smart.tools.OnNetworkListener;
 
 public class OrderTask {
 
-    public static void buyProduct(Context context, String userNumber,
-                                  String customerName, String phone, String shippingaddress,
-                                  double totalMoney, String productIds, int shopNum, double price,
-                                  int isIntegralMall, OnNetworkListener onNetworkListener) {
-        NetworkContent networkContent = new NetworkContent(API.API_ORDER_ADD);
-        networkContent.addParameters("shebei", Device.getDeviceCode());
-        networkContent.addParameters("userNumber", userNumber);
-        networkContent.addParameters("customerName", customerName);
-        networkContent.addParameters("phone", phone);
-        networkContent.addParameters("shippingaddress", shippingaddress);
-        networkContent.addParameters("totalMoney", totalMoney + "");
-        try {
-            JSONArray orderArray = new JSONArray();
-            JSONObject object = new JSONObject();
-            object.put("productIds", productIds);
-            object.put("shopNum", shopNum + "");
-            object.put("price", price);
-            object.put("isIntegralMall", isIntegralMall);
-            orderArray.put(object);
-            networkContent.addParameters("data", orderArray.toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        MissionController.startNetworkMission(context, networkContent,
-                onNetworkListener);
-    }
-
     /**
      * 添加本地产品订单
      *

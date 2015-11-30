@@ -1,5 +1,6 @@
 package yitgogo.smart.order.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.smartown.yitgogo.smart.R;
 import com.umeng.analytics.MobclickAgent;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,6 +25,10 @@ import yitgogo.smart.model.ModelMachineArea;
 import yitgogo.smart.order.model.User;
 import yitgogo.smart.task.OrderTask;
 import yitgogo.smart.task.ProductTask;
+import yitgogo.smart.tools.API;
+import yitgogo.smart.tools.Device;
+import yitgogo.smart.tools.MissionController;
+import yitgogo.smart.tools.NetworkContent;
 import yitgogo.smart.tools.NetworkMissionMessage;
 import yitgogo.smart.tools.OnNetworkListener;
 import yitgogo.smart.tools.Parameters;
@@ -303,8 +309,35 @@ public class ProductScoreBuyFragment extends BaseNotifyFragment {
         }
     }
 
+    public void buyProduct(Context context, String userNumber,
+                           String customerName, String phone, String shippingaddress,
+                           double totalMoney, String productIds, int shopNum, double price,
+                           int isIntegralMall, OnNetworkListener onNetworkListener) {
+        NetworkContent networkContent = new NetworkContent(API.API_ORDER_ADD);
+        networkContent.addParameters("shebei", Device.getDeviceCode());
+        networkContent.addParameters("userNumber", userNumber);
+        networkContent.addParameters("customerName", customerName);
+        networkContent.addParameters("phone", phone);
+        networkContent.addParameters("shippingaddress", shippingaddress);
+        networkContent.addParameters("totalMoney", totalMoney + "");
+        try {
+            JSONArray orderArray = new JSONArray();
+            JSONObject object = new JSONObject();
+            object.put("productIds", productIds);
+            object.put("shopNum", shopNum + "");
+            object.put("price", price);
+            object.put("isIntegralMall", isIntegralMall);
+            orderArray.put(object);
+            networkContent.addParameters("data", orderArray.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        MissionController.startNetworkMission(context, networkContent,
+                onNetworkListener);
+    }
+
     private void buyScoreProduct() {
-        OrderTask.buyProduct(getActivity(), user.getUseraccount(),
+        buyProduct(getActivity(), user.getUseraccount(),
                 userNameEditText.getText().toString(), userPhoneEditText
                         .getText().toString(), userAddressEditText.getText()
                         .toString(), totalMoney, productDetail.getProductId(),

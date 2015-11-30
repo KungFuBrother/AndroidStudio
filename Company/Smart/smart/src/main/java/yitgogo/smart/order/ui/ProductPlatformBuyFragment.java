@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.smartown.yitgogo.smart.R;
 import com.umeng.analytics.MobclickAgent;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,6 +23,10 @@ import yitgogo.smart.model.ModelMachineArea;
 import yitgogo.smart.order.model.User;
 import yitgogo.smart.task.OrderTask;
 import yitgogo.smart.task.ProductTask;
+import yitgogo.smart.tools.API;
+import yitgogo.smart.tools.Device;
+import yitgogo.smart.tools.MissionController;
+import yitgogo.smart.tools.NetworkContent;
 import yitgogo.smart.tools.NetworkMissionMessage;
 import yitgogo.smart.tools.OnNetworkListener;
 import yitgogo.smart.tools.Parameters;
@@ -40,6 +45,8 @@ public class ProductPlatformBuyFragment extends BaseNotifyFragment {
     User user;
     ModelMachineArea machineArea = new ModelMachineArea();
 
+    String supplierId = "";
+    String supplierName = "";
     String productId = "";
     String name = "";
     String image = "";
@@ -47,7 +54,6 @@ public class ProductPlatformBuyFragment extends BaseNotifyFragment {
     double price = 0;
     int buyCount = 0;
     double freight = 0;
-    double totalMoney = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,6 +84,12 @@ public class ProductPlatformBuyFragment extends BaseNotifyFragment {
     private void init() {
         Bundle bundle = getArguments();
         if (bundle != null) {
+            if (bundle.containsKey("supplierId")) {
+                supplierId = bundle.getString("supplierId");
+            }
+            if (bundle.containsKey("supplierName")) {
+                supplierName = bundle.getString("supplierName");
+            }
             if (bundle.containsKey("productId")) {
                 productId = bundle.getString("productId");
             }
@@ -98,9 +110,6 @@ public class ProductPlatformBuyFragment extends BaseNotifyFragment {
             }
             if (bundle.containsKey("freight")) {
                 freight = bundle.getDouble("freight");
-            }
-            if (bundle.containsKey("totalMoney")) {
-                totalMoney = bundle.getDouble("totalMoney");
             }
         }
     }
@@ -132,7 +141,7 @@ public class ProductPlatformBuyFragment extends BaseNotifyFragment {
         priceTextView.setText(Parameters.CONSTANT_RMB + decimalFormat.format(price));
         countTextView.setText(String.valueOf(buyCount));
         freightTextView.setText(Parameters.CONSTANT_RMB + decimalFormat.format(freight));
-        totalMoneyTextView.setText(Parameters.CONSTANT_RMB + decimalFormat.format(totalMoney));
+        totalMoneyTextView.setText(Parameters.CONSTANT_RMB + decimalFormat.format((buyCount * price) + freight));
     }
 
     @Override
@@ -171,7 +180,7 @@ public class ProductPlatformBuyFragment extends BaseNotifyFragment {
     }
 
     private void buy() {
-        if (totalMoney > 0) {
+        if (buyCount * price > 0) {
             if (!isPhoneNumber(userPhoneEditText.getText().toString().trim())) {
                 Notify.show("请填写正确的收货人电话");
             } else if (userNameEditText.length() == 0) {
@@ -180,13 +189,13 @@ public class ProductPlatformBuyFragment extends BaseNotifyFragment {
                 Notify.show("请填写收货地址");
             } else {
                 if (user.isLogin()) {
-                    buyplatformProduct();
+                    buyProduct();
                 } else {
                     registerUser();
                 }
             }
         } else {
-            Notify.show("商品金额有误");
+            Notify.show("商品价格有误，不能购买");
         }
     }
 
@@ -265,7 +274,7 @@ public class ProductPlatformBuyFragment extends BaseNotifyFragment {
                                 showUserInfo();
                             } else {
                                 if (user.isLogin()) {
-                                    buyplatformProduct();
+                                    buyProduct();
                                 }
                             }
                         }
@@ -284,12 +293,37 @@ public class ProductPlatformBuyFragment extends BaseNotifyFragment {
         }
     }
 
-    private void buyplatformProduct() {
-        OrderTask.buyProduct(getActivity(), user.getUseraccount(),
-                userNameEditText.getText().toString(), userPhoneEditText
-                        .getText().toString(), userAddressEditText.getText()
-                        .toString(), totalMoney, productId, buyCount, price,
-                isIntegralMall, new OnNetworkListener() {
+    private void buyProduct() {
+        NetworkContent networkContent = new NetworkContent(API.API_ORDER_ADD);
+        networkContent.addParameters("shebei", Device.getDeviceCode());
+        networkContent.addParameters("userNumber", user.getUseraccount());
+        networkContent.addParameters("customerName", userNameEditText.getText().toString());
+        networkContent.addParameters("phone", userPhoneEditText.getText().toString());
+        networkContent.addParameters("shippingaddress", userAddressEditText.getText().toString());
+        networkContent.addParameters("totalMoney", decimalFormat.format(buyCount * price));
+        try {
+
+            JSONArray dataArray = new JSONArray();
+            JSONObject object = new JSONObject();
+            object.put("productIds", productId);
+            object.put("shopNum", buyCount);
+            object.put("price", price);
+            object.put("isIntegralMall", isIntegralMall);
+            dataArray.put(object);
+            networkContent.addParameters("data", dataArray.toString());
+
+            JSONArray freightArray = new JSONArray();
+            JSONObject freightObject = new JSONObject();
+            freightObject.put("supplyId", supplierId);
+            freightObject.put("freight", freight);
+            freightArray.put(freightObject);
+            networkContent.addParameters("freights", freightArray.toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        MissionController.startNetworkMission(getActivity(), networkContent,
+                new OnNetworkListener() {
                     @Override
                     public void onStart() {
                         super.onStart();

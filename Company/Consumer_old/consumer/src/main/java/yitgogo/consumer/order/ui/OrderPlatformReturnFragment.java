@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import yitgogo.consumer.BaseNotifyFragment;
-import yitgogo.consumer.order.model.ModelProductOrder;
 import yitgogo.consumer.tools.API;
 import yitgogo.consumer.tools.NetUtil;
 import yitgogo.consumer.tools.Parameters;
@@ -33,7 +32,13 @@ public class OrderPlatformReturnFragment extends BaseNotifyFragment {
     TextView productNameTextView, productPriceTextView, contactPhoneTextView;
     EditText reasonEditText;
     Button commitButton;
-    ModelProductOrder productOrder;
+
+    String orderNumber = "";
+    String productId = "";
+    String productName = "";
+    String providerId = "";
+    String supplierId = "";
+    double productPrice = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,26 +62,31 @@ public class OrderPlatformReturnFragment extends BaseNotifyFragment {
     private void init() {
         Bundle bundle = getArguments();
         if (bundle != null) {
-            if (bundle.containsKey("object")) {
-                try {
-                    productOrder = new ModelProductOrder(new JSONObject(bundle.getString("object")));
-                    return;
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            if (bundle.containsKey("orderNumber")) {
+                orderNumber = bundle.getString("orderNumber");
             }
-        }
-        try {
-            productOrder = new ModelProductOrder(null);
-        } catch (JSONException e) {
-            e.printStackTrace();
+            if (bundle.containsKey("productId")) {
+                productId = bundle.getString("productId");
+            }
+            if (bundle.containsKey("productName")) {
+                productName = bundle.getString("productName");
+            }
+            if (bundle.containsKey("providerId")) {
+                providerId = bundle.getString("providerId");
+            }
+            if (bundle.containsKey("supplierId")) {
+                supplierId = bundle.getString("supplierId");
+            }
+            if (bundle.containsKey("productPrice")) {
+                productPrice = bundle.getDouble("productPrice");
+            }
         }
     }
 
     @Override
     protected void initViews() {
-        productNameTextView.setText(productOrder.getProductName());
-        productPriceTextView.setText(Parameters.CONSTANT_RMB + decimalFormat.format(productOrder.getUnitSellPrice()));
+        productNameTextView.setText(productName);
+        productPriceTextView.setText(Parameters.CONSTANT_RMB + decimalFormat.format(productPrice));
     }
 
     @Override
@@ -103,11 +113,11 @@ public class OrderPlatformReturnFragment extends BaseNotifyFragment {
         @Override
         protected String doInBackground(Void... voids) {
             List<NameValuePair> nameValuePairs = new ArrayList<>();
-            nameValuePairs.add(new BasicNameValuePair("saleId", "5"));
-            nameValuePairs.add(new BasicNameValuePair("supplierId", "5"));
-            nameValuePairs.add(new BasicNameValuePair("orderNumber", "YT3438821788"));
-            nameValuePairs.add(new BasicNameValuePair("productInfo", productOrder.getId()));
-            nameValuePairs.add(new BasicNameValuePair("reason", "测试测试测试退货"));
+            nameValuePairs.add(new BasicNameValuePair("saleId", providerId));
+            nameValuePairs.add(new BasicNameValuePair("supplierId", supplierId));
+            nameValuePairs.add(new BasicNameValuePair("orderNumber", orderNumber));
+            nameValuePairs.add(new BasicNameValuePair("productInfo", productId));
+            nameValuePairs.add(new BasicNameValuePair("reason", reasonEditText.getText().toString()));
             return NetUtil.getInstance().postWithoutCookie(API.API_ORDER_RETURN, nameValuePairs, false, false);
         }
 

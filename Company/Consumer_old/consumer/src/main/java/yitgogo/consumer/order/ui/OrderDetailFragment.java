@@ -31,12 +31,13 @@ import java.util.List;
 
 import yitgogo.consumer.BaseNotifyFragment;
 import yitgogo.consumer.money.ui.PayFragment;
-import yitgogo.consumer.order.model.ModelOrder;
-import yitgogo.consumer.order.model.ModelProductOrder;
+import yitgogo.consumer.order.model.ModelPlatformOrder;
+import yitgogo.consumer.order.model.ModelPlatformOrderProduct;
 import yitgogo.consumer.tools.API;
 import yitgogo.consumer.tools.Parameters;
 import yitgogo.consumer.tools.ScreenUtil;
 import yitgogo.consumer.user.model.User;
+import yitgogo.consumer.user.ui.UserLoginFragment;
 import yitgogo.consumer.view.InnerListView;
 import yitgogo.consumer.view.NormalAskDialog;
 import yitgogo.consumer.view.Notify;
@@ -49,8 +50,8 @@ public class OrderDetailFragment extends BaseNotifyFragment {
     InnerListView productList;
     LinearLayout wuliuButton;
     SwipeRefreshLayout refreshLayout;
-    ModelOrder order;
-    List<ModelProductOrder> products;
+    ModelPlatformOrder order;
+    List<ModelPlatformOrderProduct> products;
     OrderProductAdapter orderProductAdapter;
 
     TextView payButton, receiveButton;
@@ -87,7 +88,7 @@ public class OrderDetailFragment extends BaseNotifyFragment {
                 orderNumber = bundle.getString("orderNumber");
             }
         }
-        products = new ArrayList<ModelProductOrder>();
+        products = new ArrayList<>();
         orderProductAdapter = new OrderProductAdapter();
         // actionButtonLayoutParams = new LinearLayout.LayoutParams(0,
         // LinearLayout.LayoutParams.MATCH_PARENT);
@@ -164,7 +165,7 @@ public class OrderDetailFragment extends BaseNotifyFragment {
 
             @Override
             public void onClick(View v) {
-                payMoney(order.getOrderNumber(), order.getTotalSellPrice(),
+                payMoney(order.getOrderNumber(), order.getTotalMoney_Discount(),
                         PayFragment.ORDER_TYPE_YY);
             }
         });
@@ -201,7 +202,7 @@ public class OrderDetailFragment extends BaseNotifyFragment {
         // + decimalFormat.format(order.getTotalMoney()));
         // discountText.setText(Parameters.CONSTANT_RMB
         // + decimalFormat.format(order.getTotalDiscount()));
-        payMoneyText.setText(Parameters.CONSTANT_RMB + decimalFormat.format(order.getTotalSellPrice()));
+        payMoneyText.setText(Parameters.CONSTANT_RMB + decimalFormat.format(order.getTotalMoney_Discount()));
         initAciotnBar();
     }
 
@@ -266,7 +267,7 @@ public class OrderDetailFragment extends BaseNotifyFragment {
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
-            ModelProductOrder product = products.get(position);
+            final ModelPlatformOrderProduct product = products.get(position);
             ImageLoader.getInstance().displayImage(product.getImg(), holder.image);
             holder.productNameText.setText(product.getProductName());
             holder.productAttrText.setText(product.getAttName());
@@ -278,7 +279,19 @@ public class OrderDetailFragment extends BaseNotifyFragment {
                 holder.actionLayout.addView(createActionButton("申请退货", new OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        jump(OrderPlatformReturnFragment.class.getName(), "申请退货");
+                        if (User.getUser().isLogin()) {
+                            Bundle bundle = new Bundle();
+                            bundle.putString("productId", product.getProviderId());
+                            bundle.putString("productName", product.getProductName());
+                            bundle.putDouble("productPrice", product.getUnitSellPrice());
+                            bundle.putString("providerId", product.getProviderId());
+                            bundle.putString("supplierId", product.getSupplierId());
+                            bundle.putString("orderNumber", order.getOrderNumber());
+                            jump(OrderPlatformReturnFragment.class.getName(), "申请退货", bundle);
+                        } else {
+                            Notify.show("请先登录");
+                            jump(UserLoginFragment.class.getName(), "会员登录");
+                        }
                     }
                 }));
             }
@@ -350,8 +363,7 @@ public class OrderDetailFragment extends BaseNotifyFragment {
                         if (object.has("object")) {
                             if (!object.getString("object").equalsIgnoreCase(
                                     "null")) {
-                                order = new ModelOrder(
-                                        object.getJSONObject("object"));
+                                order = new ModelPlatformOrder(object.getJSONObject("object"));
                                 showInfo();
                             }
                         }

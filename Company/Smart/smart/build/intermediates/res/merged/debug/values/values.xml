@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
+    <!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
     <eat-comment/>
     <attr format="reference" name="drawerArrowStyle"/>
     <attr format="dimension" name="height"/>
@@ -23,11 +23,11 @@
     <color name="background_floating_material_light">#ffeeeeee</color>
     <color name="background_material_dark">#ff303030</color>
     <color name="background_material_light">#ffeeeeee</color>
-    <!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/src/main/res/values/colors.xml -->
+    <!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/src/main/res/values/colors.xml -->
     <eat-comment/>
     <color name="blue">#00BFFF</color>
     <color name="blue_daker">#1E90FF</color>
-    <!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
+    <!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
     <eat-comment/>
     <color name="bright_foreground_disabled_material_dark">#80ffffff</color>
     <color name="bright_foreground_disabled_material_light">#80000000</color>
@@ -37,30 +37,30 @@
     <color name="bright_foreground_material_light">@android:color/black</color>
     <color name="button_material_dark">#ff5a595b</color>
     <color name="button_material_light">#ffd6d7d7</color>
-    <!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/src/main/res/values/colors.xml -->
+    <!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/src/main/res/values/colors.xml -->
     <eat-comment/>
     <color name="crusta">#F2784B</color>
-    <!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
+    <!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
     <eat-comment/>
     <color name="dim_foreground_disabled_material_dark">#80bebebe</color>
     <color name="dim_foreground_disabled_material_light">#80323232</color>
     <color name="dim_foreground_material_dark">#ffbebebe</color>
     <color name="dim_foreground_material_light">#ff323232</color>
-    <!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/src/main/res/values/colors.xml -->
+    <!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/src/main/res/values/colors.xml -->
     <eat-comment/>
     <color name="disbaleTextColor">#3f000000</color>
     <color name="divider">#20000000</color>
     <color name="edit_lable_back">#05000000</color>
-    <!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
+    <!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
     <eat-comment/>
     <color name="highlighted_text_material_dark">#6680cbc4</color>
     <color name="highlighted_text_material_light">#66009688</color>
     <color name="hint_foreground_material_dark">@color/bright_foreground_disabled_material_dark</color>
     <color name="hint_foreground_material_light">@color/bright_foreground_disabled_material_light</color>
-    <!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/src/main/res/values/colors.xml -->
+    <!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/src/main/res/values/colors.xml -->
     <eat-comment/>
     <color name="lighting_yellow">#F5AB35</color>
-    <!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
+    <!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
     <eat-comment/>
     <color name="link_text_material_dark">@color/material_deep_teal_200</color>
     <color name="link_text_material_light">@color/material_deep_teal_500</color>
@@ -77,11 +77,11 @@
     <color name="primary_text_default_material_light">#de000000</color>
     <color name="primary_text_disabled_material_dark">#4Dffffff</color>
     <color name="primary_text_disabled_material_light">#39000000</color>
-    <!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/src/main/res/values/colors.xml -->
+    <!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/src/main/res/values/colors.xml -->
     <eat-comment/>
     <color name="radical_red">#F62459</color>
     <color name="red">#da4844</color>
-    <!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
+    <!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
     <eat-comment/>
     <color name="ripple_material_dark">#4dffffff</color>
     <color name="ripple_material_light">#1f000000</color>
@@ -89,16 +89,16 @@
     <color name="secondary_text_default_material_light">#8a000000</color>
     <color name="secondary_text_disabled_material_dark">#36ffffff</color>
     <color name="secondary_text_disabled_material_light">#24000000</color>
-    <!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/src/main/res/values/colors.xml -->
+    <!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/src/main/res/values/colors.xml -->
     <eat-comment/>
     <color name="shadowStart">#1f000000</color>
-    <!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
+    <!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
     <eat-comment/>
     <color name="switch_thumb_disabled_material_dark">#ff616161</color>
     <color name="switch_thumb_disabled_material_light">#ffbdbdbd</color>
     <color name="switch_thumb_normal_material_dark">#ffbdbdbd</color>
     <color name="switch_thumb_normal_material_light">#fff1f1f1</color>
-    <!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/src/main/res/values/colors.xml -->
+    <!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/src/main/res/values/colors.xml -->
     <eat-comment/>
     <color name="tab_color">#f8f8f8</color>
     <color name="textColorCompany">#FF4500</color>
@@ -135,7 +135,7 @@
     <declare-styleable name="Toolbar"><attr format="reference" name="titleTextAppearance"/><attr format="reference" name="subtitleTextAppearance"/><attr name="title"/><attr name="subtitle"/><attr name="android:gravity"/><attr format="dimension" name="titleMargins"/><attr format="dimension" name="titleMarginStart"/><attr format="dimension" name="titleMarginEnd"/><attr format="dimension" name="titleMarginTop"/><attr format="dimension" name="titleMarginBottom"/><attr name="contentInsetStart"/><attr name="contentInsetEnd"/><attr name="contentInsetLeft"/><attr name="contentInsetRight"/><attr format="dimension" name="maxButtonHeight"/><attr format="reference" name="collapseIcon"/><attr format="string" name="collapseContentDescription"/><attr name="popupTheme"/><attr format="reference" name="navigationIcon"/><attr format="string" name="navigationContentDescription"/><attr name="android:minHeight"/></declare-styleable>
     <declare-styleable name="View"><attr format="dimension" name="paddingStart"/><attr format="dimension" name="paddingEnd"/><attr name="android:focusable"/><attr format="reference" name="theme"/><attr name="android:theme"/><attr format="color" name="backgroundTint"/><attr name="backgroundTintMode"><enum name="src_over" value="3"/><enum name="src_in" value="5"/><enum name="src_atop" value="9"/><enum name="multiply" value="14"/><enum name="screen" value="15"/></attr></declare-styleable>
     <declare-styleable name="ViewStubCompat"><attr name="android:layout"/><attr name="android:inflatedId"/><attr name="android:id"/></declare-styleable>
-    <!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
+    <!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
     <eat-comment/>
     <dimen name="abc_action_bar_content_inset_material">16dp</dimen>
     <dimen name="abc_action_bar_default_height_material">56dp</dimen>
@@ -203,14 +203,14 @@
     <item name="dialog_fixed_width_minor" type="dimen">320dp</item>
     <item format="float" name="disabled_alpha_material_dark" type="dimen">0.30</item>
     <item format="float" name="disabled_alpha_material_light" type="dimen">0.26</item>
-    <!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/Smart/pullToRefresh/unspecified/res/values/values.xml -->
+    <!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/Smart/pullToRefresh/unspecified/res/values/values.xml -->
     <eat-comment/>
     <dimen name="header_footer_left_right_padding">24dp</dimen>
     <dimen name="header_footer_top_bottom_padding">12dp</dimen>
     <dimen name="indicator_corner_radius">12dp</dimen>
     <dimen name="indicator_internal_padding">4dp</dimen>
     <dimen name="indicator_right_padding">10dp</dimen>
-    <!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
+    <!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
     <eat-comment/>
     <dimen name="notification_large_icon_height">64dp</dimen>
     <dimen name="notification_large_icon_width">64dp</dimen>
@@ -220,25 +220,25 @@
     <item name="action_bar_spinner" type="id"/>
     <item name="action_menu_divider" type="id"/>
     <item name="action_menu_presenter" type="id"/>
-    <!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/Smart/pullToRefresh/unspecified/res/values/values.xml -->
+    <!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/Smart/pullToRefresh/unspecified/res/values/values.xml -->
     <eat-comment/>
     <item name="gridview" type="id"/>
-    <!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
+    <!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
     <eat-comment/>
     <item name="home" type="id"/>
     <item name="progress_circular" type="id"/>
     <item name="progress_horizontal" type="id"/>
-    <!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/Smart/pullToRefresh/unspecified/res/values/values.xml -->
+    <!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/Smart/pullToRefresh/unspecified/res/values/values.xml -->
     <eat-comment/>
     <item name="scrollview" type="id"/>
-    <!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
+    <!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
     <eat-comment/>
     <item name="split_action_bar" type="id"/>
     <item name="up" type="id"/>
-    <!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/Smart/pullToRefresh/unspecified/res/values/values.xml -->
+    <!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/Smart/pullToRefresh/unspecified/res/values/values.xml -->
     <eat-comment/>
     <item name="webview" type="id"/>
-    <!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
+    <!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
     <eat-comment/>
     <integer name="abc_config_activityDefaultDur">220</integer>
     <integer name="abc_config_activityShortDur">150</integer>
@@ -262,10 +262,10 @@
     <string name="abc_shareactionprovider_share_with">Share with</string>
     <string name="abc_shareactionprovider_share_with_application">Share with %s</string>
     <string name="abc_toolbar_collapse_description">Collapse</string>
-    <!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/src/main/res/values/strings.xml -->
+    <!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="app_name">易田购购(智能版)</string>
-    <!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/Smart/pullToRefresh/unspecified/res/values/values.xml -->
+    <!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/Smart/pullToRefresh/unspecified/res/values/values.xml -->
     <eat-comment/>
     <string name="pull_to_refresh_from_bottom_pull_label">@string/pull_to_refresh_pull_label</string>
     <string name="pull_to_refresh_from_bottom_refreshing_label">@string/pull_to_refresh_refreshing_label</string>
@@ -273,7 +273,7 @@
     <string name="pull_to_refresh_pull_label">Pull to refresh…</string>
     <string name="pull_to_refresh_refreshing_label">Loading…</string>
     <string name="pull_to_refresh_release_label">Release to refresh…</string>
-    <!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
+    <!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
     <eat-comment/>
     <string name="status_bar_notification_info_overflow">999+</string>
     <style name="AlertDialog.AppCompat" parent="Base.AlertDialog.AppCompat"/>
@@ -1194,12 +1194,12 @@
         <item name="android:scaleType">center</item>
         <item name="android:background">?attr/selectableItemBackground</item>
     </style>
-    <!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/src/main/res/values/styles.xml -->
+    <!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/src/main/res/values/styles.xml -->
     <eat-comment/>
     <style name="MyRadioButton">
         <item name="android:button">@drawable/selector_radio_button</item>
     </style>
-    <!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
+    <!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/res/values/values.xml -->
     <eat-comment/>
     <style name="Platform.AppCompat" parent="android:Theme">
         <item name="android:windowNoTitle">true</item>
@@ -1526,7 +1526,7 @@
     <style name="Widget.AppCompat.TextView.SpinnerItem" parent="Base.Widget.AppCompat.TextView.SpinnerItem"/>
     <style name="Widget.AppCompat.Toolbar" parent="Base.Widget.AppCompat.Toolbar"/>
     <style name="Widget.AppCompat.Toolbar.Button.Navigation" parent="RtlOverlay.Widget.AppCompat.Toolbar.Button.Navigation"/>
-    <!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/src/main/res/values/styles.xml -->
+    <!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/src/main/res/values/styles.xml -->
     <eat-comment/>
     <style name="Yitgogo_Theme_Smart" parent="@android:style/Theme.Light.NoTitleBar.Fullscreen">
         <item name="android:windowBackground">@color/theme_background</item>

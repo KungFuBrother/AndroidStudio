@@ -4,4 +4,4 @@
     <item android:drawable="@drawable/iconfont_check_normal" android:state_checked="false"/>
     <item android:drawable="@drawable/iconfont_check_checked" android:state_checked="true"/>
 
-</selector><!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/src/main/res/drawable/selector_radio_button.xml -->
+</selector><!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/src/main/res/drawable/selector_radio_button.xml -->

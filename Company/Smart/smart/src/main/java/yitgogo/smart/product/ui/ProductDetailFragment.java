@@ -37,9 +37,12 @@ import org.json.JSONObject;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 
+import smartown.controller.shoppingcart.DataBaseHelper;
+import smartown.controller.shoppingcart.ShoppingCartController;
 import yitgogo.smart.BaseNotifyFragment;
-import yitgogo.smart.home.model.ModelCar;
 import yitgogo.smart.model.ModelMachineArea;
 import yitgogo.smart.order.ui.ProductPlatformBuyFragment;
 import yitgogo.smart.product.model.ModelProduct;
@@ -48,7 +51,6 @@ import yitgogo.smart.sale.model.ModelSaleDetailTejia;
 import yitgogo.smart.sale.model.ModelSaleDetailTime;
 import yitgogo.smart.task.ProductTask;
 import yitgogo.smart.tools.API;
-import yitgogo.smart.tools.Content;
 import yitgogo.smart.tools.Device;
 import yitgogo.smart.tools.MissionController;
 import yitgogo.smart.tools.NetworkContent;
@@ -66,8 +68,7 @@ public class ProductDetailFragment extends BaseNotifyFragment {
 
     ViewPager imagePager;
     LinearLayout activityLayout;
-    TextView nameTextView, brandTextView, priceTextView, originalPriceTextView,
-            stateTextView, attrTextView;
+    TextView nameTextView, brandTextView, priceTextView, originalPriceTextView, stateTextView, attrTextView;
     ImageView lastImageButton, nextImageButton;
     TextView imageIndexText;
 
@@ -100,6 +101,8 @@ public class ProductDetailFragment extends BaseNotifyFragment {
     ModelSaleDetailTejia saleDetailTejia = new ModelSaleDetailTejia();
 
     ModelMachineArea machineArea = new ModelMachineArea();
+
+    HashMap<String, Double> freightMap;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -139,6 +142,7 @@ public class ProductDetailFragment extends BaseNotifyFragment {
             }
         }
         productDetail = new ModelProduct();
+        freightMap = new HashMap<>();
         imageAdapter = new ImageAdapter();
         relationAdapter = new RelationAdapter();
     }
@@ -370,26 +374,11 @@ public class ProductDetailFragment extends BaseNotifyFragment {
      */
     private void addToCar() {
         if (productDetail.getNum() > 0) {
-            try {
-                JSONArray carArray = new JSONArray(Content.getStringContent(
-                        Parameters.CACHE_KEY_CAR, "[]"));
-                for (int i = 0; i < carArray.length(); i++) {
-                    ModelCar modelCar = new ModelCar(carArray.getJSONObject(i));
-                    if (modelCar.getProduct().getId().equals(productDetail.getId())) {
-                        Notify.show("已添加过此商品");
-                        return;
-                    }
-                }
-                JSONObject object = new JSONObject();
-                object.put("productCount", 1);
-                object.put("isSelected", true);
-                object.put("product", productDetail.getJsonObject());
-                carArray.put(object);
-                Content.saveStringContent(Parameters.CACHE_KEY_CAR, carArray.toString());
-                Notify.show("已添加到购物车");
-            } catch (JSONException e) {
-                Notify.show("添加到购物车失败");
-                e.printStackTrace();
+            if (ShoppingCartController.getInstance().hasProduct(DataBaseHelper.tableCarPlatform, productDetail.getId())) {
+                Notify.show("购物车已存在此商品");
+            } else {
+                ShoppingCartController.getInstance().addProduct(DataBaseHelper.tableCarPlatform, true, buyCount, productDetail.getSupplierId(), productDetail.getSupplierName(), productDetail.getId(), productDetail.getJsonObject().toString());
+                Notify.show("添加到购物车成功");
             }
         } else {
             Notify.show("此商品无货，无法添加到购物车");
@@ -810,7 +799,7 @@ public class ProductDetailFragment extends BaseNotifyFragment {
 
     private void getFreight() {
         countTextView.setText(String.valueOf(buyCount));
-        ProductTask.getFreight(getActivity(), productDetail.getNumber(), buyCount, machineArea.getId(),
+        ProductTask.getFreight(getActivity(), productDetail.getNumber() + "-" + buyCount, machineArea.getId(),
                 new OnNetworkListener() {
                     @Override
                     public void onStart() {
@@ -822,12 +811,41 @@ public class ProductDetailFragment extends BaseNotifyFragment {
                     public void onFinish() {
                         super.onFinish();
                         hideLoading();
-                        countTotalMoney();
                     }
 
                     @Override
                     public void onSuccess(NetworkMissionMessage message) {
                         super.onSuccess(message);
+                        //{"message":"ok","state":"SUCCESS","cacheKey":null,"dataList":[{"3046":0.0}],"totalCount":1,"dataMap":{},"object":null}
+                        if (!TextUtils.isEmpty(message.getResult())) {
+                            try {
+                                JSONObject object = new JSONObject(message.getResult());
+                                if (object.optString("state").equalsIgnoreCase("SUCCESS")) {
+                                    JSONArray jsonArray = object.optJSONArray("dataList");
+                                    if (jsonArray != null) {
+                                        for (int i = 0; i < jsonArray.length(); i++) {
+                                            JSONObject jsonObject = jsonArray.optJSONObject(i);
+                                            if (jsonObject != null) {
+                                                Iterator<String> keys = jsonObject.keys();
+                                                while (keys.hasNext()) {
+                                                    String key = keys.next();
+                                                    freightMap.put(key, jsonObject.optDouble(key));
+                                                }
+                                            }
+                                        }
+                                        if (freightMap.containsKey(productDetail.getSupplierId())) {
+                                            freight = freightMap.get(productDetail.getSupplierId());
+                                            freightTextView.setText("运费:" + Parameters.CONSTANT_RMB + decimalFormat.format(freight));
+                                        }
+                                        countTotalMoney();
+                                    }
+                                    return;
+                                }
+                                Notify.show(object.optString("message"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
                 });
     }

@@ -4,4 +4,4 @@
     <item android:state_checked="true" android:color="@color/textColorCompany"/>
     <item android:state_checked="false" android:color="@color/textColorSecond"/>
 
-</selector><!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/src/main/res/drawable/selector_text.xml -->
+</selector><!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/src/main/res/drawable/selector_text.xml -->

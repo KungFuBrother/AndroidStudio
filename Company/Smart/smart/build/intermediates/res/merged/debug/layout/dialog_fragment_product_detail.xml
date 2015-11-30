@@ -296,7 +296,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="4px"
-                            android:text="运费￥10.00"
                             android:textColor="@color/textColorCompany"
                             android:textSize="16px" />
                     </LinearLayout>
@@ -465,4 +464,4 @@
         </LinearLayout>
     </ScrollView>
 
-</LinearLayout><!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/src/main/res/layout/dialog_fragment_product_detail.xml -->
+</LinearLayout><!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/src/main/res/layout/dialog_fragment_product_detail.xml -->

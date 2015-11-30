@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartown.yitgogo.smart.R;
 import com.umeng.analytics.MobclickAgent;
 
@@ -24,10 +24,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
+import smartown.controller.shoppingcart.DataBaseHelper;
+import smartown.controller.shoppingcart.ModelShoppingCart;
+import smartown.controller.shoppingcart.ShoppingCartController;
 import yitgogo.smart.BaseNotifyFragment;
-import yitgogo.smart.home.model.ModelCar;
 import yitgogo.smart.home.model.ModelListPrice;
 import yitgogo.smart.model.ModelMachineArea;
 import yitgogo.smart.order.model.User;
@@ -35,35 +38,40 @@ import yitgogo.smart.product.model.ModelProduct;
 import yitgogo.smart.task.OrderTask;
 import yitgogo.smart.task.ProductTask;
 import yitgogo.smart.tools.API;
-import yitgogo.smart.tools.Content;
 import yitgogo.smart.tools.Device;
 import yitgogo.smart.tools.MissionController;
 import yitgogo.smart.tools.NetworkContent;
 import yitgogo.smart.tools.NetworkMissionMessage;
 import yitgogo.smart.tools.OnNetworkListener;
 import yitgogo.smart.tools.Parameters;
+import yitgogo.smart.view.InnerListView;
 import yitgogo.smart.view.Notify;
 
-public class ShoppingCarPlatformBuyFragment extends BaseNotifyFragment
-        implements OnClickListener {
+public class ShoppingCarPlatformBuyFragment extends BaseNotifyFragment {
     // 购物车部分
     ListView carList;
-    List<ModelCar> modelCars;
+
+    //购物车勾选的商品
+    List<ModelShoppingCart> shoppingCarts;
+    //商品价格
     HashMap<String, ModelListPrice> priceMap;
+    //供货商
+    List<String> providers;
+    HashMap<String, Double> freightMap;
+    //按供货商分组的商品
+    HashMap<String, List<ModelShoppingCart>> shoppingCartByProvider;
+
+    StringBuilder productNumbers = new StringBuilder();
+
     CarAdapter carAdapter;
-    TextView selectAllButton, deleteButton;
-    JSONArray carArray;
-    boolean allSelected = true;
 
     EditText userPhoneEditText, userNameEditText, userAddressEditText;
     TextView userAreaTextView;
 
     TextView totalPriceTextView, buyButton;
-    double totalMoney = 0;
+    double goodsMoney = 0;
     User user = new User();
     ModelMachineArea machineArea = new ModelMachineArea();
-
-    List<ModelCar> orderProducts;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,6 +79,12 @@ public class ShoppingCarPlatformBuyFragment extends BaseNotifyFragment
         setContentView(R.layout.fragment_platform_car_buy);
         init();
         findViews();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(ShoppingCarPlatformBuyFragment.class.getName());
     }
 
     @Override
@@ -82,41 +96,28 @@ public class ShoppingCarPlatformBuyFragment extends BaseNotifyFragment
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initShoppingCart();
         getArea();
     }
 
     private void init() {
-        modelCars = new ArrayList<ModelCar>();
-        orderProducts = new ArrayList<ModelCar>();
-        priceMap = new HashMap<String, ModelListPrice>();
+        shoppingCarts = new ArrayList<>();
+        priceMap = new HashMap<>();
+        providers = new ArrayList<>();
+        freightMap = new HashMap<>();
+        shoppingCartByProvider = new HashMap<>();
         carAdapter = new CarAdapter();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onPageStart(ShoppingCarPlatformBuyFragment.class.getName());
-        refresh();
     }
 
     protected void findViews() {
         carList = (ListView) contentView.findViewById(R.id.car_list);
-        selectAllButton = (TextView) contentView
-                .findViewById(R.id.car_selectall);
-        deleteButton = (TextView) contentView.findViewById(R.id.car_delete);
-        totalPriceTextView = (TextView) contentView
-                .findViewById(R.id.car_total);
+        totalPriceTextView = (TextView) contentView.findViewById(R.id.car_total);
 
-        userNameEditText = (EditText) contentView
-                .findViewById(R.id.order_user_name);
-        userPhoneEditText = (EditText) contentView
-                .findViewById(R.id.order_user_phone);
-        userAreaTextView = (TextView) contentView
-                .findViewById(R.id.order_user_area);
-        userAddressEditText = (EditText) contentView
-                .findViewById(R.id.order_user_address);
-        buyButton = (TextView) contentView
-                .findViewById(R.id.order_user_confirm);
+        userNameEditText = (EditText) contentView.findViewById(R.id.order_user_name);
+        userPhoneEditText = (EditText) contentView.findViewById(R.id.order_user_phone);
+        userAreaTextView = (TextView) contentView.findViewById(R.id.order_user_area);
+        userAddressEditText = (EditText) contentView.findViewById(R.id.order_user_address);
+        buyButton = (TextView) contentView.findViewById(R.id.order_user_confirm);
 
         initViews();
         registerViews();
@@ -128,8 +129,6 @@ public class ShoppingCarPlatformBuyFragment extends BaseNotifyFragment
 
     @Override
     protected void registerViews() {
-        selectAllButton.setOnClickListener(this);
-        deleteButton.setOnClickListener(this);
         buyButton.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -140,15 +139,11 @@ public class ShoppingCarPlatformBuyFragment extends BaseNotifyFragment
         userPhoneEditText.addTextChangedListener(new TextWatcher() {
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before,
-                                      int count) {
-
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
 
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
-
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
             @Override
@@ -163,9 +158,120 @@ public class ShoppingCarPlatformBuyFragment extends BaseNotifyFragment
         });
     }
 
+    private void initShoppingCart() {
+        shoppingCarts = ShoppingCartController.getInstance().getSelectedProducts(DataBaseHelper.tableCarPlatform);
+        priceMap = new HashMap<>();
+        providers = new ArrayList<>();
+        freightMap = new HashMap<>();
+        shoppingCartByProvider = new HashMap<>();
+        carAdapter.notifyDataSetChanged();
+        productNumbers = new StringBuilder();
+        totalPriceTextView.setText("");
+        if (shoppingCarts.size() > 0) {
+            StringBuilder productIds = new StringBuilder();
+            for (int i = 0; i < shoppingCarts.size(); i++) {
+                try {
+                    ModelProduct product = new ModelProduct(new JSONObject(shoppingCarts.get(i).getProductObject()));
+                    if (i > 0) {
+                        productIds.append(",");
+                        productNumbers.append(",");
+                    }
+                    productIds.append(shoppingCarts.get(i).getProductId());
+                    productNumbers.append(product.getNumber() + "-" + shoppingCarts.get(i).getBuyCount());
+
+                    if (!providers.contains(shoppingCarts.get(i).getProviderId())) {
+                        providers.add(shoppingCarts.get(i).getProviderId());
+                    }
+
+                    if (shoppingCartByProvider.containsKey(shoppingCarts.get(i).getProviderId())) {
+                        shoppingCartByProvider.get(shoppingCarts.get(i).getProviderId()).add(shoppingCarts.get(i));
+                    } else {
+                        List<ModelShoppingCart> providerShoppingCarts = new ArrayList<>();
+                        providerShoppingCarts.add(shoppingCarts.get(i));
+                        shoppingCartByProvider.put(shoppingCarts.get(i).getProviderId(), providerShoppingCarts);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            getProductPrice(productIds.toString());
+        } else {
+            Notify.show("请勾选要购买的商品");
+        }
+    }
+
+    private void countTotalMoney() {
+        goodsMoney = 0;
+        double freightMoney = 0;
+        for (int i = 0; i < providers.size(); i++) {
+            if (shoppingCartByProvider.containsKey(providers.get(i))) {
+                List<ModelShoppingCart> shoppingCarts = shoppingCartByProvider.get(providers.get(i));
+                for (int j = 0; j < shoppingCarts.size(); j++) {
+                    if (priceMap.containsKey(shoppingCarts.get(j).getProductId())) {
+                        double price = priceMap.get(shoppingCarts.get(j).getProductId()).getPrice();
+                        int count = shoppingCarts.get(j).getBuyCount();
+                        if (price > 0) {
+                            goodsMoney += count * price;
+                        }
+                    }
+                }
+                if (freightMap.containsKey(providers.get(i))) {
+                    freightMoney += freightMap.get(providers.get(i));
+                }
+            }
+        }
+        totalPriceTextView.setText(Parameters.CONSTANT_RMB + decimalFormat.format(goodsMoney + freightMoney));
+    }
+
+    private void addOrder() {
+        for (int i = 0; i < shoppingCarts.size(); i++) {
+            if (priceMap.containsKey(shoppingCarts.get(i).getProductId())) {
+                double price = priceMap.get(shoppingCarts.get(i).getProductId()).getPrice();
+                if (price <= 0) {
+                    errorProductInfo(shoppingCarts.get(i));
+                    return;
+                }
+            } else {
+                errorProductInfo(shoppingCarts.get(i));
+                return;
+            }
+        }
+        if (goodsMoney > 0) {
+            if (!isPhoneNumber(userPhoneEditText.getText().toString().trim())) {
+                Notify.show("请填写正确的收货人电话");
+            } else if (userNameEditText.length() == 0) {
+                Notify.show("请填写收货人姓名");
+            } else if (userAddressEditText.length() == 0) {
+                Notify.show("请填写收货地址");
+            } else {
+                if (user.isLogin()) {
+                    buyProduct();
+                } else {
+                    registerUser();
+                }
+            }
+        }
+    }
+
+    private void errorProductInfo(ModelShoppingCart shoppingCart) {
+        try {
+            ModelProduct product = new ModelProduct(new JSONObject(shoppingCart.getProductObject()));
+            Notify.show("商品“" + product.getProductName() + "”价格有误，不能购买。");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showUserInfo() {
+        if (user != null) {
+            userNameEditText.setText(user.getRealname());
+            userAddressEditText.setText(user.getAddress());
+        }
+    }
+
     private void registerUser() {
-        OrderTask.registerUser(getActivity(), userPhoneEditText.getText()
-                        .toString(), userNameEditText.getText().toString(),
+        OrderTask.registerUser(getActivity(), userPhoneEditText.getText().toString(), userNameEditText.getText().toString(),
                 userAddressEditText.getText().toString(),
                 new OnNetworkListener() {
                     @Override
@@ -187,8 +293,7 @@ public class ShoppingCarPlatformBuyFragment extends BaseNotifyFragment
                             JSONObject object;
                             try {
                                 object = new JSONObject(message.getResult());
-                                if (object.optString("state").equalsIgnoreCase(
-                                        "SUCCESS")) {
+                                if (object.optString("state").equalsIgnoreCase("SUCCESS")) {
                                     getUserInfo(false);
                                     return;
                                 }
@@ -225,10 +330,8 @@ public class ShoppingCarPlatformBuyFragment extends BaseNotifyFragment
                     JSONObject object;
                     try {
                         object = new JSONObject(message.getResult());
-                        if (object.optString("state").equalsIgnoreCase(
-                                "SUCCESS")) {
-                            JSONObject userJsonObject = object
-                                    .optJSONObject("object");
+                        if (object.optString("state").equalsIgnoreCase("SUCCESS")) {
+                            JSONObject userJsonObject = object.optJSONObject("object");
                             if (userJsonObject != null) {
                                 user = new User(userJsonObject);
                             } else {
@@ -250,212 +353,6 @@ public class ShoppingCarPlatformBuyFragment extends BaseNotifyFragment
         });
     }
 
-    private void refresh() {
-        modelCars.clear();
-        carAdapter.notifyDataSetChanged();
-        totalPriceTextView.setText("");
-        try {
-            carArray = new JSONArray(Content.getStringContent(
-                    Parameters.CACHE_KEY_CAR, "[]"));
-            for (int i = 0; i < carArray.length(); i++) {
-                modelCars.add(new ModelCar(carArray.getJSONObject(i)));
-            }
-            carAdapter.notifyDataSetChanged();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        if (modelCars.size() > 0) {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (int i = 0; i < modelCars.size(); i++) {
-                if (i > 0) {
-                    stringBuilder.append(",");
-                }
-                stringBuilder.append(modelCars.get(i).getProduct().getId());
-            }
-            getProductPrice(stringBuilder.toString());
-        } else {
-            loadingEmpty("购物车还没有添加商品");
-        }
-    }
-
-    private void addCount(int position) {
-        ModelProduct product = modelCars.get(position).getProduct();
-        long originalCount = modelCars.get(position).getProductCount();
-        try {
-            if (priceMap.containsKey(product.getId())) {
-                if (product.getNum() > originalCount) {
-                    carArray.getJSONObject(position).remove("productCount");
-                    carArray.getJSONObject(position).put("productCount",
-                            originalCount + 1);
-                    Content.saveStringContent(Parameters.CACHE_KEY_CAR,
-                            carArray.toString());
-                    refresh();
-                } else {
-                    Notify.show("库存不足");
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void deleteCount(int position) {
-        long originalCount = modelCars.get(position).getProductCount();
-        if (originalCount > 1) {
-            try {
-                carArray.getJSONObject(position).remove("productCount");
-                carArray.getJSONObject(position).put("productCount",
-                        originalCount - 1);
-                Content.saveStringContent(Parameters.CACHE_KEY_CAR,
-                        carArray.toString());
-                refresh();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void select(int position) {
-        boolean originalSelection = modelCars.get(position).isSelected();
-        try {
-            carArray.getJSONObject(position).remove("isSelected");
-            carArray.getJSONObject(position).put("isSelected",
-                    !originalSelection);
-            Content.saveStringContent(Parameters.CACHE_KEY_CAR,
-                    carArray.toString());
-            refresh();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void countTotalPrice() {
-        allSelected = true;
-        totalMoney = 0;
-        for (int i = 0; i < modelCars.size(); i++) {
-            if (modelCars.get(i).isSelected()) {
-                ModelProduct product = modelCars.get(i).getProduct();
-                if (priceMap.containsKey(product.getId())) {
-                    double price = priceMap.get(product.getId()).getPrice();
-                    long count = modelCars.get(i).getProductCount();
-                    if (price > 0) {
-                        totalMoney += count * price;
-                    }
-                }
-            } else {
-                allSelected = false;
-            }
-        }
-        if (allSelected) {
-            selectAllButton.setText("全不选");
-        } else {
-            selectAllButton.setText("全选");
-        }
-        totalPriceTextView.setText(Parameters.CONSTANT_RMB
-                + decimalFormat.format(totalMoney));
-    }
-
-    private void selectAll() {
-        try {
-            // 当前已全选，改为全不选
-            if (allSelected) {
-                for (int i = 0; i < carArray.length(); i++) {
-                    carArray.getJSONObject(i).remove("isSelected");
-                    carArray.getJSONObject(i).put("isSelected", false);
-                }
-            } else {
-                for (int i = 0; i < carArray.length(); i++) {
-                    carArray.getJSONObject(i).remove("isSelected");
-                    carArray.getJSONObject(i).put("isSelected", true);
-                }
-            }
-            Content.saveStringContent(Parameters.CACHE_KEY_CAR,
-                    carArray.toString());
-            refresh();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void delete() {
-        JSONArray jsonArray = new JSONArray();
-        for (int i = 0; i < modelCars.size(); i++) {
-            if (!modelCars.get(i).isSelected()) {
-                try {
-                    jsonArray.put(carArray.getJSONObject(i));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        Content.saveStringContent(Parameters.CACHE_KEY_CAR,
-                jsonArray.toString());
-        refresh();
-    }
-
-    private void addOrder() {
-        orderProducts.clear();
-        for (int i = 0; i < modelCars.size(); i++) {
-            if (modelCars.get(i).isSelected()) {
-                ModelProduct product = modelCars.get(i).getProduct();
-                if (priceMap.containsKey(product.getId())) {
-                    ModelListPrice price = priceMap.get(product.getId());
-                    if (price.getPrice() > 0) {
-                        if (price.getNum() < modelCars.get(i).getProductCount()) {
-                            Notify.show("商品库存不足，无法下单");
-                            return;
-                        }
-                    } else {
-                        Notify.show("有商品信息错误，无法下单");
-                        return;
-                    }
-                } else {
-                    Notify.show("有商品信息错误，无法下单");
-                    return;
-                }
-                orderProducts.add(modelCars.get(i));
-            }
-        }
-        if (orderProducts.size() > 0) {
-            if (!isPhoneNumber(userPhoneEditText.getText().toString().trim())) {
-                Notify.show("请填写正确的收货人电话");
-            } else if (userNameEditText.length() == 0) {
-                Notify.show("请填写收货人姓名");
-            } else if (userAddressEditText.length() == 0) {
-                Notify.show("请填写收货地址");
-            } else {
-                if (user.isLogin()) {
-                    buyProduct();
-                } else {
-                    registerUser();
-                }
-            }
-        }
-    }
-
-    private void showUserInfo() {
-        if (user != null) {
-            userNameEditText.setText(user.getRealname());
-            userAddressEditText.setText(user.getAddress());
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.car_selectall:
-                selectAll();
-                break;
-
-            case R.id.car_delete:
-                delete();
-                break;
-
-            default:
-                break;
-        }
-    }
-
     private void getProductPrice(String productIds) {
         ProductTask.getProductPrice(getActivity(), productIds,
                 new OnNetworkListener() {
@@ -466,22 +363,16 @@ public class ShoppingCarPlatformBuyFragment extends BaseNotifyFragment
                         if (!TextUtils.isEmpty(requestMessage.getResult())) {
                             JSONObject object;
                             try {
-                                object = new JSONObject(requestMessage
-                                        .getResult());
-                                if (object.getString("state").equalsIgnoreCase(
-                                        "SUCCESS")) {
-                                    JSONArray priceArray = object
-                                            .optJSONArray("dataList");
+                                object = new JSONObject(requestMessage.getResult());
+                                if (object.getString("state").equalsIgnoreCase("SUCCESS")) {
+                                    JSONArray priceArray = object.optJSONArray("dataList");
                                     if (priceArray != null) {
                                         for (int i = 0; i < priceArray.length(); i++) {
-                                            ModelListPrice priceList = new ModelListPrice(
-                                                    priceArray.getJSONObject(i));
-                                            priceMap.put(
-                                                    priceList.getProductId(),
-                                                    priceList);
+                                            ModelListPrice priceList = new ModelListPrice(priceArray.getJSONObject(i));
+                                            priceMap.put(priceList.getProductId(), priceList);
                                         }
-                                        countTotalPrice();
                                         carAdapter.notifyDataSetChanged();
+                                        countTotalMoney();
                                     }
                                 }
                             } catch (JSONException e) {
@@ -492,16 +383,65 @@ public class ShoppingCarPlatformBuyFragment extends BaseNotifyFragment
                 });
     }
 
+    private void getFreight(String productNumber) {
+        ProductTask.getFreight(getActivity(), productNumber, machineArea.getId(),
+                new OnNetworkListener() {
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+                        showLoading();
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        hideLoading();
+                    }
+
+                    @Override
+                    public void onSuccess(NetworkMissionMessage message) {
+                        super.onSuccess(message);
+                        if (!TextUtils.isEmpty(message.getResult())) {
+                            try {
+                                JSONObject object = new JSONObject(message.getResult());
+                                if (object.optString("state").equalsIgnoreCase("SUCCESS")) {
+                                    JSONArray jsonArray = object.optJSONArray("dataList");
+                                    if (jsonArray != null) {
+                                        for (int i = 0; i < jsonArray.length(); i++) {
+                                            JSONObject jsonObject = jsonArray.optJSONObject(i);
+                                            if (jsonObject != null) {
+                                                Iterator<String> keys = jsonObject.keys();
+                                                while (keys.hasNext()) {
+                                                    String key = keys.next();
+                                                    freightMap.put(key, jsonObject.optDouble(key));
+                                                }
+                                            }
+                                        }
+                                        carAdapter.notifyDataSetChanged();
+                                        countTotalMoney();
+                                    }
+                                    return;
+                                }
+                                Notify.show(object.optString("message"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }
+                });
+    }
+
     class CarAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
-            return modelCars.size();
+            return providers.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return modelCars.get(position);
+            return providers.get(position);
         }
 
         @Override
@@ -511,98 +451,104 @@ public class ShoppingCarPlatformBuyFragment extends BaseNotifyFragment
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            final int index = position;
-            ViewHolder holder;
+            ViewHolder holder = new ViewHolder();
             if (convertView == null) {
-                convertView = layoutInflater.inflate(R.layout.list_car, null);
-                holder = new ViewHolder();
-                holder.addButton = (ImageView) convertView
-                        .findViewById(R.id.list_car_count_add);
-                holder.countText = (TextView) convertView
-                        .findViewById(R.id.list_car_count);
-                holder.deleteButton = (ImageView) convertView
-                        .findViewById(R.id.list_car_count_delete);
-                holder.goodNameText = (TextView) convertView
-                        .findViewById(R.id.list_car_title);
-                holder.goodsImage = (ImageView) convertView
-                        .findViewById(R.id.list_car_image);
-                holder.goodsPriceText = (TextView) convertView
-                        .findViewById(R.id.list_car_price);
-                holder.guigeText = (TextView) convertView
-                        .findViewById(R.id.list_car_guige);
-                holder.stateText = (TextView) convertView
-                        .findViewById(R.id.list_car_state);
-                holder.selectButton = (LinearLayout) convertView
-                        .findViewById(R.id.list_car_select);
-                holder.selection = (ImageView) convertView
-                        .findViewById(R.id.list_car_selection);
+                convertView = layoutInflater.inflate(R.layout.list_shopping_cart_platform_buy_provider, null);
+                holder.providerNameTextView = (TextView) convertView.findViewById(R.id.cart_platform_provider_name);
+                holder.freightTextView = (TextView) convertView.findViewById(R.id.cart_platform_provider_send);
+                holder.productListView = (InnerListView) convertView.findViewById(R.id.cart_platform_provider_product);
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
-            holder.addButton.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    addCount(index);
-                }
-            });
-            holder.deleteButton.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    deleteCount(index);
-                }
-            });
-            holder.selectButton.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    select(index);
-                }
-            });
-            ModelCar modelCar = modelCars.get(position);
-            ModelProduct product = modelCar.getProduct();
-
-            holder.countText.setText(modelCar.getProductCount() + "");
-            if (modelCar.isSelected()) {
-                holder.selection
-                        .setImageResource(R.drawable.iconfont_check_checked);
-            } else {
-                holder.selection
-                        .setImageResource(R.drawable.iconfont_check_normal);
-            }
-
-            holder.goodNameText.setText(product.getProductName());
-            holder.guigeText.setText(product.getAttName());
-            imageLoader.displayImage(getSmallImageUrl(product.getImg()),
-                    holder.goodsImage);
-
-            if (priceMap.containsKey(product.getId())) {
-                ModelListPrice price = priceMap.get(product.getId());
-                holder.goodsPriceText.setText("¥"
-                        + decimalFormat.format(price.getPrice()));
-                if (price.getNum() > 0) {
-                    if (price.getNum() < 5) {
-                        holder.stateText.setText("仅剩" + price.getNum()
-                                + product.getUnit());
-                    } else {
-                        holder.stateText.setText("有货");
-                    }
+            if (shoppingCartByProvider.containsKey(providers.get(position))) {
+                if (!shoppingCartByProvider.get(providers.get(position)).isEmpty()) {
+                    holder.providerNameTextView.setText(shoppingCartByProvider.get(providers.get(position)).get(0).getProviderName());
                 } else {
-                    holder.stateText.setText("无货");
+                    holder.providerNameTextView.setText("");
                 }
+            } else {
+                holder.providerNameTextView.setText("");
             }
+            if (freightMap.containsKey(providers.get(position))) {
+                holder.freightTextView.setText(Parameters.CONSTANT_RMB + decimalFormat.format(freightMap.get(providers.get(position))));
+            } else {
+                holder.freightTextView.setText("");
+            }
+            holder.productListView.setAdapter(new CarProductAdapter(shoppingCartByProvider.get(providers.get(position))));
             return convertView;
         }
 
         class ViewHolder {
-            ImageView goodsImage, addButton, deleteButton;
-            TextView goodNameText, goodsPriceText, guigeText, countText,
-                    stateText;
-            LinearLayout selectButton;
-            ImageView selection;
+            TextView providerNameTextView, freightTextView;
+            InnerListView productListView;
         }
+    }
+
+    class CarProductAdapter extends BaseAdapter {
+
+        List<ModelShoppingCart> shoppingCarts = new ArrayList<>();
+
+        public CarProductAdapter(List<ModelShoppingCart> shoppingCarts) {
+            this.shoppingCarts = shoppingCarts;
+        }
+
+        @Override
+        public int getCount() {
+            return shoppingCarts.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return shoppingCarts.get(i);
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return i;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            ViewHolder holder = new ViewHolder();
+            if (view == null) {
+                view = layoutInflater.inflate(R.layout.list_shopping_cart_platform_buy, null);
+                holder.goodsImageView = (ImageView) view.findViewById(R.id.platform_car_buy_image);
+                holder.goodsNameTextView = (TextView) view.findViewById(R.id.platform_car_buy_name);
+                holder.goodsAttrTextView = (TextView) view.findViewById(R.id.platform_car_buy_attr);
+                holder.goodsCountTextView = (TextView) view.findViewById(R.id.platform_car_buy_count);
+                holder.goodsPriceTextView = (TextView) view.findViewById(R.id.platform_car_buy_price);
+                view.setTag(holder);
+            } else {
+                holder = (ViewHolder) view.getTag();
+            }
+            try {
+                ModelProduct product = new ModelProduct(new JSONObject(shoppingCarts.get(i).getProductObject()));
+                ImageLoader.getInstance().displayImage(getSmallImageUrl(product.getImg()), holder.goodsImageView);
+                holder.goodsNameTextView.setText(product.getProductName());
+                holder.goodsAttrTextView.setText(product.getAttName());
+                holder.goodsCountTextView.setText("数量:" + shoppingCarts.get(i).getBuyCount());
+                if (priceMap.containsKey(shoppingCarts.get(i).getProductId())) {
+                    double price = priceMap.get(shoppingCarts.get(i).getProductId()).getPrice();
+                    if (price > 0) {
+                        holder.goodsPriceTextView.setText("单价:" + Parameters.CONSTANT_RMB + decimalFormat.format(price));
+                    } else {
+                        holder.goodsPriceTextView.setText("商品价格异常");
+                    }
+                } else {
+                    holder.goodsPriceTextView.setText("");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return view;
+        }
+
+        class ViewHolder {
+            ImageView goodsImageView;
+            TextView goodsNameTextView, goodsAttrTextView, goodsCountTextView, goodsPriceTextView;
+        }
+
     }
 
     private void getArea() {
@@ -634,6 +580,7 @@ public class ShoppingCarPlatformBuyFragment extends BaseNotifyFragment
                             if (dataMap != null) {
                                 machineArea = new ModelMachineArea(dataMap);
                                 userAreaTextView.setText(machineArea.getAreas());
+                                getFreight(productNumbers.toString());
                             }
                         }
                     } catch (JSONException e) {
@@ -649,28 +596,35 @@ public class ShoppingCarPlatformBuyFragment extends BaseNotifyFragment
         NetworkContent networkContent = new NetworkContent(API.API_ORDER_ADD);
         networkContent.addParameters("shebei", Device.getDeviceCode());
         networkContent.addParameters("userNumber", user.getUseraccount());
-        networkContent.addParameters("customerName", userNameEditText.getText()
-                .toString());
-        networkContent.addParameters("phone", userPhoneEditText.getText()
-                .toString());
-        networkContent.addParameters("shippingaddress", userAddressEditText
-                .getText().toString());
-        networkContent.addParameters("totalMoney", totalMoney + "");
+        networkContent.addParameters("customerName", userNameEditText.getText().toString());
+        networkContent.addParameters("phone", userPhoneEditText.getText().toString());
+        networkContent.addParameters("shippingaddress", userAddressEditText.getText().toString());
+        networkContent.addParameters("totalMoney", goodsMoney + "");
         try {
-            JSONArray orderArray = new JSONArray();
-            for (int i = 0; i < orderProducts.size(); i++) {
-                ModelProduct product = orderProducts.get(i).getProduct();
+            JSONArray dataArray = new JSONArray();
+            for (int i = 0; i < shoppingCarts.size(); i++) {
+                ModelProduct product = new ModelProduct(new JSONObject(shoppingCarts.get(i).getProductObject()));
                 if (priceMap.containsKey(product.getId())) {
                     JSONObject object = new JSONObject();
                     object.put("productIds", product.getId());
-                    object.put("shopNum", orderProducts.get(i)
-                            .getProductCount());
+                    object.put("shopNum", shoppingCarts.get(i).getBuyCount());
                     object.put("price", product.getPrice());
                     object.put("isIntegralMall", 0);
-                    orderArray.put(object);
+                    dataArray.put(object);
                 }
             }
-            networkContent.addParameters("data", orderArray.toString());
+            networkContent.addParameters("data", dataArray.toString());
+
+            JSONArray freightArray = new JSONArray();
+            for (int i = 0; i < providers.size(); i++) {
+                if (freightMap.containsKey(providers.get(i))) {
+                    JSONObject freightObject = new JSONObject();
+                    freightObject.put("supplyId", providers.get(i));
+                    freightObject.put("freight", freightMap.get(providers.get(i)));
+                    freightArray.put(freightObject);
+                }
+            }
+            networkContent.addParameters("freights", freightArray.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -701,10 +655,10 @@ public class ShoppingCarPlatformBuyFragment extends BaseNotifyFragment
                             JSONObject object;
                             try {
                                 object = new JSONObject(message.getResult());
-                                if (object.optString("state").equalsIgnoreCase(
-                                        "SUCCESS")) {
+                                if (object.optString("state").equalsIgnoreCase("SUCCESS")) {
                                     Notify.show("下单成功");
                                     payMoney(object.optJSONArray("object"));
+                                    ShoppingCartController.getInstance().removeSelectedProducts(DataBaseHelper.tableCarPlatform);
                                     return;
                                 }
                                 Notify.show(object.optString("message"));

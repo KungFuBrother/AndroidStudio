@@ -15,4 +15,4 @@
         android:topLeftRadius="@dimen/indicator_corner_radius"
         android:topRightRadius="@dimen/indicator_corner_radius" />
 
-</shape><!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/pullToRefresh/src/main/res/drawable/indicator_bg_bottom.xml --><!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/Smart/pullToRefresh/unspecified/res/drawable/indicator_bg_bottom.xml -->
+</shape><!-- From: file:/E:/Github/AndroidStudio/Company/Smart/pullToRefresh/src/main/res/drawable/indicator_bg_bottom.xml --><!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/build/intermediates/exploded-aar/Smart/pullToRefresh/unspecified/res/drawable/indicator_bg_bottom.xml -->

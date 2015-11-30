@@ -12,6 +12,7 @@ import com.smartown.yitgogo.smart.R;
 import com.umeng.analytics.AnalyticsConfig;
 import com.umeng.analytics.MobclickAgent;
 
+import smartown.controller.shoppingcart.DataBaseHelper;
 import yitgogo.smart.suning.model.SuningCarController;
 import yitgogo.smart.tools.Content;
 import yitgogo.smart.tools.Device;
@@ -29,6 +30,7 @@ public class YitgogoApplication extends Application {
     }
 
     private void init() {
+        DataBaseHelper.init(this);
         PackageTool.init(this);
         Device.init();
         Notify.init(this);

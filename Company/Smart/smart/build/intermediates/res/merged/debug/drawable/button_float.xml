@@ -6,4 +6,4 @@
     <item android:state_pressed="true"><bitmap android:src="@drawable/float_button_normal" />
     </item>
 
-</selector><!-- From: file:/Users/Smartown/Desktop/Develop/Android/Projects/AndroidStudio/Company/Smart/smart/src/main/res/drawable/button_float.xml -->
+</selector><!-- From: file:/E:/Github/AndroidStudio/Company/Smart/smart/src/main/res/drawable/button_float.xml -->

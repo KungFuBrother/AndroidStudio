@@ -109,10 +109,11 @@ public class ProductTask {
                 onNetworkListener);
     }
 
-    public static void getFreight(Context context, String productNumber, int buyCount, String areaid, OnNetworkListener onNetworkListener) {
+    public static void getFreight(Context context, String productNumber, String areaid, OnNetworkListener onNetworkListener) {
         NetworkContent networkContent = new NetworkContent(API.API_PRODUCT_FREIGHT);
-        networkContent.addParameters("productNumber", productNumber + "-" + buyCount);
+        networkContent.addParameters("productNumber", productNumber);
         networkContent.addParameters("areaid", areaid);
+        networkContent.addParameters("machine", Device.getDeviceCode());
         MissionController.startNetworkMission(context, networkContent, onNetworkListener);
     }
 

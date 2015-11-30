@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RadioGroup
+        android:id="@+id/order_tabs"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:background="@color/divider"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/order_tab_normal"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="1px"
+            android:layout_weight="1"
+            android:background="@drawable/selector_white_divider"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="普通订单"
+            android:textColor="@drawable/selector_text"
+            android:textSize="12dp" />
+
+        <RadioButton
+            android:id="@+id/order_tab_suning"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="1px"
+            android:layout_weight="1"
+            android:background="@drawable/selector_white_divider"
+            android:button="@null"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="云商城"
+            android:textColor="@drawable/selector_text"
+            android:textSize="12dp" />
+
+        <RadioButton
+            android:id="@+id/order_tab_local_product"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="1px"
+            android:layout_weight="1"
+            android:background="@drawable/selector_white_divider"
+            android:button="@null"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="本地商品"
+            android:textColor="@drawable/selector_text"
+            android:textSize="12dp" />
+
+        <RadioButton
+            android:id="@+id/order_tab_local_service"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="1px"
+            android:layout_weight="1"
+            android:background="@drawable/selector_white_divider"
+            android:button="@null"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="本地服务"
+            android:textColor="@drawable/selector_text"
+            android:textSize="12dp" />
+
+        <RadioButton
+            android:id="@+id/order_tab_bianmin"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/selector_white_divider"
+            android:button="@null"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="便民服务"
+            android:textColor="@drawable/selector_text"
+            android:textSize="12dp" />
+    </RadioGroup>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider" />
+
+    <FrameLayout
+        android:id="@+id/order_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+    </FrameLayout>
+
+</LinearLayout>

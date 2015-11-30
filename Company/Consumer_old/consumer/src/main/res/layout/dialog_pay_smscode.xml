@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/back_white_rec_border"
+        android:orientation="vertical" >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/theme_title_background" >
+
+            <TextView
+                android:id="@+id/pay_sms_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="输入验证码"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="18dp" />
+
+            <ImageView
+                android:id="@+id/pay_sms_close"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:background="@drawable/selector_trans_divider"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_clear_black_24dp" />
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/divider" />
+
+        <EditText
+            android:id="@+id/pay_sms_code"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_margin="16dp"
+            android:background="@drawable/back_white_rec_border"
+            android:gravity="center"
+            android:inputType="number"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:textColor="@color/textColorSecond"
+            android:textSize="24dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/divider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/theme_title_background"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/pay_sms_get"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/selector_trans_divider"
+                android:enabled="false"
+                android:gravity="center"
+                android:text="获取验证码"
+                android:textColor="@color/textColorSecond"
+                android:textSize="16dp" />
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@color/divider" />
+
+            <TextView
+                android:id="@+id/pay_sms_ok"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/selector_trans_divider"
+                android:gravity="center"
+                android:text="确定"
+                android:textColor="@color/textColorSecond"
+                android:textSize="16dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

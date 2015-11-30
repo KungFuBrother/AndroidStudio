@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/theme_title_background" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="易商城"
+            android:textAppearance="@style/titleText" />
+
+        <ImageView
+            android:id="@+id/home_yitgogo_search"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:background="@drawable/selector_trans_divider"
+            android:padding="4dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icon_search" />
+
+        <ImageView
+            android:id="@+id/home_yitgogo_class"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:background="@drawable/selector_trans_divider"
+            android:padding="4dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icon_classes" />
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider" />
+
+    <com.handmark.pulltorefresh.library.PullToRefreshScrollView
+        android:id="@+id/home_yitgogo_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <FrameLayout
+                android:id="@+id/home_yitgogo_ads_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+            </FrameLayout>
+
+            <yitgogo.consumer.view.InnerGridView
+                android:id="@+id/home_yitgogo_product_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:listSelector="@android:color/transparent"
+                android:numColumns="2" >
+            </yitgogo.consumer.view.InnerGridView>
+        </LinearLayout>
+    </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
+
+</LinearLayout>

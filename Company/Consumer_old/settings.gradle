@@ -1,0 +1,2 @@
+include ':consumer', ':ViewPagerIndicator'
+include ':pullToRefresh'

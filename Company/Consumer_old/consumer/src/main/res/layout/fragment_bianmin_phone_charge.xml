@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/theme_title_background" >
+
+        <LinearLayout
+            android:id="@+id/title_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/selector_trans_divider"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"
+                android:src="@drawable/iconfont_last" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:text="返回"
+                android:textColor="@color/textColorSecond"
+                android:textSize="12dp" />
+        </LinearLayout>
+
+        <RadioGroup
+            android:id="@+id/phone_charge_tabs"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:background="@drawable/edit_back_round"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/phone_charge_tab_fast"
+                android:layout_width="72dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/tab_selector_left"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="快充"
+                android:textColor="@drawable/selector_text"
+                android:textSize="14dp" />
+
+            <RadioButton
+                android:id="@+id/phone_charge_tab_slow"
+                android:layout_width="72dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/tab_selector_left"
+                android:button="@null"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="慢充"
+                android:textColor="@drawable/selector_text"
+                android:textSize="14dp" />
+        </RadioGroup>
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider" />
+
+    <FrameLayout
+        android:id="@+id/phone_charge_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+    </FrameLayout>
+
+</LinearLayout>

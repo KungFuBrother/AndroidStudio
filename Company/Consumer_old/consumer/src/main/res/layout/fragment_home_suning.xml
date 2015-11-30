@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/theme_title_background">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="云商城"
+                android:textAppearance="@style/titleText" />
+
+            <ImageView
+                android:id="@+id/home_suning_class"
+                android:layout_width="48dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="left"
+                android:background="@drawable/selector_trans_divider"
+                android:padding="4dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_classes" />
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:layout_margin="8dp"
+                android:background="@drawable/back_trans_rec_border">
+
+                <LinearLayout
+                    android:id="@+id/home_suning_city_select"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp">
+
+                    <TextView
+                        android:id="@+id/home_suning_city"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:gravity="center"
+                        android:textColor="@color/textColorSecond"
+                        android:textSize="12dp" />
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/iconfont_next" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/divider" />
+
+        <android.support.v4.widget.DrawerLayout
+            android:id="@+id/home_suning_drawer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <com.handmark.pulltorefresh.library.PullToRefreshScrollView
+                android:id="@+id/home_suning_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="4dp">
+
+
+                    <yitgogo.consumer.view.InnerGridView
+                        android:id="@+id/home_suning_product_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:listSelector="@android:color/transparent"
+                        android:numColumns="2"></yitgogo.consumer.view.InnerGridView>
+                </LinearLayout>
+            </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
+
+            <FrameLayout
+                android:id="@+id/home_suning_product_class"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:background="@color/theme_background"
+                android:clickable="true"></FrameLayout>
+        </android.support.v4.widget.DrawerLayout>
+
+
+    </LinearLayout>
+
+</FrameLayout>

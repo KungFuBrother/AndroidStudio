@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RadioGroup
+        android:id="@+id/select_store_tabs"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:background="@color/divider"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/select_store_locate"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/selector_white_divider"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="附近"
+            android:textColor="@drawable/selector_text"
+            android:textSize="14dp" />
+
+        <RadioButton
+            android:id="@+id/select_store_select"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="1px"
+            android:layout_weight="1"
+            android:background="@drawable/selector_white_divider"
+            android:button="@null"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="按区域选择"
+            android:textColor="@drawable/selector_text"
+            android:textSize="14dp" />
+    </RadioGroup>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider" />
+
+    <FrameLayout
+        android:id="@+id/select_store_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+    </FrameLayout>
+
+</LinearLayout>

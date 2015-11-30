@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal" >
+
+        <Spinner
+            android:id="@+id/selector_scoreType"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:gravity="center" />
+
+        <LinearLayout
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/divider" >
+        </LinearLayout>
+
+        <Spinner
+            android:id="@+id/selector_scores"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/divider" >
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/selector_date"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/selector_trans_divider"
+            android:gravity="center"
+            android:hint="选择起止时间"
+            android:lines="2"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/divider" >
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/trade_selector_select"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/selector_trans_divider"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_done_black_24dp" />
+
+        <LinearLayout
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/divider" >
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/trade_selector_clear"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/selector_trans_divider"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_clear_black_24dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/divider" >
+    </LinearLayout>
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/score_detail_lv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </com.handmark.pulltorefresh.library.PullToRefreshListView>
+
+</LinearLayout>

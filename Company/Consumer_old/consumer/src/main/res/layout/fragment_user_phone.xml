@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@color/white"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/divider" >
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:gravity="center"
+                        android:minWidth="72dp"
+                        android:text="当前账号"
+                        android:textColor="@color/material_blue_grey_800"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:layout_width="1px"
+                        android:layout_height="8dp"
+                        android:layout_margin="8dp"
+                        android:background="@color/divider" >
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/user_info_phone_account"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:hint="未登录"
+                        android:singleLine="true"
+                        android:textColor="@color/material_blue_grey_800"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:background="@color/divider" >
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:gravity="center"
+                        android:minWidth="72dp"
+                        android:text="原手机号"
+                        android:textColor="@color/material_blue_grey_800"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:layout_width="1px"
+                        android:layout_height="8dp"
+                        android:layout_margin="8dp"
+                        android:background="@color/divider" >
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/user_info_phone_old"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:hint="未设置"
+                        android:singleLine="true"
+                        android:textColor="@color/material_blue_grey_800"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:background="@color/divider" >
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:gravity="center"
+                        android:minWidth="72dp"
+                        android:text="新手机号"
+                        android:textColor="@color/material_blue_grey_800"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:layout_width="1px"
+                        android:layout_height="8dp"
+                        android:layout_margin="8dp"
+                        android:background="@color/divider" >
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/user_info_phone_new"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="8dp"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:gravity="center_vertical"
+                        android:hint="输入新手机号"
+                        android:singleLine="true"
+                        android:textColor="@color/material_blue_grey_800"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/divider" >
+                </LinearLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/user_phone_modify"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_margin="32dp"
+                android:background="@drawable/button"
+                android:text="确认修改"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/product_drawer"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/product_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:dividerHeight="1px"
+        android:listSelector="@android:color/transparent" >
+    </com.handmark.pulltorefresh.library.PullToRefreshListView>
+
+    <FrameLayout
+        android:id="@+id/product_selector"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:background="@color/theme_background"
+        android:clickable="true"
+        android:dividerHeight="0dp" >
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/product_selector2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:background="@color/theme_background"
+        android:clickable="true"
+        android:dividerHeight="0dp" >
+    </FrameLayout>
+
+</android.support.v4.widget.DrawerLayout>

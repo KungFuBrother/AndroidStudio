@@ -118,7 +118,7 @@ public class OrderPlatformReturnFragment extends BaseNotifyFragment {
             nameValuePairs.add(new BasicNameValuePair("orderNumber", orderNumber));
             nameValuePairs.add(new BasicNameValuePair("productInfo", productId));
             nameValuePairs.add(new BasicNameValuePair("reason", reasonEditText.getText().toString()));
-            return NetUtil.getInstance().postWithoutCookie(API.API_ORDER_RETURN, nameValuePairs, false, false);
+            return NetUtil.getInstance().postWithCookie(API.API_ORDER_RETURN, nameValuePairs);
         }
 
         @Override

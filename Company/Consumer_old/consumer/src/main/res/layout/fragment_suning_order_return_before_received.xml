@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="产品名称："
+                        android:textColor="@color/textColorSecond"
+                        android:textSize="16dp" />
+
+                    <TextView
+                        android:id="@+id/fragment_platform_return_product_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/textColorSecond"
+                        android:textSize="16dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="购买价格："
+                        android:textColor="@color/textColorSecond"
+                        android:textSize="16dp" />
+
+                    <TextView
+                        android:id="@+id/fragment_platform_return_product_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/product_price"
+                        android:textSize="16dp" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/fragment_platform_return_commit"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_margin="48dp"
+                    android:background="@drawable/button_buy"
+                    android:gravity="center"
+                    android:text="提交申请"
+                    android:textColor="@color/white"
+                    android:textSize="16dp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_margin="4dp"
+                    android:layout_height="wrap_content"
+                    android:text="客户电话（苏宁）：4008156516"
+                    android:textColor="@color/product_price"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/fragment_platform_return_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="本商品为易田合作商苏宁为您提供退换货服务，苏宁开放平台商家商品由商家为您提供退换货服务。"
+                    android:textColor="@color/textColorSecond"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_margin="4dp"
+                    android:gravity="right"
+                    android:layout_height="wrap_content"
+                    android:text="查看退换货详细规则>"
+                    android:textColor="@color/button_car_normal"
+                    android:textSize="16dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

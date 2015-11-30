@@ -37,7 +37,6 @@ import yitgogo.consumer.tools.API;
 import yitgogo.consumer.tools.Parameters;
 import yitgogo.consumer.tools.ScreenUtil;
 import yitgogo.consumer.user.model.User;
-import yitgogo.consumer.user.ui.UserLoginFragment;
 import yitgogo.consumer.view.InnerListView;
 import yitgogo.consumer.view.NormalAskDialog;
 import yitgogo.consumer.view.Notify;
@@ -275,25 +274,52 @@ public class OrderDetailFragment extends BaseNotifyFragment {
             holder.productCountText.setText(" × " + product.getProductQuantity() + product.getProductUnit());
 
             holder.actionLayout.removeAllViews();
-            if (order.getOrderState().getId() == 7) {
-                holder.actionLayout.addView(createActionButton("申请退货", new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (User.getUser().isLogin()) {
-                            Bundle bundle = new Bundle();
-                            bundle.putString("productId", product.getProviderId());
-                            bundle.putString("productName", product.getProductName());
-                            bundle.putDouble("productPrice", product.getUnitSellPrice());
-                            bundle.putString("providerId", product.getProviderId());
-                            bundle.putString("supplierId", product.getSupplierId());
-                            bundle.putString("orderNumber", order.getOrderNumber());
-                            jump(OrderPlatformReturnFragment.class.getName(), "申请退货", bundle);
-                        } else {
-                            Notify.show("请先登录");
-                            jump(UserLoginFragment.class.getName(), "会员登录");
-                        }
-                    }
-                }));
+
+//            holder.actionLayout.addView(createActionText("退货已受理", R.color.product_price, null));
+//            holder.actionLayout.addView(createActionButton("查看结果", R.drawable.button_add_car, new OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    if (User.getUser().isLogin()) {
+//                        jump(OrderPlatformReturnResultFragment.class.getName(), "退货结果");
+//                    } else {
+//                        Notify.show("请先登录");
+//                        jump(UserLoginFragment.class.getName(), "会员登录");
+//                    }
+//                }
+//            }));
+
+//            holder.actionLayout.addView(createActionImage(R.drawable.iconfont_check_checked, null));
+//            holder.actionLayout.addView(createActionText("退货成功", R.color.textColorSecond, null));
+
+            holder.actionLayout.addView(createActionImage(R.drawable.iconfont_check_normal, null));
+            holder.actionLayout.addView(createActionText("退货申请未通过", R.color.textColorSecond, null));
+
+//            holder.actionLayout.addView(createActionText("退货处理中", R.color.product_price, null));
+
+            switch (order.getOrderState().getId()) {
+                case 7:
+//                    holder.actionLayout.addView(createActionButton("申请退货", R.drawable.button_buy, new OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//                            if (User.getUser().isLogin()) {
+//                                Bundle bundle = new Bundle();
+//                                bundle.putString("productId", product.getProviderId());
+//                                bundle.putString("productName", product.getProductName());
+//                                bundle.putDouble("productPrice", product.getUnitSellPrice());
+//                                bundle.putString("providerId", product.getProviderId());
+//                                bundle.putString("supplierId", product.getSupplierId());
+//                                bundle.putString("orderNumber", order.getOrderNumber());
+//                                jump(OrderPlatformReturnFragment.class.getName(), "申请退货", bundle);
+//                            } else {
+//                                Notify.show("请先登录");
+//                                jump(UserLoginFragment.class.getName(), "会员登录");
+//                            }
+//                        }
+//                    }));
+                    break;
+                default:
+//                    holder.actionLayout.removeAllViews();
+                    break;
             }
 
             return convertView;
@@ -307,31 +333,41 @@ public class OrderDetailFragment extends BaseNotifyFragment {
         }
     }
 
-    private Button createActionButton(String lable, OnClickListener onClickListener) {
+    private Button createActionButton(String lable, int backgroundResId, OnClickListener onClickListener) {
         Button button = new Button(getActivity());
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ScreenUtil.dip2px(24));
-        layoutParams.gravity = Gravity.CENTER;
         button.setLayoutParams(layoutParams);
+        button.setGravity(Gravity.CENTER);
         button.setPadding(ScreenUtil.dip2px(4), 0, ScreenUtil.dip2px(4), 0);
         button.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
         button.setText(lable);
         button.setTextColor(getResources().getColor(R.color.white));
-        button.setBackgroundResource(R.drawable.button_buy);
+        button.setBackgroundResource(backgroundResId);
         button.setOnClickListener(onClickListener);
         return button;
     }
 
-    private TextView createActionText(String lable, OnClickListener onClickListener) {
+    private TextView createActionText(String lable, int textColorResId, OnClickListener onClickListener) {
         TextView textView = new TextView(getActivity());
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.gravity = Gravity.CENTER;
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ScreenUtil.dip2px(24));
+        textView.setGravity(Gravity.CENTER);
         textView.setLayoutParams(layoutParams);
         textView.setPadding(ScreenUtil.dip2px(4), 0, ScreenUtil.dip2px(4), 0);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
         textView.setText(lable);
-        textView.setTextColor(getResources().getColor(R.color.textColorSecond));
+        textView.setTextColor(getResources().getColor(textColorResId));
         textView.setOnClickListener(onClickListener);
         return textView;
+    }
+
+    private ImageView createActionImage(int imageResId, OnClickListener onClickListener) {
+        ImageView imageView = new ImageView(getActivity());
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ScreenUtil.dip2px(24), ScreenUtil.dip2px(24));
+        imageView.setLayoutParams(layoutParams);
+        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        imageView.setImageResource(imageResId);
+        imageView.setOnClickListener(onClickListener);
+        return imageView;
     }
 
     class GetOrderDetail extends AsyncTask<Void, Void, String> {

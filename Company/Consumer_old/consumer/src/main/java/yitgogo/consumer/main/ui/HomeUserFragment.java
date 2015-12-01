@@ -30,7 +30,7 @@ import yitgogo.consumer.money.ui.MoneyHomeFragment;
 import yitgogo.consumer.order.ui.OrderFragment;
 import yitgogo.consumer.product.ui.ShoppingCarFragment;
 import yitgogo.consumer.store.model.Store;
-import yitgogo.consumer.store.ui.SelectStoreFragment;
+import yitgogo.consumer.store.ui.StoreAreaFragment;
 import yitgogo.consumer.tools.API;
 import yitgogo.consumer.tools.Content;
 import yitgogo.consumer.tools.PackageTool;
@@ -51,12 +51,12 @@ import yitgogo.consumer.view.Notify;
 public class HomeUserFragment extends BaseNotifyFragment implements
         OnClickListener {
 
-    ImageView userHeadImageView, levelImageView, storeAutoImageView;
+    ImageView userHeadImageView, levelImageView;
     TextView userNameTextView, userLevelTextView;
 
     TextView storeNameTextView, storeAddressTextView, storeContactTextView;
 
-    LinearLayout infoButton, storeButton, storeAutoButton, addressButton,
+    LinearLayout infoButton, storeButton, addressButton,
             shareButton, userListButton, openStoreButton, updateButtton;
 
     TextView loginButton;
@@ -94,63 +94,41 @@ public class HomeUserFragment extends BaseNotifyFragment implements
 
     @Override
     protected void findViews() {
-        userHeadImageView = (ImageView) contentView
-                .findViewById(R.id.user_info_userhead);
-        userNameTextView = (TextView) contentView
-                .findViewById(R.id.user_info_name);
-        levelImageView = (ImageView) contentView
-                .findViewById(R.id.user_info_level_image);
-        userLevelTextView = (TextView) contentView
-                .findViewById(R.id.user_info_level);
+        userHeadImageView = (ImageView) contentView.findViewById(R.id.user_info_userhead);
+        userNameTextView = (TextView) contentView.findViewById(R.id.user_info_name);
+        levelImageView = (ImageView) contentView.findViewById(R.id.user_info_level_image);
+        userLevelTextView = (TextView) contentView.findViewById(R.id.user_info_level);
 
-        entranceLayout = (LinearLayout) contentView
-                .findViewById(R.id.user_entrance);
-        moneyEntranceButton = (FrameLayout) contentView
-                .findViewById(R.id.user_entrance_money);
-        orderEntranceButton = (FrameLayout) contentView
-                .findViewById(R.id.user_entrance_order);
-        scoreEntranceButton = (FrameLayout) contentView
-                .findViewById(R.id.user_entrance_score);
-        carEntranceButton = (FrameLayout) contentView
-                .findViewById(R.id.user_entrance_car);
+        entranceLayout = (LinearLayout) contentView.findViewById(R.id.user_entrance);
+        moneyEntranceButton = (FrameLayout) contentView.findViewById(R.id.user_entrance_money);
+        orderEntranceButton = (FrameLayout) contentView.findViewById(R.id.user_entrance_order);
+        scoreEntranceButton = (FrameLayout) contentView.findViewById(R.id.user_entrance_score);
+        carEntranceButton = (FrameLayout) contentView.findViewById(R.id.user_entrance_car);
 
-        openStoreButton = (LinearLayout) contentView
-                .findViewById(R.id.user_open_store);
+        openStoreButton = (LinearLayout) contentView.findViewById(R.id.user_open_store);
         infoButton = (LinearLayout) contentView.findViewById(R.id.user_info);
 
-        storeAutoImageView = (ImageView) contentView
-                .findViewById(R.id.user_store_auto_image);
-        storeAutoButton = (LinearLayout) contentView
-                .findViewById(R.id.user_store_auto);
         storeButton = (LinearLayout) contentView.findViewById(R.id.user_store);
 
-        addressButton = (LinearLayout) contentView
-                .findViewById(R.id.user_address);
+        addressButton = (LinearLayout) contentView.findViewById(R.id.user_address);
         shareButton = (LinearLayout) contentView.findViewById(R.id.user_share);
-        userListButton = (LinearLayout) contentView
-                .findViewById(R.id.user_user_list);
+        userListButton = (LinearLayout) contentView.findViewById(R.id.user_user_list);
         loginButton = (TextView) contentView.findViewById(R.id.user_login);
-        updateButtton = (LinearLayout) contentView
-                .findViewById(R.id.user_user_update);
+        updateButtton = (LinearLayout) contentView.findViewById(R.id.user_user_update);
 
-        storeNameTextView = (TextView) contentView
-                .findViewById(R.id.user_store_name);
-        storeAddressTextView = (TextView) contentView
-                .findViewById(R.id.user_store_address);
-        storeContactTextView = (TextView) contentView
-                .findViewById(R.id.user_store_contact);
+        storeNameTextView = (TextView) contentView.findViewById(R.id.user_store_name);
+        storeAddressTextView = (TextView) contentView.findViewById(R.id.user_store_address);
+        storeContactTextView = (TextView) contentView.findViewById(R.id.user_store_contact);
 
         registerViews();
     }
 
     @Override
     protected void initViews() {
-        if (Content.getBooleanContent(Parameters.CACHE_KEY_AUTO_LOCATE, true)) {
-            storeAutoImageView
-                    .setImageResource(R.drawable.iconfont_check_checked);
+        if (Content.getIntContent(Parameters.CACHE_KEY_STORE_TYPE, Parameters.CACHE_VALUE_STORE_TYPE_LOCATED) == Parameters.CACHE_VALUE_STORE_TYPE_LOCATED) {
+            storeButton.setVisibility(View.GONE);
         } else {
-            storeAutoImageView
-                    .setImageResource(R.drawable.iconfont_check_normal);
+            storeButton.setVisibility(View.VISIBLE);
         }
         storeNameTextView.setText(Store.getStore().getStoreName());
         storeAddressTextView.setText(Store.getStore().getStoreAddess());
@@ -184,28 +162,11 @@ public class HomeUserFragment extends BaseNotifyFragment implements
                 jump(ShoppingCarFragment.class.getName(), "易商城购物车");
             }
         });
-        storeAutoButton.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Content.saveBooleanContent(Parameters.CACHE_KEY_AUTO_LOCATE,
-                        !Content.getBooleanContent(
-                                Parameters.CACHE_KEY_AUTO_LOCATE, true));
-                if (Content.getBooleanContent(Parameters.CACHE_KEY_AUTO_LOCATE,
-                        true)) {
-                    storeAutoImageView
-                            .setImageResource(R.drawable.iconfont_check_checked);
-                } else {
-                    storeAutoImageView
-                            .setImageResource(R.drawable.iconfont_check_normal);
-                }
-            }
-        });
         storeButton.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                jump(SelectStoreFragment.class.getName(), "修改服务中心");
+                jump(StoreAreaFragment.class.getName(), "修改服务中心");
                 getActivity().finish();
             }
         });

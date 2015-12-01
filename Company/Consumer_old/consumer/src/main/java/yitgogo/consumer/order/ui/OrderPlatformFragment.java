@@ -105,7 +105,7 @@ public class OrderPlatformFragment extends BaseNotifyFragment {
 
     private void showOrderDetail(int index) {
         Bundle bundle = new Bundle();
-        bundle.putString("orderNumber", orders.get(index).getOrderNumber());
+        bundle.putString("orderId", orders.get(index).getId());
         jump(OrderDetailFragment.class.getName(), "订单详情", bundle);
     }
 

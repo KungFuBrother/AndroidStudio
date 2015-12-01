@@ -36,6 +36,7 @@ import yitgogo.consumer.tools.API;
 import yitgogo.consumer.tools.NetUtil;
 import yitgogo.consumer.tools.Parameters;
 import yitgogo.consumer.view.InnerListView;
+import yitgogo.consumer.view.Notify;
 
 /**
  * 本地秒杀
@@ -103,12 +104,19 @@ public class LocalSaleMiaoshaFragment extends BaseNotifyFragment {
             @Override
             public void onItemClick(AdapterView<?> paramAdapterView,
                                     View paramView, int paramInt, long paramLong) {
-                Bundle bundle = new Bundle();
-                bundle.putString("id", localSaleMiaoshas.get(paramInt)
-                        .getProductId());
-                jump(LocalSaleMiaoshaDetailFragment.class.getName(),
-                        localSaleMiaoshas.get(paramInt).getProductName(), bundle);
-
+                Date currentTime = Calendar.getInstance().getTime();
+                Date startTime = new Date(localSaleMiaoshas.get(paramInt).getSpikeTime());
+                if (startTime.before(currentTime)) {
+                    if (localSaleMiaoshas.get(paramInt).getNumbers() > 0) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("id", localSaleMiaoshas.get(paramInt).getProductId());
+                        jump(LocalSaleMiaoshaDetailFragment.class.getName(), localSaleMiaoshas.get(paramInt).getProductName(), bundle);
+                    } else {
+                        Notify.show("抢购已结束");
+                    }
+                } else {
+                    Notify.show("抢购还没开始");
+                }
             }
         });
     }

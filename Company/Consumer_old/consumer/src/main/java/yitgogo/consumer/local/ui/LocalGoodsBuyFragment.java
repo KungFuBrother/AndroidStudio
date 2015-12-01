@@ -55,7 +55,6 @@ public class LocalGoodsBuyFragment extends BaseNotifyFragment {
 			goodsMoneyTextView, postFeeTextView, totalPayTextView,
 			confirmButton;
 	LinearLayout diliverPayButton;
-	FrameLayout countDeleteButton, countAddButton;
 
 	double totalMoney = 0;
 	int goodsCount = 1;
@@ -81,7 +80,7 @@ public class LocalGoodsBuyFragment extends BaseNotifyFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.fragment_confirm_order_local_goods);
+		setContentView(R.layout.fragment_confirm_order_local_goods_normal);
 		init();
 		findViews();
 	}
@@ -147,10 +146,6 @@ public class LocalGoodsBuyFragment extends BaseNotifyFragment {
 				.findViewById(R.id.order_confirm_confirm);
 		diliverPayButton = (LinearLayout) contentView
 				.findViewById(R.id.order_confirm_goods_pay_diliver);
-		countDeleteButton = (FrameLayout) contentView
-				.findViewById(R.id.order_confirm_goods_count_delete);
-		countAddButton = (FrameLayout) contentView
-				.findViewById(R.id.order_confirm_goods_count_add);
 		initViews();
 		registerViews();
 	}
@@ -170,24 +165,6 @@ public class LocalGoodsBuyFragment extends BaseNotifyFragment {
 
 	@Override
 	protected void registerViews() {
-		countAddButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View paramView) {
-				goodsCount++;
-				countTotalMoney();
-			}
-		});
-		countDeleteButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View paramView) {
-				if (goodsCount > 1) {
-					goodsCount--;
-				}
-				countTotalMoney();
-			}
-		});
 		diliverPayButton.setOnClickListener(new OnClickListener() {
 
 			@Override

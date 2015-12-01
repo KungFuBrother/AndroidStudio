@@ -4,10 +4,13 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -30,6 +33,7 @@ import yitgogo.consumer.suning.model.ModelSuningOrder;
 import yitgogo.consumer.suning.model.ModelSuningOrderProduct;
 import yitgogo.consumer.tools.API;
 import yitgogo.consumer.tools.Parameters;
+import yitgogo.consumer.tools.ScreenUtil;
 import yitgogo.consumer.view.InnerListView;
 import yitgogo.consumer.view.NormalAskDialog;
 import yitgogo.consumer.view.Notify;
@@ -204,21 +208,15 @@ public class SuningOrderDetailFragment extends BaseNotifyFragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder holder;
             if (convertView == null) {
-                convertView = layoutInflater.inflate(
-                        R.layout.list_suning_order_product, null);
+                convertView = layoutInflater.inflate(R.layout.list_suning_order_product, null);
                 holder = new ViewHolder();
-                holder.image = (ImageView) convertView
-                        .findViewById(R.id.list_product_img);
-                holder.productNameText = (TextView) convertView
-                        .findViewById(R.id.list_product_name);
-                holder.productAttrText = (TextView) convertView
-                        .findViewById(R.id.list_product_attr);
-                holder.productPriceText = (TextView) convertView
-                        .findViewById(R.id.list_product_price);
-                holder.productCountText = (TextView) convertView
-                        .findViewById(R.id.list_product_count);
-                holder.wuliuButton = (TextView) convertView
-                        .findViewById(R.id.list_product_wuliu);
+                holder.image = (ImageView) convertView.findViewById(R.id.list_product_img);
+                holder.productNameText = (TextView) convertView.findViewById(R.id.list_product_name);
+                holder.productAttrText = (TextView) convertView.findViewById(R.id.list_product_attr);
+                holder.productPriceText = (TextView) convertView.findViewById(R.id.list_product_price);
+                holder.productCountText = (TextView) convertView.findViewById(R.id.list_product_count);
+                holder.wuliuButton = (TextView) convertView.findViewById(R.id.list_product_wuliu);
+                holder.actionLayout = (LinearLayout) convertView.findViewById(R.id.list_product_action);
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
@@ -226,13 +224,10 @@ public class SuningOrderDetailFragment extends BaseNotifyFragment {
             final ModelSuningOrderProduct product = suningOrder.getProducts().get(position);
             holder.productNameText.setText(product.getName());
             holder.productAttrText.setText(product.getAttr());
-            holder.productPriceText.setText("¥"
-                    + decimalFormat.format(product.getPrice()));
-            holder.productCountText.setText(" × "
-                    + product.getNo());
+            holder.productPriceText.setText("¥" + decimalFormat.format(product.getPrice()));
+            holder.productCountText.setText("×" + product.getNo());
             if (!product.getImages().isEmpty()) {
-                ImageLoader.getInstance().displayImage(product.getImages().get(1),
-                        holder.image);
+                ImageLoader.getInstance().displayImage(product.getImages().get(1), holder.image);
             }
             holder.wuliuButton.setOnClickListener(new OnClickListener() {
                 @Override
@@ -243,14 +238,77 @@ public class SuningOrderDetailFragment extends BaseNotifyFragment {
                     jump(SuningOrderWuliuFragment.class.getName(), "物流信息", bundle);
                 }
             });
+            holder.actionLayout.removeAllViews();
+            if (suningOrder.getOrderType().equalsIgnoreCase("新订单") || suningOrder.getOrderType().equalsIgnoreCase("已取消") || suningOrder.getOrderType().equalsIgnoreCase("已退货")) {
+                holder.actionLayout.removeAllViews();
+            } else {
+                if (!suningOrder.getOrderType().equalsIgnoreCase("已完成")) {
+                    //申请退货
+                    holder.actionLayout.addView(createActionButton("申请退货", R.drawable.button_buy, new OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Bundle bundle = new Bundle();
+                            bundle.putString("productName", product.getName());
+                            bundle.putDouble("productPrice", product.getPrice());
+                            //订单编号
+                            bundle.putString("tradeNo", suningOrder.getOrderNumber());
+                            //产品编号
+                            bundle.putString("produNo", product.getNumber());
+                            //类型 完成==2 取消== 4
+                            bundle.putInt("type", 4);
+
+                            jump(SuningOrderReturnBeforeReceivedFragment.class.getName(), "申请退货", bundle);
+                        }
+                    }));
+                } else {
+                    //申请退货
+                    holder.actionLayout.addView(createActionButton("申请退货", R.drawable.button_buy, new OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Bundle bundle = new Bundle();
+                            bundle.putString("productName", product.getName());
+                            bundle.putDouble("productPrice", product.getPrice());
+
+                            jump(SuningOrderReturnAfterReceivedFragment.class.getName(), "申请退货", bundle);
+                        }
+                    }));
+                }
+            }
             return convertView;
         }
 
         class ViewHolder {
             ImageView image;
-            TextView productNameText, productAttrText, productPriceText,
-                    productCountText, wuliuButton;
+            TextView productNameText, productAttrText, productPriceText, productCountText, wuliuButton;
+            LinearLayout actionLayout;
         }
+    }
+
+    private Button createActionButton(String lable, int backgroundResId, OnClickListener onClickListener) {
+        Button button = new Button(getActivity());
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ScreenUtil.dip2px(28));
+        button.setLayoutParams(layoutParams);
+        button.setGravity(Gravity.CENTER);
+        button.setPadding(ScreenUtil.dip2px(8), 0, ScreenUtil.dip2px(8), 0);
+        button.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
+        button.setText(lable);
+        button.setTextColor(getResources().getColor(R.color.white));
+        button.setBackgroundResource(backgroundResId);
+        button.setOnClickListener(onClickListener);
+        return button;
+    }
+
+    private TextView createActionText(String lable, int textColorResId, OnClickListener onClickListener) {
+        TextView textView = new TextView(getActivity());
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ScreenUtil.dip2px(28));
+        textView.setGravity(Gravity.CENTER);
+        textView.setLayoutParams(layoutParams);
+        textView.setPadding(ScreenUtil.dip2px(8), 0, ScreenUtil.dip2px(8), 0);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
+        textView.setText(lable);
+        textView.setTextColor(getResources().getColor(textColorResId));
+        textView.setOnClickListener(onClickListener);
+        return textView;
     }
 
     private String getSecretPhone(String phone) {
@@ -281,8 +339,7 @@ public class SuningOrderDetailFragment extends BaseNotifyFragment {
             List<NameValuePair> parameters = new ArrayList<NameValuePair>();
             parameters.add(new BasicNameValuePair("tradeNo", suningOrder.getOrderNumber()));
             parameters.add(new BasicNameValuePair("type", "2"));
-            return netUtil.postWithoutCookie(API.API_SUNING_ORDER_RECEIVE,
-                    parameters, false, false);
+            return netUtil.postWithoutCookie(API.API_SUNING_ORDER_RECEIVE_RETURN, parameters, false, false);
         }
 
         @Override

@@ -249,6 +249,7 @@ public class BaseNotifyFragment extends Fragment {
                             platformOrderResult.optJSONObject(i));
                     orderNumbers.add(orderResult.getOrdernumber());
                     payPrice += orderResult.getZhekouhou();
+                    payPrice += orderResult.getFreight();
                 }
                 payMoney(orderNumbers, payPrice, PayFragment.ORDER_TYPE_YY);
             }

@@ -1,29 +1,5 @@
 package yitgogo.consumer;
 
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.NameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import yitgogo.consumer.bianmin.ModelBianminOrderResult;
-import yitgogo.consumer.bianmin.phoneCharge.ui.PhoneChargeFragment;
-import yitgogo.consumer.local.model.ModelLocalCar;
-import yitgogo.consumer.money.ui.PayFragment;
-import yitgogo.consumer.order.model.ModelOrderResult;
-import yitgogo.consumer.order.model.ModelStorePostInfo;
-import yitgogo.consumer.order.ui.OrderFragment;
-import yitgogo.consumer.product.ui.ProductDetailFragment;
-import yitgogo.consumer.product.ui.ProductListFragment;
-import yitgogo.consumer.tools.MD5;
-import yitgogo.consumer.tools.NetUtil;
-import yitgogo.consumer.tools.Parameters;
-import yitgogo.consumer.tools.ScreenUtil;
-
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -57,6 +33,30 @@ import android.widget.TextView;
 
 import com.dtr.zxing.activity.CaptureActivity;
 import com.smartown.yitian.gogo.R;
+
+import org.apache.http.NameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import yitgogo.consumer.bianmin.ModelBianminOrderResult;
+import yitgogo.consumer.bianmin.phoneCharge.ui.PhoneChargeFragment;
+import yitgogo.consumer.local.model.ModelLocalCar;
+import yitgogo.consumer.money.ui.PayFragment;
+import yitgogo.consumer.order.model.ModelOrderResult;
+import yitgogo.consumer.order.model.ModelStorePostInfo;
+import yitgogo.consumer.order.ui.OrderFragment;
+import yitgogo.consumer.product.ui.ProductDetailFragment;
+import yitgogo.consumer.product.ui.ProductListFragment;
+import yitgogo.consumer.tools.MD5;
+import yitgogo.consumer.tools.NetUtil;
+import yitgogo.consumer.tools.Parameters;
+import yitgogo.consumer.tools.ScreenUtil;
 
 /**
  * 有通知功能的fragment
@@ -574,14 +574,13 @@ public class BaseNotifyFragment extends Fragment {
         if (platformOrderResult != null) {
             if (platformOrderResult != null) {
                 double payPrice = 0;
-                int productCount = 0;
                 ArrayList<String> orderNumbers = new ArrayList<String>();
                 for (int i = 0; i < platformOrderResult.length(); i++) {
                     ModelOrderResult orderResult = new ModelOrderResult(
                             platformOrderResult.optJSONObject(i));
                     orderNumbers.add(orderResult.getOrdernumber());
                     payPrice += orderResult.getZhekouhou();
-                    // productCount+= orderResult.get
+                    payPrice += orderResult.getFreight();
                 }
                 if (orderNumbers.size() > 0) {
                     if (payPrice > 0) {

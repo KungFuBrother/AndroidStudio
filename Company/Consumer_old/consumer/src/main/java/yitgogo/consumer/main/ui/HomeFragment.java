@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,12 +33,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import yitgogo.consumer.BaseNotifyFragment;
-import yitgogo.consumer.activity.ActivityFragment;
 import yitgogo.consumer.home.model.ModelListPrice;
 import yitgogo.consumer.home.model.ModelProduct;
 import yitgogo.consumer.home.part.PartAdsFragment;
@@ -80,6 +80,9 @@ public class HomeFragment extends BaseNotifyFragment implements OnClickListener 
     ImageView classButton, scanButton, nongfuButton;
     TextView searchTextView;
 
+    TextView tv_timer_day, tv_timer_hour, tv_timer_second, tv_timer_min;
+    LinearLayout ll_date_time;
+
     List<ModelProduct> products;
     HashMap<String, ModelListPrice> priceMap;
     ProductAdapter productAdapter;
@@ -103,6 +106,13 @@ public class HomeFragment extends BaseNotifyFragment implements OnClickListener 
             switch (msg.what) {
                 case 0x12:
                     PartTejiaFragment.getTejiaFragment().initViews();
+                    break;
+
+                case 0:
+                    frashTimer();
+                    break;
+                case 1:
+                    ll_date_time.setVisibility(View.GONE);
                     break;
 
                 default:
@@ -188,8 +198,71 @@ public class HomeFragment extends BaseNotifyFragment implements OnClickListener 
                 .findViewById(R.id.home_part_nongfu);
         searchTextView = (TextView) contentView
                 .findViewById(R.id.home_title_edit);
+
+        ll_date_time = (LinearLayout) contentView.findViewById(R.id.ll_date_time);
+        tv_timer_day = (TextView) contentView.findViewById(R.id.tv_timer_day);
+        tv_timer_hour = (TextView) contentView.findViewById(R.id.tv_timer_hour);
+        tv_timer_second = (TextView) contentView.findViewById(R.id.tv_timer_second);
+        tv_timer_min = (TextView) contentView.findViewById(R.id.tv_timer_minute);
+        handler.sendEmptyMessage(0);
+
         initViews();
         registerViews();
+    }
+
+    public void frashTimer() {
+        String sDt = "2015/12/11 00:00:00";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        try {
+            Date dt2 = sdf.parse(sDt);
+            // ¼ÌÐø×ª»»µÃµ½ÃëÊýµÄlongÐÍ
+            long activityTimer = dt2.getTime();
+            long timer = activityTimer - System.currentTimeMillis();
+            if (timer > 0) {
+                setTimer(timer);
+                handler.sendEmptyMessageDelayed(0, 1000);
+            } else {
+                handler.sendEmptyMessage(1);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // ¼ÆËãÊ±¼ä
+    public void setTimer(long time) {
+        int day = (int) (time / (3600000 * 24));
+        int hour = (int) (time / 3600000) % 24;
+        int minute = (int) (time / 60000) % 60;
+        int second = (int) (time / 1000) % 60;
+
+        String sDay = "", sHour = "", sMinute = "", sSecond = "";
+        if (day < 10) {
+            sDay = "0" + day;
+        } else {
+            sDay = "" + day;
+        }
+        if (hour < 10) {
+            sHour = "0" + hour;
+        } else {
+            sHour = "" + hour;
+        }
+        if (minute < 10) {
+            sMinute = "0" + minute;
+        } else {
+            sMinute = "" + minute;
+        }
+        if (second < 10) {
+            sSecond = "0" + second;
+        } else {
+            sSecond = "" + second;
+        }
+
+        tv_timer_day.setText(sDay);
+        tv_timer_hour.setText(sHour);
+        tv_timer_min.setText(sMinute);
+        tv_timer_second.setText(sSecond);
     }
 
     protected void initViews() {

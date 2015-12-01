@@ -45,6 +45,7 @@ public class PlatformProductBuyFragment extends BaseNotifyFragment {
     String supplierName = "";
     String productId = "";
     String productNumber = "";
+    String productAttr = "";
     String name = "";
     String image = "";
     int isIntegralMall = 0;
@@ -103,6 +104,9 @@ public class PlatformProductBuyFragment extends BaseNotifyFragment {
             if (bundle.containsKey("name")) {
                 name = bundle.getString("name");
             }
+            if (bundle.containsKey("productAttr")) {
+                productAttr = bundle.getString("productAttr");
+            }
             if (bundle.containsKey("image")) {
                 image = bundle.getString("image");
             }
@@ -148,8 +152,9 @@ public class PlatformProductBuyFragment extends BaseNotifyFragment {
         ImageLoader.getInstance().displayImage(getSmallImageUrl(image), imageView);
         providerTextView.setText(supplierName);
         nameTextView.setText(name);
-        priceTextView.setText(Parameters.CONSTANT_RMB + decimalFormat.format(price));
-        countTextView.setText(String.valueOf(buyCount));
+        attrTextView.setText(productAttr);
+        priceTextView.setText("单价:" + Parameters.CONSTANT_RMB + decimalFormat.format(price));
+        countTextView.setText("数量:" + String.valueOf(buyCount));
     }
 
     @Override

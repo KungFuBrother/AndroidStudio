@@ -134,14 +134,11 @@ public class LocalSaleMiaoshaDetailFragment extends BaseNotifyFragment {
 				if (User.getUser().isLogin()) {
 					if (localSaleMiaoshaDetail != null) {
 						Bundle bundle = new Bundle();
-						bundle.putString("object", localSaleMiaoshaDetail
-								.getJsonObject().toString());
-						jump(LocalGoodsSaleMiaoshaBuyFragment.class.getName(),
-								"确认订单", bundle);
+						bundle.putString("object", localSaleMiaoshaDetail.getJsonObject().toString());
+						jump(LocalGoodsSaleMiaoshaBuyFragment.class.getName(), "确认订单", bundle);
 					}
 				} else {
-					Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT)
-							.show();
+					Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT).show();
 					jump(UserLoginFragment.class.getName(), "会员登录");
 					return;
 				}
@@ -152,8 +149,7 @@ public class LocalSaleMiaoshaDetailFragment extends BaseNotifyFragment {
 			@Override
 			public void onClick(View v) {
 				Bundle bundle = new Bundle();
-				bundle.putString("html",
-						localSaleMiaoshaDetail.getProductDetais());
+				bundle.putString("html", localSaleMiaoshaDetail.getProductDetais());
 				bundle.putInt("type", WebFragment.TYPE_HTML);
 				jump(WebFragment.class.getName(),
 						localSaleMiaoshaDetail.getProductName(), bundle);

@@ -717,6 +717,7 @@ public class ProductDetailFragment extends BaseNotifyFragment {
                         bundle.putString("productId", productDetail.getId());
                         bundle.putString("productNumber", productDetail.getNumber());
                         bundle.putString("name", productDetail.getProductName());
+                        bundle.putString("productAttr", productDetail.getAttName());
                         bundle.putString("image", productDetail.getImg());
                         bundle.putInt("isIntegralMall", isIntegralMall);
                         bundle.putInt("buyCount", buyCount);

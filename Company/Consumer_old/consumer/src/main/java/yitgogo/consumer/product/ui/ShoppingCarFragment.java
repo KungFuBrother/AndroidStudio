@@ -56,6 +56,8 @@ public class ShoppingCarFragment extends BaseNotifyFragment {
     TextView totalPriceTextView, buyButton;
     double totalMoney = 0;
 
+    boolean confirm = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +70,11 @@ public class ShoppingCarFragment extends BaseNotifyFragment {
     public void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd(ShoppingCarFragment.class.getName());
-        ShoppingCartController.getInstance().saveChangedShoppingCart(DataBaseHelper.tableCarPlatform, shoppingCarts);
+        //如果不是跳转到确认订单，只是屏幕关闭
+        if (!confirm) {
+            ShoppingCartController.getInstance().saveChangedShoppingCart(DataBaseHelper.tableCarPlatform, shoppingCarts);
+        }
+        confirm = false;
     }
 
     private void init() {
@@ -260,7 +266,9 @@ public class ShoppingCarFragment extends BaseNotifyFragment {
         }
         if (selectedCount > 0) {
             if (User.getUser().isLogin()) {
-                jump(ShoppingCarPlatformBuyFragment.class.getName(), "确认订单");
+                //跳转到确认订单界面，confirm设为true，跳过onpause的数据保存，使用异步任务保存数据后在跳转，延时较长
+                confirm = true;
+                new SavaCar().execute();
             } else {
                 Notify.show("请先登录");
                 jump(UserLoginFragment.class.getName(), "登录");
@@ -385,6 +393,26 @@ public class ShoppingCarFragment extends BaseNotifyFragment {
             TextView goodNameText, goodsPriceText, guigeText, countText, stateText;
             FrameLayout selectButton;
             CheckBox selection;
+        }
+    }
+
+    class SavaCar extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            showLoading();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            ShoppingCartController.getInstance().saveChangedShoppingCart(DataBaseHelper.tableCarPlatform, shoppingCarts);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            hideLoading();
+            jump(ShoppingCarPlatformBuyFragment.class.getName(), "确认订单");
         }
     }
 

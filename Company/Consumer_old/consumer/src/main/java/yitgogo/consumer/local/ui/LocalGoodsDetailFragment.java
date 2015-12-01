@@ -1,6 +1,5 @@
 package yitgogo.consumer.local.ui;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -16,9 +15,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout.LayoutParams;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -31,6 +30,7 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.smartown.yitian.gogo.R;
 import com.umeng.analytics.MobclickAgent;
+import com.viewpagerindicator.CirclePageIndicator;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -50,31 +50,40 @@ import yitgogo.consumer.user.model.User;
 import yitgogo.consumer.user.ui.UserLoginFragment;
 import yitgogo.consumer.view.Notify;
 
-/**
- * @author Tiger
- * @description 本地商品详情
- */
 public class LocalGoodsDetailFragment extends BaseNotifyFragment {
 
-    // 商品详情部分控件
-    ViewPager imagesPager;
-    ImageView imageLastButton, imageNextButton;
-    TextView imageIndexTextView, nameTextView, priceTextView, unitTextView,
-            attrTextView, buyButton, addCarButton;
+    CirclePageIndicator pageIndicator;
+    FrameLayout imageLayout;
+    ViewPager imagePager;
 
-    LinearLayout attrButton, detailButton;
+    TextView nameTextView;
+
+    TextView priceTextView;
+
+    LinearLayout attrLayout;
+    TextView attrTextView;
+
+    FrameLayout countDeleteLayout;
+    FrameLayout countAddLayout;
+    TextView countTextView;
+
+    LinearLayout htmlLayout;
+
+    TextView totalMoneyTextView;
+    Button buyButton;
+    Button carButton;
 
     String goodsId = "";
-
     ModelLocalGoodsDetail goodsDetail;
-
     ImageAdapter imageAdapter;
     RelationAdapter relationAdapter;
+
+    int buyCount = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_lcaol_goods_detail);
+        setContentView(R.layout.fragment_local_goods_detail);
         init();
         findViews();
     }
@@ -110,45 +119,39 @@ public class LocalGoodsDetailFragment extends BaseNotifyFragment {
         relationAdapter = new RelationAdapter();
     }
 
-    @Override
     protected void findViews() {
-        imagesPager = (ViewPager) contentView
-                .findViewById(R.id.fresh_detail_images);
-        imageLastButton = (ImageView) contentView
-                .findViewById(R.id.fresh_detail_image_last);
-        imageNextButton = (ImageView) contentView
-                .findViewById(R.id.fresh_detail_image_next);
-        imageIndexTextView = (TextView) contentView
-                .findViewById(R.id.fresh_detail_image_index);
-        nameTextView = (TextView) contentView
-                .findViewById(R.id.fresh_detail_name);
-        priceTextView = (TextView) contentView
-                .findViewById(R.id.fresh_detail_price);
-        unitTextView = (TextView) contentView
-                .findViewById(R.id.fresh_detail_unit);
-        attrTextView = (TextView) contentView
-                .findViewById(R.id.fresh_attr_name);
+        pageIndicator = (CirclePageIndicator) contentView.findViewById(R.id.local_goods_detail_image_indicator);
+        imageLayout = (FrameLayout) contentView.findViewById(R.id.local_goods_detail_image_layout);
+        imagePager = (ViewPager) contentView.findViewById(R.id.local_goods_detail_image_pager);
 
-        attrButton = (LinearLayout) contentView.findViewById(R.id.fresh_attr);
+        nameTextView = (TextView) contentView.findViewById(R.id.local_goods_detail_name);
 
-        buyButton = (TextView) contentView.findViewById(R.id.fresh_detail_buy);
-        addCarButton = (TextView) contentView
-                .findViewById(R.id.fresh_detail_car);
+        priceTextView = (TextView) contentView.findViewById(R.id.local_goods_detail_price);
 
-        detailButton = (LinearLayout) contentView
-                .findViewById(R.id.fresh_detail);
+        attrLayout = (LinearLayout) contentView.findViewById(R.id.local_goods_detail_attr_layout);
+        attrTextView = (TextView) contentView.findViewById(R.id.local_goods_detail_attr);
+
+        countDeleteLayout = (FrameLayout) contentView.findViewById(R.id.local_goods_detail_count_delete);
+        countAddLayout = (FrameLayout) contentView.findViewById(R.id.local_goods_detail_count_add);
+        countTextView = (TextView) contentView.findViewById(R.id.local_goods_detail_count);
+
+        htmlLayout = (LinearLayout) contentView.findViewById(R.id.local_goods_detail_html);
+
+        totalMoneyTextView = (TextView) contentView.findViewById(R.id.local_goods_detail_total_money);
+        buyButton = (Button) contentView.findViewById(R.id.local_goods_detail_buy);
+        carButton = (Button) contentView.findViewById(R.id.local_goods_detail_add_car);
+
         initViews();
         registerViews();
     }
 
-    @SuppressLint("NewApi")
-    @Override
     protected void initViews() {
-        LayoutParams layoutParams = new LayoutParams(screenWidth, screenWidth);
-        imagesPager.setLayoutParams(layoutParams);
-        imagesPager.setAdapter(imageAdapter);
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, screenWidth);
+        imagePager.setLayoutParams(layoutParams);
+        imagePager.setAdapter(imageAdapter);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void registerViews() {
         addImageButton(R.drawable.iconfont_cart, "购物车", new OnClickListener() {
@@ -158,75 +161,48 @@ public class LocalGoodsDetailFragment extends BaseNotifyFragment {
                 jump(ShoppingCarLocalFragment.class.getName(), "本地商品购物车");
             }
         });
-        attrButton.setOnClickListener(new OnClickListener() {
-
+        attrLayout.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 if (!goodsDetail.getProductRelations().isEmpty()) {
                     new RelationDialog().show(getFragmentManager(), null);
                 }
             }
         });
-        buyButton.setOnClickListener(new OnClickListener() {
-
+        htmlLayout.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if (User.getUser().isLogin()) {
-                    if (goodsDetail != null) {
-                        Bundle bundle = new Bundle();
-                        bundle.putString("goods", goodsDetail.getLocalGoods()
-                                .getJsonObject().toString());
-                        jump(LocalGoodsBuyFragment.class.getName(), "确认订单",
-                                bundle);
-                    }
-                } else {
-                    Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT)
-                            .show();
-                    jump(UserLoginFragment.class.getName(), "会员登录");
-                    return;
-                }
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putString("html", goodsDetail.getLocalGoods().getRetailProdDescribe());
+                bundle.putInt("type", WebFragment.TYPE_HTML);
+                jump(WebFragment.class.getName(), goodsDetail.getLocalGoods().getRetailProdManagerName(), bundle);
             }
         });
-        addCarButton.setOnClickListener(new OnClickListener() {
-
+        buyButton.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
+                buyProduct();
+            }
+        });
+        carButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 addToCar();
             }
         });
-        detailButton.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString("html", goodsDetail.getLocalGoods()
-                        .getRetailProdDescribe());
-                bundle.putInt("type", WebFragment.TYPE_HTML);
-                jump(WebFragment.class.getName(), goodsDetail.getLocalGoods()
-                        .getRetailProdManagerName(), bundle);
-            }
-        });
-        imageLastButton.setOnClickListener(new OnClickListener() {
+        countAddLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (imageAdapter.getCount() > 0) {
-                    if (imagesPager.getCurrentItem() == 0) {
-                        imagesPager.setCurrentItem(imageAdapter.getCount() - 1, true);
-                    } else {
-                        imagesPager.setCurrentItem(imagesPager.getCurrentItem() - 1, true);
-                    }
-                }
+                buyCount++;
+                countTotalMoney();
             }
         });
-        imageNextButton.setOnClickListener(new OnClickListener() {
+        countDeleteLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (imageAdapter.getCount() > 0) {
-                    if (imagesPager.getCurrentItem() == imageAdapter.getCount() - 1) {
-                        imagesPager.setCurrentItem(0, true);
-                    } else {
-                        imagesPager.setCurrentItem(imagesPager.getCurrentItem() + 1, true);
-                    }
+                if (buyCount > 1) {
+                    buyCount--;
+                    countTotalMoney();
                 }
             }
         });
@@ -235,20 +211,35 @@ public class LocalGoodsDetailFragment extends BaseNotifyFragment {
     private void showGoodsInfo() {
         if (goodsDetail != null) {
             imageAdapter.notifyDataSetChanged();
-            nameTextView.setText(goodsDetail.getLocalGoods()
-                    .getRetailProdManagerName());
-            priceTextView.setText(Parameters.CONSTANT_RMB
-                    + decimalFormat.format(goodsDetail.getLocalGoods()
-                    .getRetailPrice()));
-            unitTextView.setText("/" + goodsDetail.getLocalGoods().getUnit());
+            nameTextView.setText(goodsDetail.getLocalGoods().getRetailProdManagerName());
+            priceTextView.setText(Parameters.CONSTANT_RMB + decimalFormat.format(goodsDetail.getLocalGoods().getRetailPrice()));
             attrTextView.setText(goodsDetail.getLocalGoods().getAttName());
             getFragmentManager()
                     .beginTransaction()
-                    .replace(
-                            R.id.fresh_detail_store_info,
-                            new StorePartInfoFragment(goodsDetail
-                                    .getLocalGoods().getProviderBean()))
+                    .replace(R.id.local_goods_detail_store_info, new StorePartInfoFragment(goodsDetail.getLocalGoods().getProviderBean()))
                     .commit();
+            countTotalMoney();
+        }
+    }
+
+    private void countTotalMoney() {
+        countTextView.setText(String.valueOf(buyCount));
+        totalMoneyTextView.setText(Parameters.CONSTANT_RMB + decimalFormat.format(buyCount * goodsDetail.getLocalGoods().getRetailPrice()));
+    }
+
+    private void buyProduct() {
+        if (User.getUser().isLogin()) {
+            if (goodsDetail != null) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("buyCount", buyCount);
+                bundle.putString("goods", goodsDetail.getLocalGoods().getJsonObject().toString());
+                jump(LocalGoodsBuyFragment.class.getName(), "确认订单", bundle);
+            }
+        } else {
+            Toast.makeText(getActivity(), "请先登录", Toast.LENGTH_SHORT)
+                    .show();
+            jump(UserLoginFragment.class.getName(), "会员登录");
+            return;
         }
     }
 
@@ -447,8 +438,8 @@ public class LocalGoodsDetailFragment extends BaseNotifyFragment {
             Dialog dialog = new Dialog(getActivity());
             dialog.getWindow().setBackgroundDrawableResource(R.color.divider);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(dialogView, new LayoutParams(
-                    LayoutParams.MATCH_PARENT, screenWidth));
+            dialog.setContentView(dialogView, new FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT, screenWidth));
             return dialog;
         }
 
@@ -472,7 +463,7 @@ public class LocalGoodsDetailFragment extends BaseNotifyFragment {
                     dismiss();
                 }
             });
-            listView.setOnItemClickListener(new OnItemClickListener() {
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 @Override
                 public void onItemClick(AdapterView<?> arg0, View arg1,

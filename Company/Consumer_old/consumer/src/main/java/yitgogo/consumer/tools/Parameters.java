@@ -7,7 +7,6 @@ public interface Parameters {
     public String CACHE_KEY_STORE_TYPE = "CACHE_KEY_STORE_TYPE";
     public String CACHE_KEY_STORE_AREA = "CACHE_KEY_STORE_AREA";
     public String CACHE_KEY_STORE_JSONSTRING = "CACHE_KEY_STORE_JSONSTRING";
-    public String CACHE_KEY_AUTO_LOCATE = "CACHE_KEY_AUTO_LOCATE";
     public String CACHE_KEY_CAR = "CACHE_KEY_CAR";
     public String CACHE_KEY_CAR_LOCAL = "CACHE_KEY_CAR_LOCAL";
     public String CACHE_KEY_ORDER_PRODUCT = "CACHE_KEY_ORDER_PRODUCT";

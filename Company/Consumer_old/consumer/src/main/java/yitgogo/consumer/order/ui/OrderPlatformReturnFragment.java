@@ -33,12 +33,13 @@ public class OrderPlatformReturnFragment extends BaseNotifyFragment {
     EditText reasonEditText;
     Button commitButton;
 
-    String orderNumber = "";
-    String productId = "";
     String productName = "";
-    String providerId = "";
-    String supplierId = "";
     double productPrice = 0;
+
+    String saleId = "";
+    String supplierId = "";
+    String orderNumber = "";
+    String productInfo = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,23 +63,25 @@ public class OrderPlatformReturnFragment extends BaseNotifyFragment {
     private void init() {
         Bundle bundle = getArguments();
         if (bundle != null) {
-            if (bundle.containsKey("orderNumber")) {
-                orderNumber = bundle.getString("orderNumber");
-            }
-            if (bundle.containsKey("productId")) {
-                productId = bundle.getString("productId");
-            }
+
             if (bundle.containsKey("productName")) {
                 productName = bundle.getString("productName");
             }
-            if (bundle.containsKey("providerId")) {
-                providerId = bundle.getString("providerId");
+            if (bundle.containsKey("productPrice")) {
+                productPrice = bundle.getDouble("productPrice");
+            }
+
+            if (bundle.containsKey("saleId")) {
+                saleId = bundle.getString("saleId");
             }
             if (bundle.containsKey("supplierId")) {
                 supplierId = bundle.getString("supplierId");
             }
-            if (bundle.containsKey("productPrice")) {
-                productPrice = bundle.getDouble("productPrice");
+            if (bundle.containsKey("orderNumber")) {
+                orderNumber = bundle.getString("orderNumber");
+            }
+            if (bundle.containsKey("productInfo")) {
+                productInfo = bundle.getString("productInfo");
             }
         }
     }
@@ -107,22 +110,23 @@ public class OrderPlatformReturnFragment extends BaseNotifyFragment {
 
         @Override
         protected void onPreExecute() {
-            super.onPreExecute();
+            showLoading();
         }
 
         @Override
         protected String doInBackground(Void... voids) {
             List<NameValuePair> nameValuePairs = new ArrayList<>();
-            nameValuePairs.add(new BasicNameValuePair("saleId", providerId));
+            nameValuePairs.add(new BasicNameValuePair("saleId", saleId));
             nameValuePairs.add(new BasicNameValuePair("supplierId", supplierId));
             nameValuePairs.add(new BasicNameValuePair("orderNumber", orderNumber));
-            nameValuePairs.add(new BasicNameValuePair("productInfo", productId));
+            nameValuePairs.add(new BasicNameValuePair("productInfo", productInfo));
             nameValuePairs.add(new BasicNameValuePair("reason", reasonEditText.getText().toString()));
             return NetUtil.getInstance().postWithCookie(API.API_ORDER_RETURN, nameValuePairs);
         }
 
         @Override
         protected void onPostExecute(String result) {
+            hideLoading();
             if (!TextUtils.isEmpty(result)) {
                 try {
                     JSONObject object = new JSONObject(result);

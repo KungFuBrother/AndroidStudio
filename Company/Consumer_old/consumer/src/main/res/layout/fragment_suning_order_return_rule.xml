@@ -141,6 +141,16 @@
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/fragment_suning_return_rule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:gravity="right"
+                android:text="查看更多>"
+                android:textColor="@color/button_car_normal"
+                android:textSize="16dp" />
+
         </LinearLayout>
     </ScrollView>
 

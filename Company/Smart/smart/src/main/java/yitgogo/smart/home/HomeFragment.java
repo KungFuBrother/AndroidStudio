@@ -2,6 +2,8 @@ package yitgogo.smart.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -9,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -28,6 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -79,11 +83,67 @@ public class HomeFragment extends BaseNotifyFragment {
     ImageView nongfuImageView;
     LinearLayout bianmButton, suningButton, searchButton, qrcodeButton;
 
+    FrameLayout timeLayout;
+    TextView dayTextView, hourTextView, minuteTextView, secondsTextView;
+    ImageView closeTimeButton;
+
     List<ModelProduct> products;
     HashMap<String, ModelListPrice> priceMap;
     ProductAdapter productAdapter;
 
     int pageSize = 12, pageNo = 0;
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == 1) {
+                if (timeLayout.getVisibility() == View.GONE) {
+                    return;
+                }
+                long currentTime = Calendar.getInstance().getTimeInMillis();
+                long startTime = (long) 1449763200 * 1000;
+                if (startTime > currentTime) {
+                    timeLayout.setVisibility(View.VISIBLE);
+                    long time = startTime - currentTime;
+                    long day = time / 86400000;
+                    long hour = time % 86400000 / 3600000;
+                    long minute = time % 3600000 / 60000;
+                    long seconds = time % 60000 / 1000;
+                    StringBuilder stringBuilder = new StringBuilder();
+                    if (day < 10) {
+                        stringBuilder.append("0");
+                    }
+                    stringBuilder.append(day);
+                    dayTextView.setText(stringBuilder.toString());
+
+                    stringBuilder = new StringBuilder();
+                    if (hour < 10) {
+                        stringBuilder.append("0");
+                    }
+                    stringBuilder.append(hour);
+                    hourTextView.setText(stringBuilder.toString());
+
+                    stringBuilder = new StringBuilder();
+                    if (minute < 10) {
+                        stringBuilder.append("0");
+                    }
+                    stringBuilder.append(minute);
+                    minuteTextView.setText(stringBuilder.toString());
+
+                    stringBuilder = new StringBuilder();
+                    if (seconds < 10) {
+                        stringBuilder.append("0");
+                    }
+                    stringBuilder.append(seconds);
+                    secondsTextView.setText(stringBuilder.toString());
+
+                    handler.sendEmptyMessageDelayed(1, 1000);
+                } else {
+                    timeLayout.setVisibility(View.GONE);
+                }
+            }
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -137,11 +197,19 @@ public class HomeFragment extends BaseNotifyFragment {
         searchButton = (LinearLayout) contentView.findViewById(R.id.main_search);
         qrcodeButton = (LinearLayout) contentView.findViewById(R.id.main_qrcode);
 
+        timeLayout = (FrameLayout) contentView.findViewById(R.id.home_1212_layout);
+        dayTextView = (TextView) contentView.findViewById(R.id.home_1212_day);
+        hourTextView = (TextView) contentView.findViewById(R.id.home_1212_hour);
+        minuteTextView = (TextView) contentView.findViewById(R.id.home_1212_minute);
+        secondsTextView = (TextView) contentView.findViewById(R.id.home_1212_second);
+        closeTimeButton = (ImageView) contentView.findViewById(R.id.home_1212_close);
+
         initViews();
         registerViews();
     }
 
     protected void initViews() {
+        handler.sendEmptyMessage(1);
         refreshScrollView.setMode(Mode.BOTH);
         productGridView.setAdapter(productAdapter);
         getFragmentManager()
@@ -234,6 +302,13 @@ public class HomeFragment extends BaseNotifyFragment {
             @Override
             public void onClick(View v) {
                 new QrcodeDialog().show(getFragmentManager(), null);
+            }
+        });
+        closeTimeButton.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                timeLayout.setVisibility(View.GONE);
             }
         });
     }

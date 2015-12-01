@@ -1,11 +1,11 @@
 package yitgogo.consumer.home.part;
 
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.LayoutParams;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,11 +88,9 @@ public class PartMiaoshaFragment extends BaseNormalFragment {
 
     @Override
     protected void initViews() {
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                screenWidth, screenWidth / 21 * 11);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(screenWidth, screenWidth / 10 * 6);
         recyclerView.setLayoutParams(layoutParams);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(
-                getActivity());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(miaoshaAdapter);
@@ -106,7 +104,7 @@ public class PartMiaoshaFragment extends BaseNormalFragment {
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putString("result", result);
-                jump(SaleMiaoshaFragment.class.getName(), "秒杀",bundle);
+                jump(SaleMiaoshaFragment.class.getName(), "秒杀", bundle);
             }
         });
     }
@@ -122,8 +120,8 @@ public class PartMiaoshaFragment extends BaseNormalFragment {
                 if (object.optString("state").equalsIgnoreCase("SUCCESS")) {
                     JSONArray array = object.optJSONArray("dataList");
                     if (array != null) {
-                        if (array.length() > 4) {
-                            for (int i = 0; i < 4; i++) {
+                        if (array.length() > 10) {
+                            for (int i = 0; i < 10; i++) {
                                 saleMiaoshas.add(new ModelSaleMiaosha(array
                                         .optJSONObject(i)));
                             }
@@ -153,21 +151,17 @@ public class PartMiaoshaFragment extends BaseNormalFragment {
         class MiaoshaViewHolder extends RecyclerView.ViewHolder {
 
             ImageView imageView;
-            TextView nameTextView, timeTextView, priceTextView;
+            TextView nameTextView, priceTextView, salePriceTextView, stateTextView;
 
             public MiaoshaViewHolder(View view) {
                 super(view);
-                LayoutParams params = new LayoutParams(screenWidth / 5 * 2,
-                        screenWidth / 21 * 11);
-                view.setLayoutParams(params);
-                imageView = (ImageView) view
-                        .findViewById(R.id.list_miaosha_image);
-                nameTextView = (TextView) view
-                        .findViewById(R.id.list_miaosha_name);
-                timeTextView = (TextView) view
-                        .findViewById(R.id.list_miaosha_time);
-                priceTextView = (TextView) view
-                        .findViewById(R.id.list_miaosha_price);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(screenWidth / 5 * 2, LinearLayout.LayoutParams.MATCH_PARENT);
+                imageView = (ImageView) view.findViewById(R.id.item_kill_image);
+                nameTextView = (TextView) view.findViewById(R.id.item_kill_name);
+                priceTextView = (TextView) view.findViewById(R.id.item_kill_price);
+                salePriceTextView = (TextView) view.findViewById(R.id.item_kill_sale_price);
+                stateTextView = (TextView) view.findViewById(R.id.item_kill_state);
+                view.setLayoutParams(layoutParams);
             }
         }
 
@@ -180,69 +174,42 @@ public class PartMiaoshaFragment extends BaseNormalFragment {
         public void onBindViewHolder(ViewHolder viewHolder, int position) {
             final int index = position;
             MiaoshaViewHolder holder = (MiaoshaViewHolder) viewHolder;
-            ImageLoader.getInstance()
-                    .displayImage(
-                            getSmallImageUrl(saleMiaoshas.get(position)
-                                    .getSeckillImg()), holder.imageView);
-            holder.nameTextView.setText(saleMiaoshas.get(position)
-                    .getProductName());
+            ImageLoader.getInstance().displayImage(getSmallImageUrl(saleMiaoshas.get(position).getSeckillImg()), holder.imageView);
+            holder.nameTextView.setText(saleMiaoshas.get(position).getProductName());
             if (prices.containsKey(saleMiaoshas.get(position).getProdutId())) {
-                holder.priceTextView.setText(Parameters.CONSTANT_RMB
-                        + decimalFormat.format(prices.get(saleMiaoshas.get(
-                        position).getProdutId())));
+                holder.salePriceTextView.setText("秒杀价:" + Parameters.CONSTANT_RMB + decimalFormat.format(prices.get(saleMiaoshas.get(position).getProdutId())));
             }
             Date currentTime = Calendar.getInstance().getTime();
-            Date startTime = new Date(saleMiaoshas.get(position)
-                    .getSeckillTime());
+            Date startTime = new Date(saleMiaoshas.get(position).getSeckillTime());
             if (startTime.before(currentTime)) {
-                if (saleMiaoshas.get(position).getSeckillNumber() <= 0) {
-                    holder.timeTextView.setText("抢购结束");
+                if (saleMiaoshas.get(position).getSeckillNumber() > 0) {
+                    holder.stateTextView.setText("正在秒杀");
+                    holder.stateTextView.setBackgroundColor(Color.rgb(226, 59, 96));
+                    holder.stateTextView.setTextColor(Color.rgb(255, 241, 0));
                 } else {
-                    holder.timeTextView.setText("抢购中");
+                    holder.stateTextView.setText("已售罄");
+                    holder.stateTextView.setBackgroundColor(Color.rgb(189, 189, 189));
+                    holder.stateTextView.setTextColor(Color.rgb(255, 255, 255));
                 }
             } else {
-                // long remainSeconds = (startTime.getTime() - currentTime
-                // .getTime()) / 1000;
-                // long hour = remainSeconds / 3600;
-                // long minute = (remainSeconds % 3600) / 60;
-                // long second = (remainSeconds % 3600) % 60;
-                // String h = "", m = "", s = "";
-                // if (hour < 10) {
-                // h = "0" + hour;
-                // } else {
-                // h = "" + hour;
-                // }
-                // if (minute < 10) {
-                // m = "0" + minute;
-                // } else {
-                // m = "" + minute;
-                // }
-                // if (second < 10) {
-                // s = "0" + second;
-                // } else {
-                // s = "" + second;
-                // }
-                holder.timeTextView.setText(simpleDateFormat.format(startTime));
+                holder.stateTextView.setText("未开始");
+                holder.stateTextView.setBackgroundColor(Color.rgb(189, 189, 189));
+                holder.stateTextView.setTextColor(Color.rgb(255, 255, 255));
             }
             holder.itemView.setOnClickListener(new OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
                     Date currentTime = Calendar.getInstance().getTime();
-                    Date startTime = new Date(saleMiaoshas.get(index)
-                            .getSeckillTime());
+                    Date startTime = new Date(saleMiaoshas.get(index).getSeckillTime());
                     if (startTime.before(currentTime)) {
-                        if (saleMiaoshas.get(index).getSeckillNumber() <= 0) {
-                            Notify.show("秒杀已经结束");
+                        if (saleMiaoshas.get(index).getSeckillNumber() > 0) {
+                            showProductDetail(saleMiaoshas.get(index).getProdutId(), saleMiaoshas.get(index).getProductName(), CaptureActivity.SALE_TYPE_MIAOSHA);
                         } else {
-                            showProductDetail(saleMiaoshas.get(index)
-                                            .getProdutId(), saleMiaoshas.get(index)
-                                            .getProductName(),
-                                    CaptureActivity.SALE_TYPE_MIAOSHA);
+                            Notify.show("已售罄");
                         }
                     } else {
-                        Notify.show("秒杀还未开始，开始时间\n"
-                                + simpleDateFormat.format(startTime));
+                        Notify.show("未开始");
                     }
                 }
             });
@@ -250,8 +217,7 @@ public class PartMiaoshaFragment extends BaseNormalFragment {
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup arg0, int arg1) {
-            View view = layoutInflater.inflate(R.layout.list_product_miaosha,
-                    null);
+            View view = layoutInflater.inflate(R.layout.list_product_miaosha, null);
             MiaoshaViewHolder viewHolder = new MiaoshaViewHolder(view);
             return viewHolder;
         }

@@ -119,7 +119,9 @@ public class OrderConfirmPartAddressFragment extends BaseNormalFragment {
 
     private void showAddressInfo() {
         if (address != null) {
-            onSetAddressListener.onSetAddress();
+            if (onSetAddressListener != null) {
+                onSetAddressListener.onSetAddress();
+            }
             userNameTextView.setText(address.getPersonName());
             userPhoneTextView.setText(address.getPhone());
             userAreaTextView.setText(address.getAreaAddress());

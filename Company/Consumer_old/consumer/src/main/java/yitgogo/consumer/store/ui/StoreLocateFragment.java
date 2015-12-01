@@ -40,6 +40,7 @@ import yitgogo.consumer.tools.LogUtil;
 import yitgogo.consumer.tools.Parameters;
 import yitgogo.consumer.view.InnerListView;
 
+@Deprecated
 public class StoreLocateFragment extends BaseNotifyFragment {
 
     InnerListView storeListView;

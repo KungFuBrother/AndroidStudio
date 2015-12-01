@@ -96,12 +96,29 @@ public class StoreAreaFragment extends BaseNotifyFragment {
         gridView = (InnerGridView) contentView
                 .findViewById(R.id.store_select_selection);
         initViews();
+        registerViews();
     }
 
     @Override
     protected void initViews() {
         listView.setAdapter(areaListAdapter);
         gridView.setAdapter(areaGridAdapter);
+    }
+
+    @Override
+    protected void registerViews() {
+        onBackButtonClick(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!getArea) {
+                    if (Store.getStore() == null) {
+                        getActivity().finish();
+                    } else {
+                        getLocalBusinessState();
+                    }
+                }
+            }
+        });
     }
 
     private void getLocalBusinessState() {

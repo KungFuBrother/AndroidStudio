@@ -20,7 +20,7 @@ import com.umeng.analytics.MobclickAgent;
 
 import yitgogo.consumer.main.ui.MainActivity;
 import yitgogo.consumer.product.ui.ProductListFragment;
-import yitgogo.consumer.store.ui.SelectStoreFragment;
+import yitgogo.consumer.store.ui.StoreAreaFragment;
 import yitgogo.consumer.tools.LogUtil;
 import yitgogo.consumer.tools.ScreenUtil;
 
@@ -177,7 +177,7 @@ public class ContainerActivity extends BaseActivity {
             if (productListFragment.onKeyDown(keyCode, event)) {
                 return true;
             }
-        } else if (fragmentName.equals(SelectStoreFragment.class.getName())) {
+        } else if (fragmentName.equals(StoreAreaFragment.class.getName())) {
             if (keyCode == KeyEvent.KEYCODE_BACK) {
                 getLocalBusinessState();
             }
@@ -193,6 +193,7 @@ public class ContainerActivity extends BaseActivity {
                 Intent intent = new Intent(ContainerActivity.this, MainActivity.class);
                 intent.putExtra("showLocalBusiness", showLocalBusiness);
                 startActivity(intent);
+                finish();
             }
         };
         localBusinessState.execute();

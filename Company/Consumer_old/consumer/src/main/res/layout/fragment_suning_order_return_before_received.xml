@@ -35,10 +35,9 @@
                         android:textSize="16dp" />
 
                     <TextView
-                        android:id="@+id/fragment_platform_return_product_name"
+                        android:id="@+id/fragment_suning_return_product_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=""
                         android:textColor="@color/textColorSecond"
                         android:textSize="16dp" />
 
@@ -59,7 +58,7 @@
                         android:textSize="16dp" />
 
                     <TextView
-                        android:id="@+id/fragment_platform_return_product_price"
+                        android:id="@+id/fragment_suning_return_product_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/product_price"
@@ -68,7 +67,7 @@
                 </LinearLayout>
 
                 <Button
-                    android:id="@+id/fragment_platform_return_commit"
+                    android:id="@+id/fragment_suning_return_commit"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_margin="48dp"
@@ -84,19 +83,19 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="4dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="4dp">
 
                 <TextView
+                    android:id="@+id/fragment_suning_return_phone"
                     android:layout_width="wrap_content"
-                    android:layout_margin="4dp"
                     android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
                     android:text="客户电话（苏宁）：4008156516"
                     android:textColor="@color/product_price"
                     android:textSize="16dp" />
 
                 <TextView
-                    android:id="@+id/fragment_platform_return_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
@@ -105,10 +104,11 @@
                     android:textSize="16dp" />
 
                 <TextView
+                    android:id="@+id/fragment_suning_return_rule"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:gravity="right"
-                    android:layout_height="wrap_content"
                     android:text="查看退换货详细规则>"
                     android:textColor="@color/button_car_normal"
                     android:textSize="16dp" />

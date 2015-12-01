@@ -1,5 +1,6 @@
 package yitgogo.smart.product.ui;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -36,6 +37,7 @@ import yitgogo.smart.tools.Parameters;
 import yitgogo.smart.view.Notify;
 
 public class ShoppingCarPlatformFragment extends BaseNotifyFragment {
+
     // 购物车部分
     ListView carList;
     List<ModelShoppingCart> shoppingCarts;
@@ -46,6 +48,8 @@ public class ShoppingCarPlatformFragment extends BaseNotifyFragment {
 
     TextView totalPriceTextView, buyButton;
     double totalMoney = 0;
+
+    boolean confirm = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,7 +76,11 @@ public class ShoppingCarPlatformFragment extends BaseNotifyFragment {
     public void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd(ShoppingCarPlatformFragment.class.getName());
-        ShoppingCartController.getInstance().saveChangedShoppingCart(DataBaseHelper.tableCarPlatform, shoppingCarts);
+        //如果不是跳转到确认订单，只是屏幕关闭
+        if (!confirm) {
+            ShoppingCartController.getInstance().saveChangedShoppingCart(DataBaseHelper.tableCarPlatform, shoppingCarts);
+        }
+        confirm = false;
     }
 
     protected void findViews() {
@@ -129,7 +137,9 @@ public class ShoppingCarPlatformFragment extends BaseNotifyFragment {
                     }
                 }
                 if (selectedCount > 0) {
-                    openWindow(ShoppingCarPlatformBuyFragment.class.getName(), "确认订单");
+                    //跳转到确认订单界面，confirm设为true，跳过onpause的数据保存，使用异步任务保存数据后在跳转，延时较长
+                    confirm = true;
+                    new SavaCar().execute();
                 } else {
                     Notify.show("请勾选要购买的商品");
                 }
@@ -389,6 +399,26 @@ public class ShoppingCarPlatformFragment extends BaseNotifyFragment {
                     stateText;
             LinearLayout selectButton;
             ImageView selection;
+        }
+    }
+
+    class SavaCar extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            showLoading();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            ShoppingCartController.getInstance().saveChangedShoppingCart(DataBaseHelper.tableCarPlatform, shoppingCarts);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            hideLoading();
+            openWindow(ShoppingCarPlatformBuyFragment.class.getName(), "确认订单");
         }
     }
 

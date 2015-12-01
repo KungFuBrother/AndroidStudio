@@ -4,14 +4,16 @@ import org.json.JSONObject;
 
 public class ModelPlatformOrderProduct {
 
-    String id = "", productNumber = "", productName = "", attName = "", productUnit = "", img = "", providerId = "", supplierId = "", userAccount = "", returnState = "";
+    String id = "", productNumber = "", productName = "", attName = "", productUnit = "", img = "", providerId = "", supplierId = "", userAccount = "";
     int productQuantity = 0;
     double unitSellPrice = 0;
-    JSONObject jsonObject=new JSONObject();
+    int displayReturnButton = 0;
+    int returnState = 0;
+    JSONObject jsonObject = new JSONObject();
 
     public ModelPlatformOrderProduct(JSONObject object) {
         if (object != null) {
-            this.jsonObject=object;
+            this.jsonObject = object;
             if (object.has("id")) {
                 if (!object.optString("id").equalsIgnoreCase("null")) {
                     id = object.optString("id");
@@ -57,9 +59,14 @@ public class ModelPlatformOrderProduct {
                     userAccount = object.optString("userAccount");
                 }
             }
+            if (object.has("displayReturnButton")) {
+                if (!object.optString("displayReturnButton").equalsIgnoreCase("null")) {
+                    displayReturnButton = object.optInt("displayReturnButton");
+                }
+            }
             if (object.has("returnState")) {
                 if (!object.optString("returnState").equalsIgnoreCase("null")) {
-                    returnState = object.optString("returnState");
+                    returnState = object.optInt("returnState");
                 }
             }
             if (object.has("productQuantity")) {
@@ -111,7 +118,11 @@ public class ModelPlatformOrderProduct {
         return userAccount;
     }
 
-    public String getReturnState() {
+    public int getDisplayReturnButton() {
+        return displayReturnButton;
+    }
+
+    public int getReturnState() {
         return returnState;
     }
 

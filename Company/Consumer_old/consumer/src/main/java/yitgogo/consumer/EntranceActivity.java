@@ -112,15 +112,9 @@ public class EntranceActivity extends BaseActivity {
      */
     private void shouldUpdateStore() {
         if (Store.getStore() == null) {
-            Notify.show("正在查找附近的服务中心");
             updateStore(true);
         } else {
-            if (Content.getBooleanContent(Parameters.CACHE_KEY_AUTO_LOCATE,
-                    true)) {
-                updateStore(false);
-            } else {
-                getLocalBusinessState();
-            }
+            updateStore(false);
         }
     }
 
@@ -233,14 +227,7 @@ public class EntranceActivity extends BaseActivity {
                                         return;
                                     }
                                 } catch (JSONException e) {
-                                    // 执行到这里说明没有自动定位到到最近加盟店，需要手选
-                                    if (mustGetStore) {
-                                        selectJmd();
-                                    } else {
-                                        getLocalBusinessState();
-                                    }
                                     e.printStackTrace();
-                                    return;
                                 }
                             }
                         }

@@ -1,5 +1,7 @@
 package yitgogo.smart.product.ui;
 
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -8,16 +10,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.smartown.yitgogo.smart.R;
 import com.umeng.analytics.MobclickAgent;
@@ -34,10 +31,8 @@ import java.util.List;
 
 import yitgogo.smart.BaseNotifyFragment;
 import yitgogo.smart.home.model.HomeData;
+import yitgogo.smart.home.model.ModelKillPrice;
 import yitgogo.smart.home.model.ModelSaleMiaosha;
-import yitgogo.smart.home.part.PartMiaoshaFragment;
-import yitgogo.smart.local.LocalServiceDetailFragment;
-import yitgogo.smart.local.model.ModelLocalService;
 import yitgogo.smart.task.HomeTask;
 import yitgogo.smart.tools.API;
 import yitgogo.smart.tools.MissionController;
@@ -55,7 +50,7 @@ public class MiaoshaFragment extends BaseNotifyFragment {
     InnerGridView productGridView;
 
     List<ModelSaleMiaosha> saleMiaoshas;
-    HashMap<String, Double> prices;
+    HashMap<String, ModelKillPrice> killPriceHashMap;
     MiaoshaAdapter miaoshaAdapter;
 
     @Override
@@ -106,7 +101,7 @@ public class MiaoshaFragment extends BaseNotifyFragment {
     private void init() {
         measureScreen();
         saleMiaoshas = new ArrayList<>();
-        prices = new HashMap<>();
+        killPriceHashMap = new HashMap<>();
         miaoshaAdapter = new MiaoshaAdapter();
     }
 
@@ -130,21 +125,17 @@ public class MiaoshaFragment extends BaseNotifyFragment {
     protected void registerViews() {
         productGridView.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                    long arg3) {
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 Date currentTime = Calendar.getInstance().getTime();
-                Date startTime = new Date(saleMiaoshas.get(arg2)
-                        .getSeckillTime());
+                Date startTime = new Date(saleMiaoshas.get(arg2).getSeckillTime());
                 if (startTime.before(currentTime)) {
-                    if (saleMiaoshas.get(arg2).getSeckillNumber() <= 0) {
-                        Notify.show("抢购结束");
+                    if (saleMiaoshas.get(arg2).getSeckillNumber() > 0) {
+                        showProductDetail(saleMiaoshas.get(arg2).getProdutId(), QrCodeTool.SALE_TYPE_MIAOSHA);
                     } else {
-                        showProductDetail(saleMiaoshas.get(arg2).getProdutId(),
-                                QrCodeTool.SALE_TYPE_MIAOSHA);
+                        Notify.show("已售罄");
                     }
                 } else {
-                    Notify.show("秒杀还没开始，开始时间:"
-                            + simpleDateFormat.format(startTime));
+                    Notify.show("未开始");
                 }
             }
         });
@@ -169,25 +160,16 @@ public class MiaoshaFragment extends BaseNotifyFragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder viewHolder;
+            ViewHolder viewHolder = new ViewHolder();
             if (convertView == null) {
-                convertView = layoutInflater.inflate(
-                        R.layout.list_local_sale_miaosha, null);
-                viewHolder = new ViewHolder();
-                viewHolder.imageView = (ImageView) convertView
-                        .findViewById(R.id.list_local_miaosha_image);
-                viewHolder.originalPriceTextView = (TextView) convertView
-                        .findViewById(R.id.list_local_miaosha_price_original);
-                viewHolder.priceTextView = (TextView) convertView
-                        .findViewById(R.id.list_local_miaosha_price);
-                viewHolder.timeTextView = (TextView) convertView
-                        .findViewById(R.id.list_local_miaosha_time);
-                viewHolder.nameTextView = (TextView) convertView
-                        .findViewById(R.id.list_local_miaosha_name);
-                viewHolder.timeTextView.setVisibility(View.VISIBLE);
-                FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
-                        FrameLayout.LayoutParams.MATCH_PARENT,
-                        HomeData.imageHeight);
+                convertView = layoutInflater.inflate(R.layout.item_sale_kill, null);
+                viewHolder.imageView = (ImageView) convertView.findViewById(R.id.item_kill_image);
+                viewHolder.nameTextView = (TextView) convertView.findViewById(R.id.item_kill_name);
+                viewHolder.priceTextView = (TextView) convertView.findViewById(R.id.item_kill_price);
+                viewHolder.salePriceTextView = (TextView) convertView.findViewById(R.id.item_kill_sale_price);
+                viewHolder.stateTextView = (TextView) convertView.findViewById(R.id.item_kill_state);
+                viewHolder.priceTextView.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, HomeData.imageHeight);
                 viewHolder.imageView.setLayoutParams(layoutParams);
                 convertView.setTag(viewHolder);
             } else {
@@ -196,33 +178,34 @@ public class MiaoshaFragment extends BaseNotifyFragment {
             imageLoader.displayImage(getSmallImageUrl(saleMiaoshas
                     .get(position).getSeckillImg()), viewHolder.imageView);
             Date currentTime = Calendar.getInstance().getTime();
-            Date startTime = new Date(saleMiaoshas.get(position)
-                    .getSeckillTime());
+            Date startTime = new Date(saleMiaoshas.get(position).getSeckillTime());
             if (startTime.before(currentTime)) {
-                if (saleMiaoshas.get(position).getSeckillNumber() <= 0) {
-                    viewHolder.timeTextView.setText("抢购结束");
+                if (saleMiaoshas.get(position).getSeckillNumber() > 0) {
+                    viewHolder.stateTextView.setText("正在秒杀");
+                    viewHolder.stateTextView.setBackgroundColor(Color.rgb(226, 59, 96));
+                    viewHolder.stateTextView.setTextColor(Color.rgb(255, 241, 0));
                 } else {
-                    viewHolder.timeTextView.setText("抢购中");
+                    viewHolder.stateTextView.setText("已售罄");
+                    viewHolder.stateTextView.setBackgroundColor(Color.rgb(189, 189, 189));
+                    viewHolder.stateTextView.setTextColor(Color.rgb(255, 255, 255));
                 }
             } else {
-                viewHolder.timeTextView.setText("开始时间:"
-                        + simpleDateFormat.format(startTime));
+                viewHolder.stateTextView.setText("未开始");
+                viewHolder.stateTextView.setBackgroundColor(Color.rgb(189, 189, 189));
+                viewHolder.stateTextView.setTextColor(Color.rgb(255, 255, 255));
             }
             viewHolder.nameTextView.setText(saleMiaoshas.get(position)
                     .getProductName());
-            viewHolder.originalPriceTextView.setText("秒杀价:");
-            if (prices.containsKey(saleMiaoshas.get(position).getProdutId())) {
-                viewHolder.priceTextView.setText(Parameters.CONSTANT_RMB
-                        + decimalFormat.format(prices.get(saleMiaoshas.get(
-                        position).getProdutId())));
+            if (killPriceHashMap.containsKey(saleMiaoshas.get(position).getProdutId())) {
+                viewHolder.priceTextView.setText("原价:" + Parameters.CONSTANT_RMB + decimalFormat.format(killPriceHashMap.get(saleMiaoshas.get(position).getProdutId()).getOriginalPrice()));
+                viewHolder.salePriceTextView.setText("秒杀价:" + Parameters.CONSTANT_RMB + decimalFormat.format(killPriceHashMap.get(saleMiaoshas.get(position).getProdutId()).getPrice()));
             }
             return convertView;
         }
 
         class ViewHolder {
             ImageView imageView;
-            TextView priceTextView, originalPriceTextView, nameTextView,
-                    timeTextView;
+            TextView nameTextView, priceTextView, salePriceTextView, stateTextView;
         }
     }
 
@@ -268,25 +251,16 @@ public class MiaoshaFragment extends BaseNotifyFragment {
                         super.onSuccess(message);
                         if (!TextUtils.isEmpty(message.getResult())) {
                             try {
-                                JSONObject object = new JSONObject(message
-                                        .getResult());
-                                if (object.optString("state").equalsIgnoreCase(
-                                        "SUCCESS")) {
-                                    JSONArray array = object
-                                            .optJSONArray("dataList");
+                                JSONObject object = new JSONObject(message.getResult());
+                                if (object.optString("state").equalsIgnoreCase("SUCCESS")) {
+                                    JSONArray array = object.optJSONArray("dataList");
                                     if (array != null) {
                                         for (int i = 0; i < array.length(); i++) {
-                                            JSONObject jsonObject = array
-                                                    .optJSONObject(i);
+                                            JSONObject jsonObject = array.optJSONObject(i);
                                             if (jsonObject != null) {
-                                                prices.put(
-                                                        jsonObject
-                                                                .optString("id"),
-                                                        jsonObject
-                                                                .optDouble("price"));
+                                                killPriceHashMap.put(jsonObject.optString("id"), new ModelKillPrice(jsonObject));
                                             }
-                                            miaoshaAdapter
-                                                    .notifyDataSetChanged();
+                                            miaoshaAdapter.notifyDataSetChanged();
                                         }
                                     }
                                 }
@@ -309,8 +283,7 @@ public class MiaoshaFragment extends BaseNotifyFragment {
                     JSONArray array = object.optJSONArray("dataList");
                     if (array != null) {
                         for (int i = 0; i < array.length(); i++) {
-                            saleMiaoshas.add(new ModelSaleMiaosha(array
-                                    .optJSONObject(i)));
+                            saleMiaoshas.add(new ModelSaleMiaosha(array.optJSONObject(i)));
                         }
                         if (saleMiaoshas.size() > 0) {
                             getSalePrice();

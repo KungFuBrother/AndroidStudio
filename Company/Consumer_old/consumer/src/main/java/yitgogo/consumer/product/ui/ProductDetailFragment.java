@@ -1,21 +1,27 @@
 package yitgogo.consumer.product.ui;
 
+import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -49,14 +55,12 @@ import yitgogo.consumer.product.model.ModelSaleDetailMiaosha;
 import yitgogo.consumer.product.model.ModelSaleDetailTejia;
 import yitgogo.consumer.product.model.ModelSaleDetailTime;
 import yitgogo.consumer.store.model.Store;
-import yitgogo.consumer.store.ui.StoreAreaFragment;
+import yitgogo.consumer.store.ui.SelectAreaFragment;
 import yitgogo.consumer.tools.API;
 import yitgogo.consumer.tools.Content;
 import yitgogo.consumer.tools.Parameters;
 import yitgogo.consumer.user.model.User;
-import yitgogo.consumer.user.ui.UserAddressEditFragment;
 import yitgogo.consumer.user.ui.UserLoginFragment;
-import yitgogo.consumer.view.InnerGridView;
 import yitgogo.consumer.view.Notify;
 
 public class ProductDetailFragment extends BaseNotifyFragment {
@@ -89,10 +93,6 @@ public class ProductDetailFragment extends BaseNotifyFragment {
     Button buyButton;
     Button carButton;
 
-    LinearLayout relationLayout;
-    TextView hideRelationButton, noRelationTextView;
-    InnerGridView relationList;
-
     ImageAdapter imageAdapter;
     String productId = "";
     ModelProduct productDetail;
@@ -122,18 +122,7 @@ public class ProductDetailFragment extends BaseNotifyFragment {
     public void onResume() {
         super.onResume();
         MobclickAgent.onPageStart(ProductDetailFragment.class.getName());
-        if (!TextUtils.isEmpty(UserAddressEditFragment.areaName)) {
-            areaName = UserAddressEditFragment.areaName;
-            Content.saveStringContent("product_detail_area_name", areaName);
-            if (!TextUtils.isEmpty(UserAddressEditFragment.areaId)) {
-                areaId = UserAddressEditFragment.areaId;
-                Content.saveStringContent("product_detail_area_id", areaId);
-            }
-        }
-        areaTextView.setText(areaName);
-        if (!TextUtils.isEmpty(productDetail.getNumber())) {
-            new GetFreight().execute();
-        }
+        initArea();
     }
 
     @Override
@@ -159,12 +148,19 @@ public class ProductDetailFragment extends BaseNotifyFragment {
                 saleType = bundle.getInt("saleType");
             }
         }
-        areaName = Content.getStringContent("product_detail_area_name", "四川省>成都市>锦江区");
-        areaId = Content.getStringContent("product_detail_area_id", "23");
         productDetail = new ModelProduct();
         freightMap = new HashMap<>();
         imageAdapter = new ImageAdapter();
         relationAdapter = new RelationAdapter();
+    }
+
+    private void initArea() {
+        areaName = Content.getStringContent("product_detail_area_name", "四川省>成都市>锦江区");
+        areaId = Content.getStringContent("product_detail_area_id", "2419");
+        areaTextView.setText(areaName);
+        if (!TextUtils.isEmpty(productDetail.getNumber())) {
+            new GetFreight().execute();
+        }
     }
 
     protected void findViews() {
@@ -213,7 +209,7 @@ public class ProductDetailFragment extends BaseNotifyFragment {
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, screenWidth);
         imagePager.setLayoutParams(layoutParams);
         imagePager.setAdapter(imageAdapter);
-//        relationList.setAdapter(relationAdapter);
+        pageIndicator.setViewPager(imagePager);
     }
 
     @SuppressWarnings("deprecation")
@@ -222,15 +218,15 @@ public class ProductDetailFragment extends BaseNotifyFragment {
         attrLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (!productDetail.getProductRelations().isEmpty()) {
+                    new RelationDialog().show(getFragmentManager(), null);
+                }
             }
         });
         areaLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putBoolean("getArea", true);
-                jump(StoreAreaFragment.class.getName(), "选择收货区域", bundle);
+                jump(SelectAreaFragment.class.getName(), "选择收货区域");
             }
         });
         htmlLayout.setOnClickListener(new OnClickListener() {
@@ -257,8 +253,12 @@ public class ProductDetailFragment extends BaseNotifyFragment {
         countAddLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                buyCount++;
-                new GetFreight().execute();
+                if (buyCount < productDetail.getNum()) {
+                    buyCount++;
+                    new GetFreight().execute();
+                } else {
+                    Notify.show("库存不足");
+                }
             }
         });
         countDeleteLayout.setOnClickListener(new OnClickListener() {
@@ -379,6 +379,65 @@ public class ProductDetailFragment extends BaseNotifyFragment {
         }
     }
 
+    class RelationDialog extends DialogFragment {
+
+        View dialogView;
+        ListView listView;
+        TextView titleTextView, button;
+
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            findViews();
+        }
+
+        @Override
+        @NonNull
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            Dialog dialog = new Dialog(getActivity());
+            dialog.getWindow().setBackgroundDrawableResource(R.color.divider);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(dialogView, new FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT, screenWidth));
+            return dialog;
+        }
+
+        private void findViews() {
+            dialogView = layoutInflater.inflate(R.layout.dialog_list, null);
+            titleTextView = (TextView) dialogView
+                    .findViewById(R.id.dialog_title);
+            button = (TextView) dialogView.findViewById(R.id.dialog_button);
+            listView = (ListView) dialogView.findViewById(R.id.dialog_list);
+            initViews();
+        }
+
+        private void initViews() {
+            titleTextView.setText("选择商品属性");
+            button.setText("取消");
+            listView.setAdapter(relationAdapter);
+            button.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    dismiss();
+                }
+            });
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> arg0, View arg1,
+                                        int arg2, long arg3) {
+                    if (!productDetail.getProductRelations().get(arg2).getId()
+                            .equals(productDetail.getId())) {
+                        productId = productDetail.getProductRelations().get(arg2).getId();
+                        new GetProductDetail().execute();
+                    }
+                    dismiss();
+                }
+            });
+        }
+    }
+
     class RelationAdapter extends BaseAdapter {
 
         @Override
@@ -398,33 +457,34 @@ public class ProductDetailFragment extends BaseNotifyFragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder;
+            ViewHolder viewHolder;
             if (convertView == null) {
-                holder = new ViewHolder();
-                convertView = layoutInflater.inflate(R.layout.list_attr_value,
-                        null);
-                holder.textView = (TextView) convertView
-                        .findViewById(R.id.attr_value);
-                convertView.setTag(holder);
+                convertView = layoutInflater.inflate(
+                        R.layout.list_goods_relation, null);
+                viewHolder = new ViewHolder();
+                viewHolder.imageView = (ImageView) convertView
+                        .findViewById(R.id.list_relation_check);
+                viewHolder.textView = (TextView) convertView
+                        .findViewById(R.id.list_relation_name);
+                convertView.setTag(viewHolder);
             } else {
-                holder = (ViewHolder) convertView.getTag();
+                viewHolder = (ViewHolder) convertView.getTag();
             }
-            holder.textView.setText(productDetail.getProductRelations()
+            if (productDetail.getProductRelations().get(position).getId().equals(productDetail.getId())) {
+                viewHolder.imageView.setImageResource(R.drawable.iconfont_check_checked);
+            } else {
+                viewHolder.imageView.setImageResource(R.drawable.iconfont_check_normal);
+            }
+            viewHolder.textView.setText(productDetail.getProductRelations()
                     .get(position).getAttName());
-            if (productDetail.getProductRelations().get(position).getId()
-                    .equals(productDetail.getId())) {
-                holder.textView
-                        .setBackgroundResource(R.drawable.back_white_rec_border_orange);
-            } else {
-                holder.textView
-                        .setBackgroundResource(R.drawable.selector_white_rec_border);
-            }
             return convertView;
         }
 
         class ViewHolder {
+            ImageView imageView;
             TextView textView;
         }
+
     }
 
     /**
@@ -637,6 +697,7 @@ public class ProductDetailFragment extends BaseNotifyFragment {
         @Override
         protected void onPreExecute() {
             showLoading();
+            freightMap.clear();
             countTextView.setText(String.valueOf(buyCount));
         }
 

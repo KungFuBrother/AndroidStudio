@@ -250,6 +250,7 @@ public class SuningOrderDetailFragment extends BaseNotifyFragment {
                             Bundle bundle = new Bundle();
                             bundle.putString("productName", product.getName());
                             bundle.putDouble("productPrice", product.getPrice());
+                            bundle.putInt("buyCount", product.getNo());
                             //订单编号
                             bundle.putString("tradeNo", suningOrder.getOrderNumber());
                             //产品编号

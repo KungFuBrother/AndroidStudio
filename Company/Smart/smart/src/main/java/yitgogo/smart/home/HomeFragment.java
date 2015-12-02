@@ -149,8 +149,7 @@ public class HomeFragment extends BaseNotifyFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_main);
-        getActivity().startService(
-                new Intent(getActivity(), PrintService.class));
+        getActivity().startService(new Intent(getActivity(), PrintService.class));
         init();
         findViews();
     }
@@ -177,8 +176,8 @@ public class HomeFragment extends BaseNotifyFragment {
 
     private void init() {
         measureScreen();
-        products = new ArrayList<ModelProduct>();
-        priceMap = new HashMap<String, ModelListPrice>();
+        products = new ArrayList<>();
+        priceMap = new HashMap<>();
         productAdapter = new ProductAdapter();
         updateVersionInfo("ONLINE");
         getMachineArea();
@@ -186,12 +185,9 @@ public class HomeFragment extends BaseNotifyFragment {
 
     @Override
     protected void findViews() {
-        refreshScrollView = (PullToRefreshScrollView) contentView
-                .findViewById(R.id.main_refresh);
-        productGridView = (InnerGridView) contentView
-                .findViewById(R.id.main_product);
-        nongfuImageView = (ImageView) contentView
-                .findViewById(R.id.home_part_nongfu_layout);
+        refreshScrollView = (PullToRefreshScrollView) contentView.findViewById(R.id.main_refresh);
+        productGridView = (InnerGridView) contentView.findViewById(R.id.main_product);
+        nongfuImageView = (ImageView) contentView.findViewById(R.id.home_part_nongfu_layout);
         bianmButton = (LinearLayout) contentView.findViewById(R.id.main_bianmin);
         suningButton = (LinearLayout) contentView.findViewById(R.id.main_suning);
         searchButton = (LinearLayout) contentView.findViewById(R.id.main_search);

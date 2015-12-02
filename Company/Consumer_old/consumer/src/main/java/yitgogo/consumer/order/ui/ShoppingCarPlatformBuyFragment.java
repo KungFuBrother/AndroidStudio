@@ -475,6 +475,7 @@ public class ShoppingCarPlatformBuyFragment extends BaseNotifyFragment {
         @Override
         protected void onPreExecute() {
             showLoading();
+            freightMap.clear();
         }
 
         @Override

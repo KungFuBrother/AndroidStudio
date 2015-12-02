@@ -1,14 +1,5 @@
 package yitgogo.smart.tools;
 
-import android.util.Log;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.security.KeyStore;
-
-import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -28,6 +19,12 @@ import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.security.KeyStore;
 
 public class NetworkMission extends Mission {
 
@@ -66,18 +63,15 @@ public class NetworkMission extends Mission {
         // }
         try {
             httpPost.setHeader("version", PackageTool.getVersionName());
-            httpPost.setEntity(new UrlEncodedFormEntity(networkContent
-                    .getNameValuePairs(), HTTP.UTF_8));
+            httpPost.setEntity(new UrlEncodedFormEntity(networkContent.getNameValuePairs(), HTTP.UTF_8));
             HttpClient client = getHttpClient();
-            client.getParams().setParameter(
-                    CoreConnectionPNames.CONNECTION_TIMEOUT, 8000);
+            client.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 8000);
             HttpResponse httpResponse = client.execute(httpPost);
             int statue = httpResponse.getStatusLine().getStatusCode();
             if (statue == 200) {
                 HttpEntity entity = httpResponse.getEntity();
                 InputStream inputStream = entity.getContent();
-                BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(inputStream));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
                 String line;
                 while ((line = reader.readLine()) != null) {
                     stringBuilder.append(line);

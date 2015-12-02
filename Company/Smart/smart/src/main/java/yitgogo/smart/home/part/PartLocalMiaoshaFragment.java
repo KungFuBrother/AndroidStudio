@@ -52,7 +52,7 @@ public class PartLocalMiaoshaFragment extends BaseNormalFragment {
 
 	private void init() {
 		measureScreen();
-		localSaleMiaoshas = new ArrayList<ModelLocalSaleMiaosha>();
+		localSaleMiaoshas = new ArrayList<>();
 		productAdapter = new ProductAdapter();
 	}
 

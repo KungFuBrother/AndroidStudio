@@ -281,6 +281,7 @@ public class PlatformProductBuyFragment extends BaseNotifyFragment {
         @Override
         protected void onPreExecute() {
             showLoading();
+            freightMap.clear();
         }
 
         @Override

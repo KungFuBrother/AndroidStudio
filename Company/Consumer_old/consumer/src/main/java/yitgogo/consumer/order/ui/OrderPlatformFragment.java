@@ -3,6 +3,7 @@ package yitgogo.consumer.order.ui;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -17,7 +18,6 @@ import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.smartown.yitian.gogo.R;
@@ -69,7 +69,7 @@ public class OrderPlatformFragment extends BaseNotifyFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        new GetOrders().execute();
+        refresh();
     }
 
     private void init() {
@@ -89,15 +89,19 @@ public class OrderPlatformFragment extends BaseNotifyFragment {
     @Override
     protected void initViews() {
         orderList.setAdapter(orderAdapter);
-        orderList.setMode(Mode.PULL_FROM_START);
+        orderList.setMode(Mode.BOTH);
     }
 
     @Override
     protected void registerViews() {
-        orderList.setOnRefreshListener(new OnRefreshListener<ListView>() {
+        orderList.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+                refresh();
+            }
 
             @Override
-            public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
                 new GetOrders().execute();
             }
         });
@@ -109,50 +113,56 @@ public class OrderPlatformFragment extends BaseNotifyFragment {
         jump(OrderDetailFragment.class.getName(), "订单详情", bundle);
     }
 
+    private void refresh() {
+        orderList.setMode(Mode.BOTH);
+        pagenum = 0;
+        orders.clear();
+        orderAdapter.notifyDataSetChanged();
+        new GetOrders().execute();
+    }
+
     class GetOrders extends AsyncTask<Void, Void, String> {
 
         @Override
         protected void onPreExecute() {
             showLoading();
-            orders.clear();
-            orderAdapter.notifyDataSetChanged();
+            pagenum++;
         }
 
         @Override
         protected String doInBackground(Void... arg0) {
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-            nameValuePairs.add(new BasicNameValuePair("userNumber", User
-                    .getUser().getUseraccount()));
+            List<NameValuePair> nameValuePairs = new ArrayList<>();
+            nameValuePairs.add(new BasicNameValuePair("userNumber", User.getUser().getUseraccount()));
             nameValuePairs.add(new BasicNameValuePair("timeslot", "0"));
-            return netUtil.postWithoutCookie(API.API_ORDER_LIST,
-                    nameValuePairs, false, false);
+            nameValuePairs.add(new BasicNameValuePair("pagenum", String.valueOf(pagenum)));
+            nameValuePairs.add(new BasicNameValuePair("pagesize", String.valueOf(pagesize)));
+            return netUtil.postWithoutCookie(API.API_ORDER_LIST, nameValuePairs, false, false);
         }
 
         @Override
         protected void onPostExecute(String result) {
             hideLoading();
             orderList.onRefreshComplete();
-            if (result.length() > 0) {
-                JSONObject object;
+            if (!TextUtils.isEmpty(result)) {
                 try {
-                    object = new JSONObject(result);
-                    if (object.getString("state").equalsIgnoreCase("SUCCESS")) {
+                    JSONObject object = new JSONObject(result);
+                    if (object.optString("state").equalsIgnoreCase("SUCCESS")) {
                         JSONArray array = object.optJSONArray("dataList");
                         if (array != null) {
+                            if (array.length() < pagesize) {
+                                orderList.setMode(Mode.PULL_FROM_START);
+                            }
                             for (int i = 0; i < array.length(); i++) {
                                 orders.add(new ModelPlatformOrder(array.getJSONObject(i)));
                             }
-                            if (orders.size() > 0) {
-                                orderAdapter.notifyDataSetChanged();
-                                return;
-                            }
+                            orderAdapter.notifyDataSetChanged();
                         }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-            if (orders.size() == 0) {
+            if (orders.isEmpty()) {
                 loadingEmpty();
             }
         }
@@ -259,14 +269,10 @@ public class OrderPlatformFragment extends BaseNotifyFragment {
             ViewHolder holder;
             if (convertView == null) {
                 holder = new ViewHolder();
-                convertView = layoutInflater.inflate(
-                        R.layout.list_product_order, null);
-                holder.image = (ImageView) convertView
-                        .findViewById(R.id.list_product_order_image);
-                holder.productNameText = (TextView) convertView
-                        .findViewById(R.id.list_product_order_name);
-                holder.productPriceText = (TextView) convertView
-                        .findViewById(R.id.list_product_order_price);
+                convertView = layoutInflater.inflate(R.layout.list_product_order, null);
+                holder.image = (ImageView) convertView.findViewById(R.id.list_product_order_image);
+                holder.productNameText = (TextView) convertView.findViewById(R.id.list_product_order_name);
+                holder.productPriceText = (TextView) convertView.findViewById(R.id.list_product_order_price);
                 if (products.size() > 1) {
                     holder.productNameText.setVisibility(View.GONE);
                     holder.productPriceText.setVisibility(View.GONE);

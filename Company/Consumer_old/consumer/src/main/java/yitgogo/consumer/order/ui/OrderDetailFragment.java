@@ -165,7 +165,7 @@ public class OrderDetailFragment extends BaseNotifyFragment {
 
             @Override
             public void onClick(View v) {
-                payMoney(order.getOrderNumber(), order.getTotalMoney_Discount(),
+                payMoney(order.getOrderNumber(), order.getTotalMoney_Discount() + order.getFreight(),
                         PayFragment.ORDER_TYPE_YY);
             }
         });
@@ -295,6 +295,8 @@ public class OrderDetailFragment extends BaseNotifyFragment {
                                 bundle.putString("orderNumber", order.getOrderNumber());
                                 //子订单编号
                                 bundle.putString("productInfo", product.getId());
+                                //购买数量
+                                bundle.putInt("buyCount", product.getProductQuantity());
 
                                 jump(OrderPlatformReturnFragment.class.getName(), "申请退货", bundle);
                             }

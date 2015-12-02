@@ -16,8 +16,8 @@ import yitgogo.smart.model.ModelMachineArea;
 
 public class Device {
 
-    private static String deviceCode = "4a332b20bba343773a70d9b3d9a42196";
-    //        private static String deviceCode = "BFEBFBFF000306A9321077558";
+//    private static String deviceCode = "4a332b20bba343773a70d9b3d9a42196";
+            private static String deviceCode = "FFFFFFFFFFFFFFFFFFFFFFFFFF";
     private static BDLocation location = null;
     private static ModelMachineArea machineArea = new ModelMachineArea();
 

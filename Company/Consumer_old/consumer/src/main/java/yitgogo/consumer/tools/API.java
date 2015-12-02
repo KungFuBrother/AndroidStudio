@@ -21,7 +21,7 @@ public interface API {
     /**
      * 说明：根据手机号码和面值（为慢充时还须到账时间）查询充值信息 参数： phoneno 手机号码 必须 pervalue 面值 必须
      * 快充可选面值（1、2、5、10、20、30、50、100、300、500） 慢充可选面值（30、50、100）
-     * <p>
+     * <p/>
      * mctype 慢充到账时间 慢充才传 0.5（半小时到账）、4（4小时到账）、12（12小时到账）、
      * 24（24小时到账）、48（48小时到账）、72（72小时到账） 默认为24
      */
@@ -35,11 +35,11 @@ public interface API {
 
     /**
      * 说明：根据固话号码，面值，运营商，充值类型查询充值信息 参数： phoneno 固话/宽带号码 必须 格式：021-88888888
-     * <p>
+     * <p/>
      * pervalue 面值 必须 电信：10、20、30、50、100、300 联通：50、100
-     * <p>
+     * <p/>
      * teltype 运营商 必须 1、电信 2、联通（默认选中1）
-     * <p>
+     * <p/>
      * chargeType 充值类型 必须 1：固话；2：宽带（默认选中1）
      */
     String API_BIANMIN_TELEPHONE_CHARGE_INFO = IP_PUBLIC
@@ -169,18 +169,18 @@ public interface API {
             + "/api/product/promotionManage/promotionTheme/findPromotionclass";
     /**
      * 获取全部的品牌信息
-     * <p>
+     * <p/>
      * 参数：无
-     * <p>
+     * <p/>
      * 返回结果：{brandLogo:LoGo图片,brandName:品牌名称,brandId:品牌ID}
      */
     String API_HOME_BRAND = IP_PUBLIC
             + "/api/MobileArea/MobileManager/brand/MobileAreaBrandInit";
     /**
      * 获取全部的推荐分类信息
-     * <p>
+     * <p/>
      * 参数：无
-     * <p>
+     * <p/>
      * 返回结果：{classLogo:LoGo图片,className:分类名称,ClassId:品牌ID}
      */
     String API_HOME_CLASS = IP_PUBLIC
@@ -333,7 +333,7 @@ public interface API {
      * 查询订单列表
      */
     String API_ORDER_LIST = IP_PUBLIC
-            + "/api/order/franchiseeOrder/orderManage/findByOrderUserNumber";
+            + "/api/order/unified/orderManage/findByYiShopOrOCOrderUserNumber";
     /**
      * 查询订单详情
      * orderId
@@ -376,7 +376,7 @@ public interface API {
 
     /**
      * 本地产品详情
-     * <p>
+     * <p/>
      * String retailProductManagerID
      */
     String API_LOCAL_BUSINESS_GOODS_DETAIL = IP_PUBLIC
@@ -384,14 +384,14 @@ public interface API {
 
     /**
      * 本地产品大分类
-     * <p>
+     * <p/>
      * serviceProviderID
      */
     String API_LOCAL_BUSINESS_GOODS_CLASS_PRIMARY = IP_PUBLIC
             + "/api/localEBusiness/retail/productClassType/queryRPBigClassType";
     /**
      * 本地产品小分类
-     * <p>
+     * <p/>
      * productTypeValueID
      */
     String API_LOCAL_BUSINESS_GOODS_CLASS_SECOND = IP_PUBLIC
@@ -500,28 +500,28 @@ public interface API {
             + "/api/localService/orderManage/localOrder/findByLocalOrderId";
     /**
      * 本地促销-特价
-     * <p>
+     * <p/>
      * 传递参数: jgbh 机构编号
      */
     String API_LOCAL_SALE_TEJIA = IP_PUBLIC
             + "/api/product/promotionManage/LocalPromotion/findShopPromotionJGBH";
     /**
      * 本地促销-特价详情
-     * <p>
+     * <p/>
      * 传递参数 : id 促销ID
      */
     String API_LOCAL_SALE_TEJIA_DETAIL = IP_PUBLIC
             + "/api/product/promotionManage/LocalPromotion/findShopPromotionId";
     /**
      * 本地促销-秒杀
-     * <p>
+     * <p/>
      * 传递参数: jgbh 机构编号
      */
     String API_LOCAL_SALE_MIAOSHA = IP_PUBLIC
             + "/api/product/promotionManage/LocalPromotion/findSpikePromotionJGBH";
     /**
      * 本地促销-秒杀详情
-     * <p>
+     * <p/>
      * 传递参数 : id 促销ID
      */
     String API_LOCAL_SALE_MIAOSHA_DETAIL = IP_PUBLIC
@@ -546,7 +546,7 @@ public interface API {
 
     /**
      * 查询秒杀商品
-     * <p>
+     * <p/>
      * strno
      */
     String API_SALE_MIAOSHA = IP_PUBLIC
@@ -560,7 +560,7 @@ public interface API {
 
     /**
      * 查询特价商品
-     * <p>
+     * <p/>
      * strno
      */
     String API_SALE_TEJIA = IP_PUBLIC
@@ -573,7 +573,7 @@ public interface API {
 
     /**
      * 查询主题活动
-     * <p>
+     * <p/>
      * strno
      */
     String API_SALE_ACTIVITY = IP_PUBLIC
@@ -610,11 +610,11 @@ public interface API {
 
     /**
      * 获取所有活动：
-     * <p>
+     * <p/>
      * 地址: /member/activityManage/memberActivity/findAllActivity
-     * <p>
+     * <p/>
      * 说明：获取所有要展示的活动 参数：无
-     * <p>
+     * <p/>
      * 返回结果：活动对象集合（list）
      */
     String API_ACTIVITY_LIST = IP_PUBLIC
@@ -627,7 +627,7 @@ public interface API {
             + "/member/activityManage/memberActivity/getIsJoin";
     /**
      * 判断会员是否参与过该活
-     * <p>
+     * <p/>
      * memberAccount activityId
      */
     String API_ACTIVITY_JOIN_STATE = IP_PUBLIC
@@ -641,13 +641,13 @@ public interface API {
 
     /**
      * 短信验证码接口
-     * <p>
+     * <p/>
      * 参数： (第一次绑卡)：pan // 卡号 expiredDate // 卡效期// 格式是：MMYY cvv2 //
      * 安全校验值,CVV2或CVC2 // 对于银联和VISA卡，对应卡片背面的CVV2数字；对于MasterCard卡，对应卡片背面的CVC2数字
      * Amount // 交易金额 // 以元为单位，小数点后最多两位 externalRefNumber// 流水号（商家自己的订单号）
      * customerId// 客户号 cardHolderName// 客户姓名 cardHolderId// 客户身份证号 phoneNO//
      * 手机号码
-     * <p>
+     * <p/>
      * 返回数据：{responseCode=00, customerId=11999, token=1131247,
      * merchantId=104110045112012}
      */
@@ -656,14 +656,14 @@ public interface API {
 
     /**
      * 快捷支付(首次)
-     * <p>
+     * <p/>
      * payInfoType:订单类型（1-运营中心订单 2-易店订单 3-本地产品订单 4-本地服务订单5-便民服务） orderNumber：订单号
      * cardNo// 卡号 externalRefNumber// 流水号（商家自己的订单号） storableCardNo// 短卡号
      * expiredDate// 卡效期,格式是：MMYY cvv2// 安全校验值,CVV2或CVC2 //
      * 对于银联和VISA卡，对应卡片背面的CVV2数字；对于MasterCard卡，对应卡片背面的CVC2数字 amount//
      * 交易金额,以元为单位，小数点后最多两位 customerId// 客户号 cardHolderName// 客户姓名 cardHolderId//
      * 客户身份证号 phone// 手机号码 validCode// 手机验证码 token// 手机令牌码
-     * <p>
+     * <p/>
      * {responseCode=00, responseTextMessage=交易成功,
      * externalRefNumber=20150814110720}
      */
@@ -672,13 +672,13 @@ public interface API {
 
     /**
      * 快捷支付(非首次)
-     * <p>
+     * <p/>
      * payInfoType:订单类型（1-运营中心订单 2-易店订单 3-本地产品订单 4-本地服务订单） orderNumber：订单号
-     * <p>
+     * <p/>
      * storableCardNo// 短卡号 amount// 交易金额,以元为单位，小数点后最多两位 externalRefNumber//
      * 流水号（商家自己的订单号） customerId// 客户号 phone// 手机号码 validCode// 手机验证码 token//
      * 手机令牌码
-     * <p>
+     * <p/>
      * {responseCode=00, responseTextMessage=交易成功,
      * externalRefNumber=20150814110720}
      */
@@ -687,17 +687,17 @@ public interface API {
             + "/api/settlement/kuaiqian/payDataTwiceApi";
     /**
      * 钱袋子余额支付
-     * <p>
+     * <p/>
      * String memberAccount 会员账号
-     * <p>
+     * <p/>
      * String customerName 会员姓名（可选）
-     * <p>
+     * <p/>
      * String pwd 钱袋子支付密码（需加密）
-     * <p>
+     * <p/>
      * String orderNumbers 订单编号，多个订单以”,”拼接
-     * <p>
+     * <p/>
      * String orderType 订单类型 1-运营中心订单 2-易店订单 3-本地产品订单 4-本地服务订单
-     * <p>
+     * <p/>
      * String apAmount 订单金额
      */
     String API_PAY_BALANCE = IP_PUBLIC
@@ -705,7 +705,7 @@ public interface API {
 
     /**
      * 苏宁
-     * <p>
+     * <p/>
      * 获取品类(目录)接口
      *
      * @URL http://58.240.86.161/esbadapter/GEProductMgmt_GCMS/getProductCategory?data={"accessToken":"ae26377a628b0d2710f91257b67a1db0","appKey":"ZJZF","v":"2.0"}
@@ -750,142 +750,142 @@ public interface API {
 
     /**
      * 用户授权登录支付系统
-     * <p>
+     * <p/>
      * 参数： sn 授权码 必须
-     * <p>
+     * <p/>
      * 成功返回 : {payaccount:会员支付系统账号，balance：账户余额，seckey：授权码}
      */
     String MONEY_LOGIN = IP_MONEY + "/api/member/login";
     /**
      * 查询现金交易明细
-     * <p>
+     * <p/>
      * 参数： bdatetime 开始时间 选填 edatetime 结束时间 选填 pageindex 页码 必须 pagecount 页大小 必须
      */
     String MONEY_TRADE_DETAIL = IP_MONEY + "/member/cash/listdetail";
     /**
      * 查询是否设置了支付密码
-     * <p>
+     * <p/>
      * 参数：无
-     * <p>
+     * <p/>
      * 返回：{pwd：true|false}
      */
     String MONEY_PAY_PASSWORD_STATE = IP_MONEY + "/member/account/valipaypwd";
     /**
      * 设置支付密码
-     * <p>
+     * <p/>
      * 参数：paypwd 支付密码 必须 payaccount 会员支付系统账号 必须 seckey 授权码 必须
-     * <p>
+     * <p/>
      * 返回：{setpwd：ok}
      */
     String MONEY_PAY_PASSWORD_SET = IP_MONEY + "/member/account/setpaypwd";
     /**
      * 修改支付密码
-     * <p>
+     * <p/>
      * 参数：paypwd 支付密码 newpaypwd 新支付密码 mcode 短信验证码
-     * <p>
+     * <p/>
      * 返回：{modpwd：ok}
      */
     String MONEY_PAY_PASSWORD_MODIFY = IP_MONEY + "/member/account/modpaypwd";
     /**
      * 找回支付密码
-     * <p>
+     * <p/>
      * 参数：seckey 授权码 必须 cardid 身份证号码 必须 mcode 手机验证码 必须 newpaypwd 新支付密码
-     * <p>
+     * <p/>
      * 成功返回：{paypwd：ok}
      */
     String MONEY_PAY_PASSWORD_FIND = IP_MONEY
             + "/member/account/retrievepaypwd";
     /**
      * 验证支付密码支付正确
-     * <p>
+     * <p/>
      * 参数： sn 授权码 必须 payaccount 会员支付系统账号 必须 paypwd 支付密码 必须
-     * <p>
+     * <p/>
      * 返回：{vli：true|false}
-     * <p>
+     * <p/>
      * 说明：正确支付密码，返回true，错误返回false
      */
     String MONEY_PAY_PASSWORD_VALIDATE = IP_MONEY
             + "/api/member/account/validatepaypwd";
     /**
      * 查询银行卡类型
-     * <p>
+     * <p/>
      * 参数：无
-     * <p>
+     * <p/>
      * 返回：[{id：编号，name：类型名}...]
      */
     String MONEY_BANK_TYPE = IP_MONEY + "/member/bank/banktype";
     /**
      * 查询银行信息
-     * <p>
+     * <p/>
      * 参数：无
-     * <p>
+     * <p/>
      * 返回：列表
      */
     String MONEY_BANK_LIST = IP_MONEY + "/member/bank/listbank";
     /**
      * 绑定银行卡信息
-     * <p>
+     * <p/>
      * 参数： bankid 银行编号 必须 bankcardtype 银行卡类型名称 banknumber 银行卡号 必须 cardname 持卡人姓名
      * 必须 cardid 身份证号码 必须 banknameadds 开户行 必须
-     * <p>
+     * <p/>
      * 成功返回：{bind：ok}
-     * <p>
+     * <p/>
      * 说明：明显提醒客户，只能绑定自己的卡，并且手机号码必须和会员注册时的号码一样，且手机号码是银行半卡时预留的
      */
     String MONEY_BANK_BIND = IP_MONEY + "/member/bank/bindbankcard";
     /**
      * 查询绑定的银行卡信息
-     * <p>
+     * <p/>
      * 参数： sn 授权码 必须 memberid 会员编号 必须
-     * <p>
+     * <p/>
      * 成功返回：用户卡信息对象
      */
     String MONEY_BANK_BINDED = IP_MONEY + "/member/bank/listbindbankcard";
     /**
      * 解绑银行卡信息
-     * <p>
+     * <p/>
      * 参数：bankcardid 绑定的银行编号 必须 paypassword 支付密码
-     * <p>
+     * <p/>
      * 返回：{unbind：true|false}
      */
     String MONEY_BANK_UNBIND = IP_MONEY + "/member/bank/unbindbankcard";
     /**
      * 提现处理
-     * <p>
+     * <p/>
      * 参数：amount 提现金额 bankcardid 银行卡编号 paypassword 支付密码 area 银行区域 desc 备注
-     * <p>
+     * <p/>
      * 返回：{deposit：ok}
-     * <p>
+     * <p/>
      * 说明：区域是省加上城市的名字中间有中杠连接
      */
     String MONEY_BANK_TAKEOUT = IP_MONEY + "/member/account/deposit";
     /**
      * 查询提现记录
-     * <p>
+     * <p/>
      * 参数： bankcardid银行卡编号 选填 bdatetime 开始时间 选填 edatetime 结束时间 选填 pageindex 页码
      * 必须 pagecount 页大小 必须
-     * <p>
+     * <p/>
      * 返回：提现分页对象数组 说明：分页显示，时间格式 ：2015-05-08 包含年月日既可
      */
     String MONEY_BANK_TAKEOUT_HISTORY = IP_MONEY
             + "/member/account/depositlist";
     /**
      * 发操作验证短信
-     * <p>
+     * <p/>
      * 参数：无
-     * <p>
+     * <p/>
      * 返回：{send：ok，mobile：发送短信的手机号码后四位}
      */
     String MONEY_SMS_CODE = IP_MONEY + "/member/account/sendsms";
     /**
      * 查询支付区域 省
-     * <p>
+     * <p/>
      * 参数：无
      */
     String MONEY_PAY_AREA_PROVINCE = IP_MONEY + "/member/bank/getpaypro";
     /**
      * 查询支付区域 城市
-     * <p>
+     * <p/>
      * 参数：proid 省编号 必须
      */
     String MONEY_PAY_AREA_CITY = IP_MONEY + "/member/bank/getpaycity";

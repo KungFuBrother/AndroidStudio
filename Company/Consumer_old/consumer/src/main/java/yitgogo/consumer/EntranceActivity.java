@@ -30,7 +30,7 @@ import java.util.List;
 
 import yitgogo.consumer.main.ui.MainActivity;
 import yitgogo.consumer.store.model.Store;
-import yitgogo.consumer.store.ui.StoreAreaFragment;
+import yitgogo.consumer.store.ui.SelectStoreFragment;
 import yitgogo.consumer.tools.API;
 import yitgogo.consumer.tools.Content;
 import yitgogo.consumer.tools.LogUtil;
@@ -40,7 +40,6 @@ import yitgogo.consumer.user.model.User;
 import yitgogo.consumer.user.model.VersionInfo;
 import yitgogo.consumer.view.DownloadDialog;
 import yitgogo.consumer.view.NormalAskDialog;
-import yitgogo.consumer.view.Notify;
 
 public class EntranceActivity extends BaseActivity {
 
@@ -142,9 +141,7 @@ public class EntranceActivity extends BaseActivity {
     }
 
     private void selectJmd() {
-        Bundle bundle = new Bundle();
-        bundle.putBoolean("firstTime", true);
-        jump(StoreAreaFragment.class.getName(), "选择服务中心", bundle);
+        jump(SelectStoreFragment.class.getName(), "选择服务中心");
         finish();
     }
 

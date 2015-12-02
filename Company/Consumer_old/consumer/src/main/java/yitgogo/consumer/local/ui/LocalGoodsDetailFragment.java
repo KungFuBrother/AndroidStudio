@@ -149,6 +149,7 @@ public class LocalGoodsDetailFragment extends BaseNotifyFragment {
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, screenWidth);
         imagePager.setLayoutParams(layoutParams);
         imagePager.setAdapter(imageAdapter);
+        pageIndicator.setViewPager(imagePager);
     }
 
     @SuppressWarnings("deprecation")

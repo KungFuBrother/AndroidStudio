@@ -100,8 +100,7 @@ public class MissionController {
         httpPost.setHeader("version", PackageTool.getVersionName());
         try {
             if (nameValuePairs != null) {
-                httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
-                        HTTP.UTF_8));
+                httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
                 LogUtil.logInfo("Request nameValuePairs", nameValuePairs.toString());
             }
             HttpClient client = new DefaultHttpClient();

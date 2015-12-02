@@ -85,8 +85,7 @@ public class NetUtil {
      * @param nameValuePairs
      * @return
      */
-    public String postAndSaveCookie(String url,
-                                    List<NameValuePair> nameValuePairs) {
+    public String postAndSaveCookie(String url, List<NameValuePair> nameValuePairs) {
         showParameters(url, nameValuePairs);
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("");

@@ -40,6 +40,7 @@ public class OrderPlatformReturnFragment extends BaseNotifyFragment {
     String supplierId = "";
     String orderNumber = "";
     String productInfo = "";
+    int buyCount = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,13 +84,16 @@ public class OrderPlatformReturnFragment extends BaseNotifyFragment {
             if (bundle.containsKey("productInfo")) {
                 productInfo = bundle.getString("productInfo");
             }
+            if (bundle.containsKey("buyCount")) {
+                buyCount = bundle.getInt("buyCount");
+            }
         }
     }
 
     @Override
     protected void initViews() {
         productNameTextView.setText(productName);
-        productPriceTextView.setText(Parameters.CONSTANT_RMB + decimalFormat.format(productPrice));
+        productPriceTextView.setText(Parameters.CONSTANT_RMB + decimalFormat.format(productPrice) + "  ×" + buyCount);
     }
 
     @Override

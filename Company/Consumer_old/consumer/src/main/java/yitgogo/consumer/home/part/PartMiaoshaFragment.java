@@ -1,6 +1,7 @@
 package yitgogo.consumer.home.part;
 
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -32,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import yitgogo.consumer.BaseNormalFragment;
+import yitgogo.consumer.home.model.ModelKillPrice;
 import yitgogo.consumer.home.model.ModelSaleMiaosha;
 import yitgogo.consumer.product.ui.SaleMiaoshaFragment;
 import yitgogo.consumer.tools.API;
@@ -45,7 +47,7 @@ public class PartMiaoshaFragment extends BaseNormalFragment {
     RecyclerView recyclerView;
     List<ModelSaleMiaosha> saleMiaoshas;
     MiaoshaAdapter miaoshaAdapter;
-    HashMap<String, Double> prices;
+    HashMap<String, ModelKillPrice> killPriceHashMap;
 
     String result = "";
 
@@ -65,14 +67,13 @@ public class PartMiaoshaFragment extends BaseNormalFragment {
     private void init() {
         measureScreen();
         saleMiaoshas = new ArrayList<>();
-        prices = new HashMap<>();
+        killPriceHashMap = new HashMap<>();
         miaoshaAdapter = new MiaoshaAdapter();
     }
 
     @Override
     @Nullable
-    public View onCreateView(LayoutInflater inflater,
-                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.home_part_miaosha, null);
         findViews(view);
         return view;
@@ -151,16 +152,16 @@ public class PartMiaoshaFragment extends BaseNormalFragment {
         class MiaoshaViewHolder extends RecyclerView.ViewHolder {
 
             ImageView imageView;
-            TextView nameTextView, priceTextView, salePriceTextView, stateTextView;
+            TextView priceTextView, salePriceTextView, stateTextView;
 
             public MiaoshaViewHolder(View view) {
                 super(view);
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(screenWidth / 5 * 2, LinearLayout.LayoutParams.MATCH_PARENT);
                 imageView = (ImageView) view.findViewById(R.id.item_kill_image);
-                nameTextView = (TextView) view.findViewById(R.id.item_kill_name);
                 priceTextView = (TextView) view.findViewById(R.id.item_kill_price);
                 salePriceTextView = (TextView) view.findViewById(R.id.item_kill_sale_price);
                 stateTextView = (TextView) view.findViewById(R.id.item_kill_state);
+                priceTextView.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
                 view.setLayoutParams(layoutParams);
             }
         }
@@ -175,9 +176,9 @@ public class PartMiaoshaFragment extends BaseNormalFragment {
             final int index = position;
             MiaoshaViewHolder holder = (MiaoshaViewHolder) viewHolder;
             ImageLoader.getInstance().displayImage(getSmallImageUrl(saleMiaoshas.get(position).getSeckillImg()), holder.imageView);
-            holder.nameTextView.setText(saleMiaoshas.get(position).getProductName());
-            if (prices.containsKey(saleMiaoshas.get(position).getProdutId())) {
-                holder.salePriceTextView.setText("秒杀价:" + Parameters.CONSTANT_RMB + decimalFormat.format(prices.get(saleMiaoshas.get(position).getProdutId())));
+            if (killPriceHashMap.containsKey(saleMiaoshas.get(position).getProdutId())) {
+                holder.priceTextView.setText("原价:" + Parameters.CONSTANT_RMB + decimalFormat.format(killPriceHashMap.get(saleMiaoshas.get(position).getProdutId()).getOriginalPrice()));
+                holder.salePriceTextView.setText("秒杀价:" + Parameters.CONSTANT_RMB + decimalFormat.format(killPriceHashMap.get(saleMiaoshas.get(position).getProdutId()).getPrice()));
             }
             Date currentTime = Calendar.getInstance().getTime();
             Date startTime = new Date(saleMiaoshas.get(position).getSeckillTime());
@@ -235,8 +236,7 @@ public class PartMiaoshaFragment extends BaseNormalFragment {
                 builder.append(saleMiaoshas.get(i).getProdutId());
             }
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-            nameValuePairs.add(new BasicNameValuePair("productId", builder
-                    .toString()));
+            nameValuePairs.add(new BasicNameValuePair("productId", builder.toString()));
             nameValuePairs.add(new BasicNameValuePair("type", "2"));
             return netUtil.postWithoutCookie(API.API_SALE_PRICE,
                     nameValuePairs, false, false);
@@ -253,8 +253,7 @@ public class PartMiaoshaFragment extends BaseNormalFragment {
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject jsonObject = array.optJSONObject(i);
                                 if (jsonObject != null) {
-                                    prices.put(jsonObject.optString("id"),
-                                            jsonObject.optDouble("price"));
+                                    killPriceHashMap.put(jsonObject.optString("id"), new ModelKillPrice(jsonObject));
                                 }
                             }
                             miaoshaAdapter.notifyDataSetChanged();

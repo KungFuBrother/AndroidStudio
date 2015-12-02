@@ -62,7 +62,7 @@
                         android:layout_margin="8dp"
                         android:singleLine="true"
                         android:textColor="@color/product_price"
-                        android:textSize="20dp" />
+                        android:textSize="24dp" />
 
                 </LinearLayout>
 
@@ -70,23 +70,35 @@
 
             <View
                 android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/divider"></View>
+
+            <View
+                android:layout_width="match_parent"
                 android:layout_height="8dp"></View>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/divider"></View>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:orientation="vertical"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:id="@+id/local_goods_detail_attr_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/selector_trans_divider"
                     android:gravity="center_vertical"
+                    android:minHeight="48dp"
                     android:orientation="horizontal"
                     android:paddingBottom="12dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
                     android:paddingTop="12dp">
 
                     <TextView
@@ -115,13 +127,18 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:background="@color/divider"></View>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:minHeight="48dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -195,20 +212,26 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:background="@color/divider"></View>
 
                 <LinearLayout
                     android:id="@+id/local_goods_detail_html"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/selector_trans_divider"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:minHeight="48dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="了解商品详情"
+                        android:text="了解商品详情（建议在WIFI环境下使用）"
                         android:textColor="@color/product_attr"
                         android:textSize="14dp" />
 
@@ -219,6 +242,10 @@
                         android:src="@drawable/iconfont_next" />
                 </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/divider"></View>
             </LinearLayout>
 
             <View
@@ -236,6 +263,11 @@
         </LinearLayout>
 
     </ScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider"></View>
 
     <LinearLayout
         android:layout_width="match_parent"

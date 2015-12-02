@@ -152,14 +152,33 @@
                         android:layout_height="1px"
                         android:background="@color/divider" />
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="8dp"
-                        android:text="新品上架"
-                        android:textColor="@color/textColorPrimary"
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
+                        android:background="@drawable/selector_trans_divider"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="8dp">
+
+                        <View
+                            android:layout_width="2dp"
+                            android:layout_height="16dp"
+                            android:background="@color/product_price"></View>
+
+                        <View
+                            android:layout_width="8dp"
+                            android:layout_height="0dp"></View>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="新品上架"
+                            android:textColor="@color/textColorPrimary"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"

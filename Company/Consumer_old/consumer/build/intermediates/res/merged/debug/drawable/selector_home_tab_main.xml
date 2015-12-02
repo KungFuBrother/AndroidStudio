@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:drawable="@drawable/home_main_selected" android:state_selected="true"/>
-    <item android:drawable="@drawable/home_main_normal"/>
-
-</selector><!-- From: file:/E:/Github/AndroidStudio/Company/Consumer_old/consumer/src/main/res/drawable/selector_home_tab_main.xml -->

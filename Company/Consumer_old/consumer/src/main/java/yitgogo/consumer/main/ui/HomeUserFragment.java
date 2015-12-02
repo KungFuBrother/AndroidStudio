@@ -30,7 +30,7 @@ import yitgogo.consumer.money.ui.MoneyHomeFragment;
 import yitgogo.consumer.order.ui.OrderFragment;
 import yitgogo.consumer.product.ui.ShoppingCarFragment;
 import yitgogo.consumer.store.model.Store;
-import yitgogo.consumer.store.ui.StoreAreaFragment;
+import yitgogo.consumer.store.ui.SelectStoreFragment;
 import yitgogo.consumer.tools.API;
 import yitgogo.consumer.tools.Content;
 import yitgogo.consumer.tools.PackageTool;
@@ -166,7 +166,7 @@ public class HomeUserFragment extends BaseNotifyFragment implements
 
             @Override
             public void onClick(View v) {
-                jump(StoreAreaFragment.class.getName(), "修改服务中心");
+                jump(SelectStoreFragment.class.getName(), "修改服务中心");
                 getActivity().finish();
             }
         });
@@ -350,7 +350,7 @@ public class HomeUserFragment extends BaseNotifyFragment implements
         ImageLoader.getInstance().displayImage(User.getUser().getuImg(),
                 userHeadImageView);
         if (TextUtils.isEmpty(User.getUser().getRealname())) {
-            userNameTextView.setText(User.getUser().getUseraccount());
+            userNameTextView.setText(User.getUser().getPhone());
         } else {
             userNameTextView.setText(User.getUser().getRealname());
         }

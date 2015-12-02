@@ -20,7 +20,8 @@ import com.umeng.analytics.MobclickAgent;
 
 import yitgogo.consumer.main.ui.MainActivity;
 import yitgogo.consumer.product.ui.ProductListFragment;
-import yitgogo.consumer.store.ui.StoreAreaFragment;
+import yitgogo.consumer.store.model.Store;
+import yitgogo.consumer.store.ui.SelectStoreFragment;
 import yitgogo.consumer.tools.LogUtil;
 import yitgogo.consumer.tools.ScreenUtil;
 
@@ -142,8 +143,6 @@ public class ContainerActivity extends BaseActivity {
     /**
      * 添加标题栏图片按钮
      *
-     * @param imageResId
-     * @param tag
      * @param onClickListener
      */
     public void addTextButton(String text, OnClickListener onClickListener) {
@@ -177,9 +176,14 @@ public class ContainerActivity extends BaseActivity {
             if (productListFragment.onKeyDown(keyCode, event)) {
                 return true;
             }
-        } else if (fragmentName.equals(StoreAreaFragment.class.getName())) {
+        } else if (fragmentName.equals(SelectStoreFragment.class.getName())) {
             if (keyCode == KeyEvent.KEYCODE_BACK) {
-                getLocalBusinessState();
+                if (Store.getStore() == null) {
+                    finish();
+                } else {
+                    getLocalBusinessState();
+                    return false;
+                }
             }
         }
         return super.onKeyDown(keyCode, event);

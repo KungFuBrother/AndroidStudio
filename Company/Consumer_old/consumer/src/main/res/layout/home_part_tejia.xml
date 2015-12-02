@@ -25,6 +25,15 @@
             android:orientation="horizontal"
             android:padding="8dp">
 
+            <View
+                android:layout_width="2dp"
+                android:layout_height="16dp"
+                android:background="@color/product_price"></View>
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="0dp"></View>
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

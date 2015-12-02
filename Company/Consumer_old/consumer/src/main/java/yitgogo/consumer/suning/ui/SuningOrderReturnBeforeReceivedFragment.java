@@ -32,6 +32,7 @@ public class SuningOrderReturnBeforeReceivedFragment extends BaseNotifyFragment 
 
     String productName = "";
     double productPrice = 0;
+    int buyCount=0;
     String tradeNo = "", produNo = "";
     int type = 0;
 
@@ -57,6 +58,9 @@ public class SuningOrderReturnBeforeReceivedFragment extends BaseNotifyFragment 
             }
             if (bundle.containsKey("productPrice")) {
                 productPrice = bundle.getDouble("productPrice");
+            }
+            if (bundle.containsKey("buyCount")) {
+                buyCount = bundle.getInt("buyCount");
             }
             if (bundle.containsKey("tradeNo")) {
                 tradeNo = bundle.getString("tradeNo");
@@ -84,7 +88,7 @@ public class SuningOrderReturnBeforeReceivedFragment extends BaseNotifyFragment 
     @Override
     protected void initViews() {
         productNameTextView.setText(productName);
-        productPriceTextView.setText(Parameters.CONSTANT_RMB + decimalFormat.format(productPrice));
+        productPriceTextView.setText(Parameters.CONSTANT_RMB + decimalFormat.format(productPrice)+"  ×"+buyCount);
     }
 
     @Override

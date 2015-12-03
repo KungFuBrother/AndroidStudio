@@ -257,8 +257,19 @@ public class ProductDetailFragment extends BaseNotifyFragment {
         countAddButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (isSaleEnable) {
+                    if (saleType == QrCodeTool.SALE_TYPE_MIAOSHA) {
+                        Notify.show("秒杀产品一次只能购买一件");
+                        return;
+                    }
+                }
+                if (buyCount < productDetail.getNum()) {
+                    buyCount++;
+                    getFreight();
+                } else {
+                    Notify.show("库存不足");
+                }
                 buyCount++;
-                getFreight();
             }
         });
         countDeleteButton.setOnClickListener(new OnClickListener() {

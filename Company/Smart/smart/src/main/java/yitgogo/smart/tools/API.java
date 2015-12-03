@@ -8,8 +8,8 @@ public interface API {
     public String API_UPDATE = "http://updatePhone.yitos.net/android/version_smart.js";
     public String API_DOWNLOAD = "http://updatePhone.yitos.net/android/yitgogo_smart.apk";
 
-    //        public String API_IP = "http://yitos.net";
-    public String API_IP = "http://192.168.8.80:8088";
+    public String API_IP = "http://yitos.net";
+//    public String API_IP = "http://192.168.8.8:8050";
 
     /**
      * 获取服务器系统时间

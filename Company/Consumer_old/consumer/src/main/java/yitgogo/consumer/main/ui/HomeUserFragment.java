@@ -1,6 +1,8 @@
 package yitgogo.consumer.main.ui;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -54,7 +56,9 @@ public class HomeUserFragment extends BaseNotifyFragment implements
     ImageView userHeadImageView, levelImageView;
     TextView userNameTextView, userLevelTextView;
 
-    TextView storeNameTextView, storeAddressTextView, storeContactTextView;
+    TextView storeNameTextView, storeAddressTextView;
+
+    ImageView storeContactImageView;
 
     LinearLayout infoButton, storeButton, addressButton,
             shareButton, userListButton, openStoreButton, updateButtton;
@@ -118,7 +122,7 @@ public class HomeUserFragment extends BaseNotifyFragment implements
 
         storeNameTextView = (TextView) contentView.findViewById(R.id.user_store_name);
         storeAddressTextView = (TextView) contentView.findViewById(R.id.user_store_address);
-        storeContactTextView = (TextView) contentView.findViewById(R.id.user_store_contact);
+        storeContactImageView = (ImageView) contentView.findViewById(R.id.user_store_contact);
 
         registerViews();
     }
@@ -127,8 +131,21 @@ public class HomeUserFragment extends BaseNotifyFragment implements
     protected void initViews() {
         if (Content.getIntContent(Parameters.CACHE_KEY_STORE_TYPE, Parameters.CACHE_VALUE_STORE_TYPE_LOCATED) == Parameters.CACHE_VALUE_STORE_TYPE_LOCATED) {
             storeButton.setVisibility(View.GONE);
+            storeContactImageView.setVisibility(View.VISIBLE);
+            storeContactImageView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (!TextUtils.isEmpty(Store.getStore().getPhone())) {
+                        Intent intent = new Intent(Intent.ACTION_DIAL);
+                        Uri data = Uri.parse("tel:" + Store.getStore().getPhone());
+                        intent.setData(data);
+                        startActivity(intent);
+                    }
+                }
+            });
         } else {
             storeButton.setVisibility(View.VISIBLE);
+            storeContactImageView.setVisibility(View.GONE);
         }
         storeNameTextView.setText(Store.getStore().getStoreName());
         storeAddressTextView.setText(Store.getStore().getStoreAddess());
@@ -140,7 +157,6 @@ public class HomeUserFragment extends BaseNotifyFragment implements
             userLevelTextView.setText("");
             loginButton.setText("登录");
         }
-        // getCarCount();
     }
 
     @Override
@@ -185,20 +201,6 @@ public class HomeUserFragment extends BaseNotifyFragment implements
             }
         });
     }
-
-    // private void getCarCount() {
-    // long count = 0;
-    // try {
-    // JSONArray carArray = new JSONArray(Content.getStringContent(
-    // Parameters.CACHE_KEY_CAR, "[]"));
-    // for (int i = 0; i < carArray.length(); i++) {
-    // ModelCar car = new ModelCar(carArray.getJSONObject(i));
-    // count += car.getProductCount();
-    // }
-    // } catch (JSONException e) {
-    // e.printStackTrace();
-    // }
-    // }
 
     @Override
     public void onClick(View v) {

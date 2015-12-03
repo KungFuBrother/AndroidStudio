@@ -178,20 +178,7 @@ public class LocalGoodsSaleMiaoshaBuyFragment extends BaseNotifyFragment {
 
             @Override
             public void onClick(View paramView) {
-                if (miaoshaDetail.getNumbers() > miaoshaDetail.getMemberNumber()) {
-                    if (goodsCount < miaoshaDetail.getMemberNumber()) {
-                        goodsCount++;
-                    } else {
-                        Notify.show("每个账号限购" + miaoshaDetail.getMemberNumber() + "件");
-                    }
-                } else {
-                    if (goodsCount < miaoshaDetail.getNumbers()) {
-                        goodsCount++;
-                    } else {
-                        Notify.show("仅剩" + miaoshaDetail.getNumbers() + "件");
-                    }
-                }
-                countTotalMoney();
+                Notify.show("秒杀产品一次只能购买一件");
             }
         });
         countDeleteButton.setOnClickListener(new OnClickListener() {
@@ -201,7 +188,6 @@ public class LocalGoodsSaleMiaoshaBuyFragment extends BaseNotifyFragment {
                 if (goodsCount > 1) {
                     goodsCount--;
                 }
-                countTotalMoney();
             }
         });
         diliverPayButton.setOnClickListener(new OnClickListener() {

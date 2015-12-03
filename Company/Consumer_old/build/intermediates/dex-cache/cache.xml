@@ -2,32 +2,25 @@
 <items version="2" >
 
     <item
-        jar="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\exploded-aar\Consumer_old\pullToRefresh\unspecified\jars\classes.jar"
+        jar="E:\Github\AndroidStudio\Company\Consumer_old\consumer\libs\android-async-http-1.4.7.jar"
         jumboMode="false"
         revision="23.0.2"
-        sha1="a9b74ede5f7cb92bce8e706f6feba0e8056a24f9">
-        <dex dex="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\pre-dexed\debug\classes-af43ff3b31fba8131cbb5a55632db02013bd86c0.jar" />
+        sha1="cd78109020f9ec803ef4e652c17ee4615b03e20a">
+        <dex dex="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\pre-dexed\debug\android-async-http-1.4.7-7b6616cf0f94a53249610599ee345010be4f245b.jar" />
     </item>
     <item
-        jar="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\jars\libs\internal_impl-22.2.1.jar"
+        jar="C:\Users\Tiger\.gradle\caches\modules-2\files-2.1\com.umeng.analytics\analytics\5.6.1\b2705cbb19f52bb4d242458163a98d9e889c1292\analytics-5.6.1.jar"
         jumboMode="false"
         revision="23.0.2"
-        sha1="c471eaaba13ff64f6e0383d1c30a9cdc9a97efeb">
-        <dex dex="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\pre-dexed\debug\internal_impl-22.2.1-683af9f376a13f34854dbc1b4f89437c81259509.jar" />
+        sha1="b2705cbb19f52bb4d242458163a98d9e889c1292">
+        <dex dex="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\pre-dexed\debug\analytics-5.6.1-6030efd1bfd553dbd835b296eade4a1d2c83acb9.jar" />
     </item>
     <item
-        jar="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\22.2.1\jars\classes.jar"
+        jar="D:\DevelopeTools\ADT\sdk\extras\android\m2repository\com\android\support\support-annotations\22.2.1\support-annotations-22.2.1.jar"
         jumboMode="false"
         revision="23.0.2"
-        sha1="3abb4b88f5a8a0584a9b01d3170d7165f12f8588">
-        <dex dex="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\pre-dexed\debug\classes-8bfe2ff11dbb179183d21faac7d7a6ca96eac7ae.jar" />
-    </item>
-    <item
-        jar="E:\Github\AndroidStudio\Company\Consumer_old\consumer\libs\zxing.jar"
-        jumboMode="false"
-        revision="23.0.2"
-        sha1="6fe22c135f19470d05b0816d5996c442ef67da3f">
-        <dex dex="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\pre-dexed\debug\zxing-1d18e1b3a7f68cd47c7c2779a33ac707b2b08e68.jar" />
+        sha1="61a0ff5c29295ec56d7e0bd3d25d95dbf71b4b2b">
+        <dex dex="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\pre-dexed\debug\support-annotations-22.2.1-d2085f87634137d8ec7f8730a106f8472496e572.jar" />
     </item>
     <item
         jar="C:\Users\Tiger\.gradle\caches\modules-2\files-2.1\com.nostra13.universalimageloader\universal-image-loader\1.9.4\dd9eeb557650c4ad7394df23f0f5cf27a7cfc697\universal-image-loader-1.9.4.jar"
@@ -37,18 +30,18 @@
         <dex dex="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\pre-dexed\debug\universal-image-loader-1.9.4-c1ec8b576d2c335242b2443833060b37d16e8711.jar" />
     </item>
     <item
+        jar="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\22.2.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="3abb4b88f5a8a0584a9b01d3170d7165f12f8588">
+        <dex dex="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\pre-dexed\debug\classes-8bfe2ff11dbb179183d21faac7d7a6ca96eac7ae.jar" />
+    </item>
+    <item
         jar="E:\Github\AndroidStudio\Company\Consumer_old\consumer\libs\bugly_1.1.7_release.jar"
         jumboMode="false"
         revision="23.0.2"
         sha1="60ac74d66d757d457e0f5ce8c342e8f95d4a0240">
         <dex dex="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\pre-dexed\debug\bugly_1.1.7_release-c7fbe0fd3b6cd6e810182a9aa1a0de65d969e55a.jar" />
-    </item>
-    <item
-        jar="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\exploded-aar\Consumer_old\ViewPagerIndicator\unspecified\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.2"
-        sha1="71fd0fccc44c5c16b4bb2ed9307c05498ae7e562">
-        <dex dex="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\pre-dexed\debug\classes-fa36a816d5ee531706b36a47865cdc33a868849f.jar" />
     </item>
     <item
         jar="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\jars\classes.jar"
@@ -65,11 +58,32 @@
         <dex dex="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\pre-dexed\debug\classes-4b219c486c0f9a8d13da3a6ba9b87b3bbeabfc13.jar" />
     </item>
     <item
-        jar="C:\Users\Tiger\.gradle\caches\modules-2\files-2.1\com.umeng.analytics\analytics\5.6.1\b2705cbb19f52bb4d242458163a98d9e889c1292\analytics-5.6.1.jar"
+        jar="E:\Github\AndroidStudio\Company\Consumer_old\consumer\libs\zxing.jar"
         jumboMode="false"
         revision="23.0.2"
-        sha1="b2705cbb19f52bb4d242458163a98d9e889c1292">
-        <dex dex="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\pre-dexed\debug\analytics-5.6.1-6030efd1bfd553dbd835b296eade4a1d2c83acb9.jar" />
+        sha1="6fe22c135f19470d05b0816d5996c442ef67da3f">
+        <dex dex="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\pre-dexed\debug\zxing-1d18e1b3a7f68cd47c7c2779a33ac707b2b08e68.jar" />
+    </item>
+    <item
+        jar="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\jars\libs\internal_impl-22.2.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="c471eaaba13ff64f6e0383d1c30a9cdc9a97efeb">
+        <dex dex="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\pre-dexed\debug\internal_impl-22.2.1-683af9f376a13f34854dbc1b4f89437c81259509.jar" />
+    </item>
+    <item
+        jar="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\exploded-aar\Consumer_old\pullToRefresh\unspecified\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="1427dd46e2762742803347e6b0ed2d1458f6c2c7">
+        <dex dex="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\pre-dexed\debug\classes-af43ff3b31fba8131cbb5a55632db02013bd86c0.jar" />
+    </item>
+    <item
+        jar="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\exploded-aar\Consumer_old\ViewPagerIndicator\unspecified\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="02d182fd04d090ff04e49d6546b336d1a816cc7b">
+        <dex dex="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\pre-dexed\debug\classes-fa36a816d5ee531706b36a47865cdc33a868849f.jar" />
     </item>
     <item
         jar="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\exploded-aar\com.android.support\cardview-v7\22.2.1\jars\classes.jar"
@@ -84,20 +98,6 @@
         revision="23.0.2"
         sha1="346de86885606677e2efe8e6dd5db616e23f049a">
         <dex dex="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\pre-dexed\debug\BaiduLBS_Android-1916bf83367d5ea39cd21655cde4d77a943c085e.jar" />
-    </item>
-    <item
-        jar="D:\DevelopeTools\ADT\sdk\extras\android\m2repository\com\android\support\support-annotations\22.2.1\support-annotations-22.2.1.jar"
-        jumboMode="false"
-        revision="23.0.2"
-        sha1="61a0ff5c29295ec56d7e0bd3d25d95dbf71b4b2b">
-        <dex dex="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\pre-dexed\debug\support-annotations-22.2.1-d2085f87634137d8ec7f8730a106f8472496e572.jar" />
-    </item>
-    <item
-        jar="E:\Github\AndroidStudio\Company\Consumer_old\consumer\libs\android-async-http-1.4.7.jar"
-        jumboMode="false"
-        revision="23.0.2"
-        sha1="cd78109020f9ec803ef4e652c17ee4615b03e20a">
-        <dex dex="E:\Github\AndroidStudio\Company\Consumer_old\consumer\build\intermediates\pre-dexed\debug\android-async-http-1.4.7-7b6616cf0f94a53249610599ee345010be4f245b.jar" />
     </item>
 
 </items>

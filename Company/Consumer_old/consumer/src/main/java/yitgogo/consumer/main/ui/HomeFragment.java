@@ -115,7 +115,7 @@ public class HomeFragment extends BaseNotifyFragment implements OnClickListener 
                         return;
                     }
                     long currentTime = Calendar.getInstance().getTimeInMillis();
-                    long startTime = (long) 1449050040 * 1000;
+                    long startTime = (long) 1449763200 * 1000;
                     if (startTime > currentTime) {
                         timeLayout.setVisibility(View.VISIBLE);
                         long time = startTime - currentTime;

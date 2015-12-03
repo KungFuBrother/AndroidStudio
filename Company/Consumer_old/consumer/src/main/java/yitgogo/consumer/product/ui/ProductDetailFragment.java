@@ -253,6 +253,12 @@ public class ProductDetailFragment extends BaseNotifyFragment {
         countAddLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (isSaleEnable) {
+                    if (saleType == CaptureActivity.SALE_TYPE_MIAOSHA) {
+                        Notify.show("秒杀产品一次只能购买一件");
+                        return;
+                    }
+                }
                 if (buyCount < productDetail.getNum()) {
                     buyCount++;
                     new GetFreight().execute();
@@ -276,7 +282,6 @@ public class ProductDetailFragment extends BaseNotifyFragment {
      * 显示商品详情
      */
     private void showDetail() {
-        new GetFreight().execute();
         imageAdapter.notifyDataSetChanged();
         nameTextView.setText(productDetail.getProductName());
         priceTextView.setText(Parameters.CONSTANT_RMB + decimalFormat.format(productDetail.getPrice()));
@@ -296,6 +301,7 @@ public class ProductDetailFragment extends BaseNotifyFragment {
                 break;
 
             default:
+                new GetFreight().execute();
                 break;
         }
     }
@@ -556,16 +562,16 @@ public class ProductDetailFragment extends BaseNotifyFragment {
                 saleDetailMiaosha = new ModelSaleDetailMiaosha(result);
                 if (saleDetailMiaosha != null) {
                     if (saleDetailMiaosha.getSeckillPrice() > 0) {
-                        StringBuilder saleInfo = new StringBuilder();
-                        saleLayout.setVisibility(View.VISIBLE);
-                        saleInfo.append(saleDetailMiaosha.getSeckillName());
-                        saleInfo.append("\n");
                         // 开始时间<=当前时间，活动已开始
                         if (saleDetailMiaosha.getStartTime() <= Calendar
                                 .getInstance().getTime().getTime()) {
                             // 剩余秒杀数量>0，显示秒杀信息
                             if (saleDetailMiaosha.getSeckillNUmber() > 0) {
                                 isSaleEnable = true;
+                                saleLayout.setVisibility(View.VISIBLE);
+                                StringBuilder saleInfo = new StringBuilder();
+                                saleInfo.append(saleDetailMiaosha.getSeckillName());
+                                saleInfo.append("\n");
                                 priceTextView.setText("¥" + decimalFormat.format(saleDetailMiaosha.getSeckillPrice()));
                                 saleInfo.append("秒杀已开始，每个账号限购" + saleDetailMiaosha.getMemberNumber() + "件。");
                                 saleInfo.append("\n");
@@ -573,19 +579,24 @@ public class ProductDetailFragment extends BaseNotifyFragment {
                                 saleInfo.append("\n");
                                 saleInfo.append("原件:" + "¥" + decimalFormat.format(saleDetailMiaosha.getPrice()));
                                 carButton.setVisibility(View.GONE);
+                                saleTextView.setText(saleInfo.toString());
                             }
                         } else {
                             // 开始时间>当前时间，活动未开始，显示预告
+                            saleLayout.setVisibility(View.VISIBLE);
+                            StringBuilder saleInfo = new StringBuilder();
+                            saleInfo.append(saleDetailMiaosha.getSeckillName());
                             saleInfo.append("开始时间:\n" + simpleDateFormat.format(new Date(saleDetailMiaosha.getStartTime()))
                                     + "\n原价：" + Parameters.CONSTANT_RMB + decimalFormat.format(saleDetailMiaosha.getPrice()) + ","
                                     + "秒杀价：" + Parameters.CONSTANT_RMB + decimalFormat.format(saleDetailMiaosha.getSeckillPrice()));
+                            saleTextView.setText(saleInfo.toString());
                         }
-                        saleTextView.setText(saleInfo.toString());
                     }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            new GetFreight().execute();
         }
     }
 
@@ -645,6 +656,7 @@ public class ProductDetailFragment extends BaseNotifyFragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            new GetFreight().execute();
         }
     }
 
@@ -690,6 +702,7 @@ public class ProductDetailFragment extends BaseNotifyFragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            new GetFreight().execute();
         }
     }
 
@@ -731,7 +744,7 @@ public class ProductDetailFragment extends BaseNotifyFragment {
                             }
                             if (freightMap.containsKey(productDetail.getSupplierId())) {
                                 freightTextView.setText("运费:" + Parameters.CONSTANT_RMB + decimalFormat.format(freightMap.get(productDetail.getSupplierId())));
-                                totalMoneyTextView.setText(Parameters.CONSTANT_RMB + decimalFormat.format(buyCount * productDetail.getPrice() + freightMap.get(productDetail.getSupplierId())));
+                                countTotalMoney();
                             }
                         }
                         return;
@@ -742,6 +755,31 @@ public class ProductDetailFragment extends BaseNotifyFragment {
                 }
             }
         }
+    }
+
+    private void countTotalMoney() {
+        double price = productDetail.getPrice();
+        if (isSaleEnable) {
+            switch (saleType) {
+
+                case CaptureActivity.SALE_TYPE_TIME:
+                    price = saleDetailTime.getPromotionPrice();
+                    break;
+
+                case CaptureActivity.SALE_TYPE_MIAOSHA:
+                    price = saleDetailMiaosha.getSeckillPrice();
+                    break;
+
+                case CaptureActivity.SALE_TYPE_TEJIA:
+                    price = saleDetailTejia.getSalePrice();
+                    break;
+
+                default:
+                    price = productDetail.getPrice();
+                    break;
+            }
+        }
+        totalMoneyTextView.setText(Parameters.CONSTANT_RMB + decimalFormat.format(buyCount * price + freightMap.get(productDetail.getSupplierId())));
     }
 
     private void buyProduct() {

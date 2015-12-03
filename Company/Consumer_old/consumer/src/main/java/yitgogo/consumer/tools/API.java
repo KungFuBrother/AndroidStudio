@@ -5,12 +5,14 @@ public interface API {
     /**
      * 检查更新
      */
-    String API_UPDATE = "http://updatePhone.yitos.net/android/version_consumer.js";
 
     String API_LBS_NEARBY = "http://api.map.baidu.com/geosearch/v3/nearby";
 
     String URL_DOWNLOAD = "http://updatephone.yitos.net/";
 
+//    String API_UPDATE = "http://updatePhone.yitos.net/android/version_consumer.js";
+
+    String API_UPDATE = "http://updatePhone.yitos.net/android/version_consumer.js";
     //    public String IP_PUBLIC = "http://yitos.net";
     String IP_PUBLIC = "http://192.168.8.8:8050";
     //    String IP_SUNING = "http://gcapi.suning.com";

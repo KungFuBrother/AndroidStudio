@@ -68,11 +68,9 @@ public class MainActivity extends BaseActivity {
         images.add(R.drawable.selector_home_tab_yitgogo);
         lables.add("易商城");
 
-        if (showLocalBusiness) {
-            fragments.add(LocalBusinessFragment.class);
-            images.add(R.drawable.selector_home_tab_local);
-            lables.add("易商圈");
-        }
+        fragments.add(LocalBusinessFragment.class);
+        images.add(R.drawable.selector_home_tab_local);
+        lables.add("易商圈");
 
         fragments.add(HomeSuningFragment.class);
         images.add(R.drawable.selector_home_tab_score);

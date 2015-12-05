@@ -6,6 +6,7 @@ import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -13,7 +14,6 @@ import android.widget.AbsListView.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -34,12 +34,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import yitgogo.consumer.BaseNotifyFragment;
 import yitgogo.consumer.home.model.ModelListPrice;
@@ -69,8 +70,10 @@ import yitgogo.consumer.home.task.GetStore;
 import yitgogo.consumer.local.ui.NongfuFragment;
 import yitgogo.consumer.product.ui.ClassesFragment;
 import yitgogo.consumer.product.ui.ProductSearchFragment;
+import yitgogo.consumer.store.model.ModelStoreArea;
 import yitgogo.consumer.store.model.Store;
 import yitgogo.consumer.tools.API;
+import yitgogo.consumer.tools.Content;
 import yitgogo.consumer.tools.Parameters;
 import yitgogo.consumer.tools.ScreenUtil;
 import yitgogo.consumer.view.InnerGridView;
@@ -226,6 +229,7 @@ public class HomeFragment extends BaseNotifyFragment implements OnClickListener 
         products = new ArrayList<>();
         priceMap = new HashMap<>();
         productAdapter = new ProductAdapter();
+        getStoreAreas();
     }
 
     protected void findViews() {
@@ -682,4 +686,73 @@ public class HomeFragment extends BaseNotifyFragment implements OnClickListener 
         }
     }
 
+    private void getStoreAreas() {
+        if (TextUtils.isEmpty(Content.getStringContent("product_detail_area_name", ""))) {
+            new GetStoreArea().execute();
+        }
+    }
+
+    class GetStoreArea extends AsyncTask<Void, Void, String> {
+
+
+        @Override
+        protected String doInBackground(Void... params) {
+            List<NameValuePair> nameValuePairs = new ArrayList<>();
+            nameValuePairs.add(new BasicNameValuePair("spid", Store.getStore().getStoreId()));
+            return netUtil.postWithoutCookie(API.API_STORE_SELECTED_AREA, nameValuePairs, false, false);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (!TextUtils.isEmpty(result)) {
+                try {
+                    JSONObject object = new JSONObject(result);
+                    if (object.optString("state").equalsIgnoreCase("SUCCESS")) {
+                        JSONArray array = object.optJSONArray("dataList");
+                        if (array != null) {
+                            HashMap<Integer, ModelStoreArea> areaHashMap = new HashMap<>();
+                            for (int i = 0; i < array.length(); i++) {
+                                ModelStoreArea storeArea = new ModelStoreArea(array.optJSONObject(i));
+                                areaHashMap.put(storeArea.getType(), storeArea);
+                            }
+                            Content.saveStringContent("product_detail_area_name", getAreaName(areaHashMap));
+                            Content.saveStringContent("product_detail_area_id", getAreaId(areaHashMap));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+    private String getAreaName(HashMap<Integer, ModelStoreArea> areaHashMap) {
+        StringBuilder builder = new StringBuilder();
+        List<Map.Entry<Integer, ModelStoreArea>> entries = new ArrayList<>(areaHashMap.entrySet());
+        Collections.sort(entries, new Comparator<Map.Entry<Integer, ModelStoreArea>>() {
+            @Override
+            public int compare(Map.Entry<Integer, ModelStoreArea> area1, Map.Entry<Integer, ModelStoreArea> area2) {
+                return area1.getKey().compareTo(area2.getKey());
+            }
+        });
+        for (int i = 0; i < entries.size(); i++) {
+            if (i > 0) {
+                builder.append(">");
+            }
+            builder.append(entries.get(i).getValue().getName());
+        }
+        return builder.toString();
+    }
+
+    private String getAreaId(HashMap<Integer, ModelStoreArea> areaHashMap) {
+        List<Map.Entry<Integer, ModelStoreArea>> entries = new ArrayList<>(areaHashMap.entrySet());
+        Collections.sort(entries, new Comparator<Map.Entry<Integer, ModelStoreArea>>() {
+            @Override
+            public int compare(Map.Entry<Integer, ModelStoreArea> area1, Map.Entry<Integer, ModelStoreArea> area2) {
+                return area1.getKey().compareTo(area2.getKey());
+            }
+        });
+        return entries.get(entries.size() - 1).getValue().getId();
+    }
 }

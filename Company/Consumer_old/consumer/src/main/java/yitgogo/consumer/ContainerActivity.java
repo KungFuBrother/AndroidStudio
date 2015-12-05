@@ -1,6 +1,5 @@
 package yitgogo.consumer;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.GestureDetector;
@@ -18,10 +17,7 @@ import android.widget.TextView;
 import com.smartown.yitian.gogo.R;
 import com.umeng.analytics.MobclickAgent;
 
-import yitgogo.consumer.main.ui.MainActivity;
 import yitgogo.consumer.product.ui.ProductListFragment;
-import yitgogo.consumer.store.model.Store;
-import yitgogo.consumer.store.ui.SelectStoreFragment;
 import yitgogo.consumer.tools.LogUtil;
 import yitgogo.consumer.tools.ScreenUtil;
 
@@ -176,31 +172,8 @@ public class ContainerActivity extends BaseActivity {
             if (productListFragment.onKeyDown(keyCode, event)) {
                 return true;
             }
-        } else if (fragmentName.equals(SelectStoreFragment.class.getName())) {
-            if (keyCode == KeyEvent.KEYCODE_BACK) {
-                if (Store.getStore() == null) {
-                    finish();
-                } else {
-                    getLocalBusinessState();
-                    return false;
-                }
-            }
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    private void getLocalBusinessState() {
-        GetLocalBusinessState localBusinessState = new GetLocalBusinessState() {
-
-            @Override
-            protected void onPostExecute(Boolean showLocalBusiness) {
-                Intent intent = new Intent(ContainerActivity.this, MainActivity.class);
-                intent.putExtra("showLocalBusiness", showLocalBusiness);
-                startActivity(intent);
-                finish();
-            }
-        };
-        localBusinessState.execute();
     }
 
     class MyGestureListener extends GestureDetector.SimpleOnGestureListener {

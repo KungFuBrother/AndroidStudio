@@ -29,8 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import yitgogo.consumer.main.ui.MainActivity;
+import yitgogo.consumer.store.SelectStoreFragment;
 import yitgogo.consumer.store.model.Store;
-import yitgogo.consumer.store.ui.SelectStoreFragment;
 import yitgogo.consumer.tools.API;
 import yitgogo.consumer.tools.Content;
 import yitgogo.consumer.tools.LogUtil;
@@ -63,6 +63,10 @@ public class EntranceActivity extends BaseActivity {
         super.onPause();
         MobclickAgent.onPause(this);
         MobclickAgent.onPageEnd(EntranceActivity.class.getName());
+    }
+
+    private void test() {
+        updateStore(true);
     }
 
     @Override
@@ -195,8 +199,7 @@ public class EntranceActivity extends BaseActivity {
         requestParams.add("radius", "100000");
         requestParams.add("page_index", "0");
         requestParams.add("page_size", "1");
-        requestParams.add("location",
-                location.getLongitude() + "," + location.getLatitude());
+        requestParams.add("location", location.getLongitude() + "," + location.getLatitude());
         AsyncHttpClient httpClient = new AsyncHttpClient();
         httpClient.get(API.API_LBS_NEARBY, requestParams,
                 new JsonHttpResponseHandler() {
@@ -212,12 +215,9 @@ public class EntranceActivity extends BaseActivity {
                                 try {
                                     array = response.getJSONArray("contents");
                                     if (array.length() > 0) {
-                                        Content.saveIntContent(
-                                                Parameters.CACHE_KEY_STORE_TYPE,
-                                                Parameters.CACHE_VALUE_STORE_TYPE_LOCATED);
-                                        Content.saveStringContent(
-                                                Parameters.CACHE_KEY_STORE_JSONSTRING,
-                                                array.getString(0));
+                                        Content.saveIntContent(Parameters.CACHE_KEY_STORE_TYPE, Parameters.CACHE_VALUE_STORE_TYPE_LOCATED);
+                                        Content.saveBooleanContent(Parameters.CACHE_KEY_LOCATE_SUCCESS, true);
+                                        Content.saveStringContent(Parameters.CACHE_KEY_STORE_JSONSTRING, array.getString(0));
                                         Store.init(getApplicationContext());
                                         // 自动定位到到最近加盟店，跳转到主页
                                         getLocalBusinessState();

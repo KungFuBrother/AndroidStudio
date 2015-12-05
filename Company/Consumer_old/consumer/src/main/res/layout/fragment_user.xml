@@ -290,28 +290,64 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="12dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
-                        android:text="当前已选服务中心"
-                        android:textColor="@color/textColorThird"
-                        android:textSize="14dp" />
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
+                        android:minHeight="36dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="16dp"
+                            android:text="当前已选服务中心"
+                            android:textColor="@color/textColorThird"
+                            android:textSize="14dp" />
+
+                        <LinearLayout
+                            android:id="@+id/user_store_contact"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/selector_trans_divider"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:padding="14dp">
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_margin="2dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/icon_store_contact" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="2dp"
+                                android:text="联系商家"
+                                android:textColor="@color/product_price"
+                                android:textSize="14dp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/user_store"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/selector_trans_divider"
+                        android:gravity="center_vertical"
+                        android:minHeight="56dp"
                         android:orientation="horizontal"
-                        android:padding="2dp">
+                        android:paddingLeft="16dp">
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_margin="2dp"
                             android:layout_weight="1"
                             android:orientation="vertical">
 
@@ -332,11 +368,10 @@
                         </LinearLayout>
 
                         <ImageView
-                            android:id="@+id/user_store_contact"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:layout_margin="2dp"
-                            android:src="@drawable/icon_store_contact" />
+                            android:layout_width="48dp"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/iconfont_next" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -346,40 +381,6 @@
                     android:layout_height="1px"
                     android:background="@color/divider"></LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/user_store"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="@drawable/selector_trans_divider"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/icon_peisong" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="修改服务中心"
-                        android:textColor="@color/textColorPrimary"
-                        android:textSize="14dp" />
-
-                    <ImageView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/iconfont_next" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:background="@color/divider"></LinearLayout>
             </LinearLayout>
 
             <LinearLayout

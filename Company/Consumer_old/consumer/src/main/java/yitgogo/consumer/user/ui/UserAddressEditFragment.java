@@ -1,5 +1,6 @@
 package yitgogo.consumer.user.ui;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,9 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import yitgogo.consumer.BaseNotifyFragment;
-import yitgogo.consumer.store.ui.SelectAreaFragment;
+import yitgogo.consumer.store.SelectAreaFragment;
 import yitgogo.consumer.tools.API;
-import yitgogo.consumer.tools.Content;
 import yitgogo.consumer.user.model.User;
 import yitgogo.consumer.view.Notify;
 
@@ -55,7 +55,6 @@ public class UserAddressEditFragment extends BaseNotifyFragment {
     public void onResume() {
         super.onResume();
         MobclickAgent.onPageStart(UserAddressEditFragment.class.getName());
-        initArea();
     }
 
     @Override
@@ -70,6 +69,17 @@ public class UserAddressEditFragment extends BaseNotifyFragment {
         new GetAddressDetail().execute();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 22) {
+            if (resultCode == 23) {
+                areaName = data.getStringExtra("name");
+                areaId = data.getStringExtra("id");
+                areaTextView.setText(areaName);
+            }
+        }
+    }
+
     private void init() {
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -77,12 +87,6 @@ public class UserAddressEditFragment extends BaseNotifyFragment {
                 addressId = bundle.getString("addressId");
             }
         }
-    }
-
-    private void initArea() {
-        areaName = Content.getStringContent("product_detail_area_name", "四川省>成都市>锦江区");
-        areaId = Content.getStringContent("product_detail_area_id", "2419");
-        areaTextView.setText(areaName);
     }
 
     @Override
@@ -119,7 +123,9 @@ public class UserAddressEditFragment extends BaseNotifyFragment {
 
             @Override
             public void onClick(View v) {
-                jump(SelectAreaFragment.class.getName(), "选择收货区域");
+                Bundle bundle = new Bundle();
+                bundle.putInt("type", SelectAreaFragment.TYPE_GET_AREA);
+                jumpForResult(SelectAreaFragment.class.getName(), "选择区域", bundle, 22);
             }
         });
         addButton.setOnClickListener(new OnClickListener() {

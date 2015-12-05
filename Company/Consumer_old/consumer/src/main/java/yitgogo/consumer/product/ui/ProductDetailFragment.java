@@ -1,6 +1,7 @@
 package yitgogo.consumer.product.ui;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -54,8 +55,8 @@ import yitgogo.consumer.product.model.ModelProduct;
 import yitgogo.consumer.product.model.ModelSaleDetailMiaosha;
 import yitgogo.consumer.product.model.ModelSaleDetailTejia;
 import yitgogo.consumer.product.model.ModelSaleDetailTime;
+import yitgogo.consumer.store.SelectAreaFragment;
 import yitgogo.consumer.store.model.Store;
-import yitgogo.consumer.store.ui.SelectAreaFragment;
 import yitgogo.consumer.tools.API;
 import yitgogo.consumer.tools.Content;
 import yitgogo.consumer.tools.Parameters;
@@ -122,7 +123,6 @@ public class ProductDetailFragment extends BaseNotifyFragment {
     public void onResume() {
         super.onResume();
         MobclickAgent.onPageStart(ProductDetailFragment.class.getName());
-        initArea();
     }
 
     @Override
@@ -134,7 +134,19 @@ public class ProductDetailFragment extends BaseNotifyFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initArea();
         new GetProductDetail().execute();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 22) {
+            if (resultCode == 23) {
+                Content.saveStringContent("product_detail_area_name", data.getStringExtra("name"));
+                Content.saveStringContent("product_detail_area_id", data.getStringExtra("id"));
+                initArea();
+            }
+        }
     }
 
     private void init() {
@@ -226,7 +238,9 @@ public class ProductDetailFragment extends BaseNotifyFragment {
         areaLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                jump(SelectAreaFragment.class.getName(), "选择收货区域");
+                Bundle bundle = new Bundle();
+                bundle.putInt("type", SelectAreaFragment.TYPE_GET_AREA);
+                jumpForResult(SelectAreaFragment.class.getName(), "选择区域", bundle, 22);
             }
         });
         htmlLayout.setOnClickListener(new OnClickListener() {

@@ -10,15 +10,15 @@ public interface API {
 
     String URL_DOWNLOAD = "http://updatephone.yitos.net/";
 
-//    String API_UPDATE = "http://updatePhone.yitos.net/android/version_consumer.js";
-
     String API_UPDATE = "http://updatePhone.yitos.net/android/version_consumer.js";
-    //    public String IP_PUBLIC = "http://yitos.net";
-    String IP_PUBLIC = "http://192.168.8.8:8050";
-    //    String IP_SUNING = "http://gcapi.suning.com";
-    String IP_SUNING = "http://58.240.86.161";
-    //    public String IP_MONEY = "http://pay.yitos.net";
-    String IP_MONEY = "http://192.168.8.8:82";
+
+    String IP_PUBLIC = "http://yitos.net";
+    String IP_SUNING = "http://gcapi.suning.com";
+    String IP_MONEY = "http://pay.yitos.net";
+
+//    String IP_PUBLIC = "http://42.96.249.111";
+//    String IP_SUNING = "http://gcapi.suning.com";
+//    String IP_MONEY = "http://115.28.252.7";
 
     /**
      * 说明：根据手机号码和面值（为慢充时还须到账时间）查询充值信息 参数： phoneno 手机号码 必须 pervalue 面值 必须
@@ -157,6 +157,9 @@ public interface API {
      */
     String API_STORE_LIST = IP_PUBLIC
             + "/api/agency/mechanismManage/mechanism/findStoreByArea";
+
+    String API_STORE_SELECTED_AREA = IP_PUBLIC
+            + "/api/agency/mechanismManage/mechanism/findStoreAllOnRegional";
 
     /**
      * 广告

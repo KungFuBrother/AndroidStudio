@@ -31,8 +31,8 @@ import yitgogo.consumer.money.model.MoneyAccount;
 import yitgogo.consumer.money.ui.MoneyHomeFragment;
 import yitgogo.consumer.order.ui.OrderFragment;
 import yitgogo.consumer.product.ui.ShoppingCarFragment;
+import yitgogo.consumer.store.SelectStoreFragment;
 import yitgogo.consumer.store.model.Store;
-import yitgogo.consumer.store.ui.SelectStoreFragment;
 import yitgogo.consumer.tools.API;
 import yitgogo.consumer.tools.Content;
 import yitgogo.consumer.tools.PackageTool;
@@ -58,7 +58,7 @@ public class HomeUserFragment extends BaseNotifyFragment implements
 
     TextView storeNameTextView, storeAddressTextView;
 
-    ImageView storeContactImageView;
+    LinearLayout storeContactButton;
 
     LinearLayout infoButton, storeButton, addressButton,
             shareButton, userListButton, openStoreButton, updateButtton;
@@ -122,31 +122,23 @@ public class HomeUserFragment extends BaseNotifyFragment implements
 
         storeNameTextView = (TextView) contentView.findViewById(R.id.user_store_name);
         storeAddressTextView = (TextView) contentView.findViewById(R.id.user_store_address);
-        storeContactImageView = (ImageView) contentView.findViewById(R.id.user_store_contact);
+        storeContactButton = (LinearLayout) contentView.findViewById(R.id.user_store_contact);
 
         registerViews();
     }
 
     @Override
     protected void initViews() {
-        if (Content.getIntContent(Parameters.CACHE_KEY_STORE_TYPE, Parameters.CACHE_VALUE_STORE_TYPE_LOCATED) == Parameters.CACHE_VALUE_STORE_TYPE_LOCATED) {
-            storeButton.setVisibility(View.GONE);
-            storeContactImageView.setVisibility(View.VISIBLE);
-            storeContactImageView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (!TextUtils.isEmpty(Store.getStore().getPhone())) {
-                        Intent intent = new Intent(Intent.ACTION_DIAL);
-                        Uri data = Uri.parse("tel:" + Store.getStore().getPhone());
-                        intent.setData(data);
-                        startActivity(intent);
-                    }
-                }
-            });
+        if (TextUtils.isEmpty(Store.getStore().getPhone())) {
+            storeContactButton.setVisibility(View.GONE);
         } else {
-            storeButton.setVisibility(View.VISIBLE);
-            storeContactImageView.setVisibility(View.GONE);
+            storeContactButton.setVisibility(View.VISIBLE);
         }
+//        if (Content.getIntContent(Parameters.CACHE_KEY_STORE_TYPE, Parameters.CACHE_VALUE_STORE_TYPE_LOCATED) == Parameters.CACHE_VALUE_STORE_TYPE_LOCATED) {
+//            storeButton.setVisibility(View.GONE);
+//        } else {
+//            storeButton.setVisibility(View.VISIBLE);
+//        }
         storeNameTextView.setText(Store.getStore().getStoreName());
         storeAddressTextView.setText(Store.getStore().getStoreAddess());
         if (User.getUser().isLogin()) {
@@ -178,12 +170,22 @@ public class HomeUserFragment extends BaseNotifyFragment implements
                 jump(ShoppingCarFragment.class.getName(), "易商城购物车");
             }
         });
+        storeContactButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!TextUtils.isEmpty(Store.getStore().getPhone())) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    Uri data = Uri.parse("tel:" + Store.getStore().getPhone());
+                    intent.setData(data);
+                    startActivity(intent);
+                }
+            }
+        });
         storeButton.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 jump(SelectStoreFragment.class.getName(), "修改服务中心");
-                getActivity().finish();
             }
         });
         openStoreButton.setOnClickListener(new OnClickListener() {

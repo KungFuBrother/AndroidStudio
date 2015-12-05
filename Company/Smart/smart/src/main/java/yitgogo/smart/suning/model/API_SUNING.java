@@ -6,7 +6,6 @@ package yitgogo.smart.suning.model;
 public interface API_SUNING {
 
     String IP_SUNING = "http://gcapi.suning.com";
-//    String IP_SUNING = "http://58.240.86.161";
 
     /**
      * 获取品类(目录)接口

@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -33,7 +32,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import yitgogo.smart.BaseNotifyFragment;
-import yitgogo.smart.model.ModelMachineArea;
 import yitgogo.smart.order.model.User;
 import yitgogo.smart.order.ui.PayFragment;
 import yitgogo.smart.suning.model.ModelProductPrice;
@@ -57,7 +55,6 @@ public class ShoppingCarBuyFragment extends BaseNotifyFragment {
     HashMap<String, ModelProductPrice> priceHashMap = new HashMap<>();
 
     CarAdapter carAdapter;
-    TextView selectAllButton, deleteButton;
 
     EditText userPhoneEditText, userNameEditText, userAddressEditText;
     TextView userAreaTextView;
@@ -66,20 +63,31 @@ public class ShoppingCarBuyFragment extends BaseNotifyFragment {
     double goodsMoney = 0;
 
     User user = new User();
-    ModelMachineArea machineArea = new ModelMachineArea();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_platform_car_buy);
+        setContentView(R.layout.fragment_suning_car_buy);
         init();
         findViews();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(ShoppingCarBuyFragment.class.getName());
     }
 
     @Override
     public void onPause() {
         super.onPause();
         MobclickAgent.onPageEnd(ShoppingCarBuyFragment.class.getName());
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        refresh();
     }
 
     private void init() {
@@ -114,20 +122,9 @@ public class ShoppingCarBuyFragment extends BaseNotifyFragment {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onPageStart(ShoppingCarBuyFragment.class.getName());
-        refresh();
-    }
-
     protected void findViews() {
         carList = (ListView) contentView.findViewById(R.id.car_list);
-        selectAllButton = (TextView) contentView
-                .findViewById(R.id.car_selectall);
-        deleteButton = (TextView) contentView.findViewById(R.id.car_delete);
-        totalPriceTextView = (TextView) contentView
-                .findViewById(R.id.car_total);
+        totalPriceTextView = (TextView) contentView.findViewById(R.id.car_total);
 
         userNameEditText = (EditText) contentView
                 .findViewById(R.id.order_user_name);
@@ -157,20 +154,6 @@ public class ShoppingCarBuyFragment extends BaseNotifyFragment {
 
     @Override
     protected void registerViews() {
-        selectAllButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SuningCarController.selectAll();
-                refresh();
-            }
-        });
-        deleteButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SuningCarController.deleteSelectedCars();
-                refresh();
-            }
-        });
         userAreaTextView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -306,13 +289,13 @@ public class ShoppingCarBuyFragment extends BaseNotifyFragment {
     }
 
     private void refresh() {
-        suningCars = SuningCarController.getSuningCars();
+        suningCars = SuningCarController.getSelectedCars();
         carAdapter.notifyDataSetChanged();
         totalPriceTextView.setText("");
         if (suningCars.size() > 0) {
             countTotalPrice();
         } else {
-            loadingEmpty("购物车还没有添加商品");
+            loadingEmpty("请勾选要购买的商品");
         }
     }
 
@@ -404,86 +387,42 @@ public class ShoppingCarBuyFragment extends BaseNotifyFragment {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            final int index = position;
-            ViewHolder holder;
-            if (convertView == null) {
-                convertView = layoutInflater.inflate(R.layout.list_car, null);
-                holder = new ViewHolder();
-                holder.addButton = (ImageView) convertView
-                        .findViewById(R.id.list_car_count_add);
-                holder.countText = (TextView) convertView
-                        .findViewById(R.id.list_car_count);
-                holder.deleteButton = (ImageView) convertView
-                        .findViewById(R.id.list_car_count_delete);
-                holder.goodNameText = (TextView) convertView
-                        .findViewById(R.id.list_car_title);
-                holder.goodsImage = (ImageView) convertView
-                        .findViewById(R.id.list_car_image);
-                holder.goodsPriceText = (TextView) convertView
-                        .findViewById(R.id.list_car_price);
-                holder.guigeText = (TextView) convertView
-                        .findViewById(R.id.list_car_guige);
-                holder.stateText = (TextView) convertView
-                        .findViewById(R.id.list_car_state);
-                holder.selectButton = (LinearLayout) convertView
-                        .findViewById(R.id.list_car_select);
-                holder.selection = (ImageView) convertView
-                        .findViewById(R.id.list_car_selection);
-                convertView.setTag(holder);
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            ViewHolder holder = new ViewHolder();
+            if (view == null) {
+                view = layoutInflater.inflate(R.layout.list_shopping_cart_platform_buy, null);
+                holder.goodsImageView = (ImageView) view.findViewById(R.id.platform_car_buy_image);
+                holder.goodsNameTextView = (TextView) view.findViewById(R.id.platform_car_buy_name);
+                holder.goodsAttrTextView = (TextView) view.findViewById(R.id.platform_car_buy_attr);
+                holder.goodsCountTextView = (TextView) view.findViewById(R.id.platform_car_buy_count);
+                holder.goodsPriceTextView = (TextView) view.findViewById(R.id.platform_car_buy_price);
+                view.setTag(holder);
             } else {
-                holder = (ViewHolder) convertView.getTag();
+                holder = (ViewHolder) view.getTag();
             }
-            final ModelSuningCar suningCar = suningCars.get(position);
-            if (suningCar.isSelected()) {
-                holder.selection
-                        .setImageResource(R.drawable.iconfont_check_checked);
-            } else {
-                holder.selection
-                        .setImageResource(R.drawable.iconfont_check_normal);
-            }
-            ImageLoader.getInstance().displayImage(suningCar.getProductDetail().getImage(),
-                    holder.goodsImage);
-            holder.goodNameText.setText(suningCar.getProductDetail().getName());
-            holder.countText.setText(suningCar.getProductCount() + "");
+            ModelSuningCar suningCar = suningCars.get(i);
+            ImageLoader.getInstance().displayImage(getSmallImageUrl(suningCar.getProductDetail().getImage()), holder.goodsImageView);
+            holder.goodsNameTextView.setText(suningCar.getProductDetail().getName());
+            holder.goodsAttrTextView.setText(suningCar.getProductDetail().getModel());
+            holder.goodsCountTextView.setText("数量:" + suningCars.get(i).getProductCount());
             if (priceHashMap.containsKey(suningCar.getProductDetail().getSku())) {
-                holder.goodsPriceText.setText(Parameters.CONSTANT_RMB
-                        + decimalFormat.format(priceHashMap.get(suningCar.getProductDetail().getSku()).getPrice()));
+                double price = priceHashMap.get(suningCar.getProductDetail().getSku()).getPrice();
+                if (price > 0) {
+                    holder.goodsPriceTextView.setText("单价:" + Parameters.CONSTANT_RMB + decimalFormat.format(price));
+                } else {
+                    holder.goodsPriceTextView.setText("商品价格异常");
+                }
+            } else {
+                holder.goodsPriceTextView.setText("");
             }
-            holder.addButton.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    SuningCarController.addCount(suningCar.getProductDetail().getSku());
-                    refresh();
-                }
-            });
-            holder.deleteButton.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    SuningCarController.deleteCount(suningCar.getProductDetail().getSku());
-                    refresh();
-                }
-            });
-            holder.selectButton.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    SuningCarController.select(suningCar.getProductDetail().getSku());
-                    refresh();
-                }
-            });
-            return convertView;
+            return view;
         }
 
         class ViewHolder {
-            ImageView goodsImage, addButton, deleteButton;
-            TextView goodNameText, goodsPriceText, guigeText, countText,
-                    stateText;
-            LinearLayout selectButton;
-            ImageView selection;
+            ImageView goodsImageView;
+            TextView goodsNameTextView, goodsAttrTextView, goodsCountTextView, goodsPriceTextView;
         }
+
     }
 
     class Buy extends AsyncTask<Void, Void, String> {

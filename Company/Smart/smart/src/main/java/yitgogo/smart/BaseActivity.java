@@ -1,20 +1,16 @@
 package yitgogo.smart;
 
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.MotionEvent;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import yitgogo.smart.model.VersionInfo;
 import yitgogo.smart.tools.LogUtil;
 
 public class BaseActivity extends FragmentActivity {

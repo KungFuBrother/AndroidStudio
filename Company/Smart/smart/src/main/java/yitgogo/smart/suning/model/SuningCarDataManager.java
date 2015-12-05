@@ -154,32 +154,21 @@ public class SuningCarDataManager {
     }
 
     public List<ContentValues> geteSelectedProducts() {
-        String selection = column_selection + "=?";
-        String[] selectionValue = {"1"};
+        List<ContentValues> contentValues = new ArrayList<>();
         openDatabase();
-        Cursor cursor = cacheDatabase.query(tableName, null, selection,
-                selectionValue, null, null, null, null);
-        if (cursor != null) {
-            if (cursor.getCount() > 0) {
-                List<ContentValues> contentValues = new ArrayList<>();
-                cursor.moveToFirst();
-                while (cursor.moveToNext()) {
-                    ContentValues values = new ContentValues();
-                    values.put(column_sku, cursor.getString(cursor
-                            .getColumnIndex(column_sku)));
-                    values.put(column_object, cursor.getString(cursor
-                            .getColumnIndex(column_object)));
-                    values.put(column_count, cursor.getInt(cursor
-                            .getColumnIndex(column_count)));
-                    values.put(column_selection, cursor.getInt(cursor
-                            .getColumnIndex(column_selection)));
-                }
-                closeDatabase();
-                return contentValues;
-            }
+        Cursor cursor = cacheDatabase.query(tableName, null, column_selection + " = ?", new String[]{"1"}, null, null, null);
+        if (cursor.moveToFirst()) {
+            do {
+                ContentValues values = new ContentValues();
+                values.put(column_sku, cursor.getString(cursor.getColumnIndex(column_sku)));
+                values.put(column_object, cursor.getString(cursor.getColumnIndex(column_object)));
+                values.put(column_count, cursor.getInt(cursor.getColumnIndex(column_count)));
+                values.put(column_selection, cursor.getInt(cursor.getColumnIndex(column_selection)));
+            } while (cursor.moveToNext());
         }
+        cursor.close();
         closeDatabase();
-        return null;
+        return contentValues;
     }
 
 

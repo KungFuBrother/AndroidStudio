@@ -14,7 +14,6 @@ import yitgogo.smart.tools.Parameters;
  */
 public class SuningManager {
 
-    //    public static final String appKey = "YTKJ";
     public static final String appKey = "SCYT";
     public static final String version = "2.0";
 

@@ -37,7 +37,7 @@ public class YitgogoApplication extends Application {
         Content.init(this);
         ScreenUtil.init(this);
         SuningCarController.init(this);
-        LogUtil.setLogEnable(false);
+        LogUtil.setLogEnable(true);
         initImageLoader();
         initUmeng();
     }

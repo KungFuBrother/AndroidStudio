@@ -117,13 +117,12 @@ public class SuningCarController {
     }
 
     public static List<ModelSuningCar> getSelectedCars() {
+        List<ModelSuningCar> allSuningCars = getSuningCars();
         List<ModelSuningCar> suningCars = new ArrayList<>();
-        List<ContentValues> contentValues = dataManager.geteSelectedProducts();
-        for (int i = 0; i < contentValues.size(); i++) {
-            suningCars.add(new ModelSuningCar(
-                    contentValues.get(i).getAsString(SuningCarDataManager.column_object),
-                    contentValues.get(i).getAsInteger(SuningCarDataManager.column_count),
-                    contentValues.get(i).getAsInteger(SuningCarDataManager.column_selection)));
+        for (int i = 0; i < allSuningCars.size(); i++) {
+            if (allSuningCars.get(i).isSelected()) {
+                suningCars.add(allSuningCars.get(i));
+            }
         }
         return suningCars;
     }

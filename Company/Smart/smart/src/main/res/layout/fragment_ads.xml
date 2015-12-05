@@ -4,10 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <yitgogo.smart.view.AutoScrollViewPager
-        android:id="@+id/ads_pager"
+    <ImageView
+        android:id="@+id/ads_image"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </yitgogo.smart.view.AutoScrollViewPager>
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter" />
 
 </FrameLayout>
